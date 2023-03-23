@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class BrandServiceTest extends AbstractUnitTest {
 
+    //Git check
     @Autowired
     private BrandService service;
 
