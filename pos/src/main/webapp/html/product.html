@@ -1,0 +1,276 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;&nbsp;
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" id="add-product-button" style="width:100px">Add</button>
+    &nbsp;
+    <button type="button" class="btn btn-primary" id="upload-data" style="width:100px">Upload</button>
+
+
+
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;&nbsp;
+    </div>
+    <div class="row">
+
+        <!-- Table -->
+        <div class=" col-12 tableDiv">
+            <table class="table table-striped" id="product-table">
+                <thead class="table-head">
+                <tr>
+
+                    <th scope="col" style="width: 17%;">Barcode</th>
+                    <th scope="col" style="width: 17%;">Brand</th>
+                    <th scope="col" style="width: 17%;">Category</th>
+                    <th scope="col" style="width: 17%;">Name</th>
+                    <th scope="col" style="width: 12%;">Mrp</th>
+                    <th scope="col" style="width: 20%;">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+        <!-- Blank Row -->
+        <div class="row">
+            &nbsp;
+        </div>
+
+
+        <div class="row" style="display: flex; justify-content: center;">
+            <button type="button" class="btn btn-primary" id="previous-page" style="width: 100px;">Previous</button>
+
+                <input type="number" class="form-control" name="page" id="inputPage"  value="1" min="1" oninput="displayPage()" onkeypress="return /[0-9]/i.test(event.key)" required style="width: 60px;">
+                <input type="text" class="form-control" name="totalProducts" id="inputTotalPages"  required style="width: 60px;" disabled>
+
+            <button type="button" class="btn btn-primary" id="next-page" style="width: 100px;">Next</button>
+        </div>
+    </div>
+
+<!-- Product Add Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="add-product-modal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>Add Product</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin-left:20px;">
+                <form class="form-row" id="product-form">
+
+                        <div class="form-group form-inline" >
+                            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode<span class="required">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="barcode" id="inputBarcode" oninput="checkInputs()" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Barcode" required style="width: 260px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group form-inline">
+                            <label for="brand-category-select" class="required col-sm-3 col-form-label">Brand<span class="required">*</span></label>
+                            <div>
+                                <select class="form-control" id="brand-category-select" required style="width: 260px;">
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                    <div class="form-group form-inline" >
+                            <label for="inputName" class="col-sm-2 col-form-label">Name<span class="required">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text"  class="form-control" name="name" id="inputName" oninput="checkInputs()" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)" placeholder="Enter Name" required style="width: 260px;">
+                            </div>
+                        </div>
+                        <div class="form-group form-inline">
+                            <label for="inputMrp" class="col-sm-2 col-form-label">Mrp<span class="required">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="mrp" id="inputMrp" placeholder="Enter Mrp" min="0" max="999999" step="any" oninput="checkInputs()" onkeypress="return /[0-9.]/i.test(event.key)" required style="width: 260px;">
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="brandCategory" >
+
+
+
+                    <div>
+                        <br>
+                        <div style="display:inline-grid;width:240px"></div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:100px">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="add-product" style="width:100px" disabled>Add</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Product Edit Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="edit-product-modal" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Edit Product</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" id="product-edit-form">
+                        <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="barcode" placeholder="Enter Barcode" disabled>
+                                <p style="line-height:2em;"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="brand" id="inputBrand" disabled>
+                                <p style="line-height:2em;"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="category" id="inputCategory"  disabled>
+                                <p style="line-height:2em;"></p>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)" placeholder="Enter Name" required>
+                                <p style="line-height:2em;"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMrp" class="col-sm-2 col-form-label">Mrp</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="mrp" placeholder="Enter Mrp" min="0" max="999999" step="any" onkeypress="return /[0-9.]/i.test(event.key)" required>
+                                <p style="line-height:2em;"></p>
+                            </div>
+                        </div>
+                        </div>
+
+                        <input type="hidden" name="id" >
+                        <input type="hidden" name="brandCategory">
+                        <div>
+                            <br>
+                            <div style="display:inline-grid;width:280px"></div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="update-product">Update</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Product Upload Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="upload-product-modal" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="product-file">
+                        <input type="file" class="custom-file-input" accept=".tsv" id="productFile" oninput="enableUpload();">
+                        <label class="custom-file-label" for="productFile" id="productFileName">Choose file</label>
+                    </div>
+                    <a th:href="@{/sample/product.tsv}" target="_blank">Download Sample</a>
+                    <br>
+                    Rows: <span id="rowCount">0</span>,
+                    Processed: <span id="processCount">0</span>,
+                    Errors: <span id="errorCount">0</span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="process-data">Upload</button>
+                    <button type="button" class="btn btn-warning" id="download-errors">Download Errors</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> <!-- Container end-->
+
+<!--Error Modal-->
+
+<!-- Error Toast-->
+<div class="toast error" role="alert" id="error-modal" aria-live="assertive" aria-atomic="ture" style="width:400px" >
+    <div class="toast-header"  style="background-color:tomato" >
+
+        <strong class="mr-auto" >Error </strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="toast-body">
+    </div>
+</div>
+
+<!-- Success Toast-->
+
+<div class="toast success " role="alert" id="success-modal" aria-live="assertive" aria-atomic="ture" style="width:400px">
+    <div class="toast-header" style="background-color: #90EE90" >
+
+        <strong class="mr-auto"  >Success </strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="toast-body"  >
+    </div>
+</div>
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/product.js}"/></script>
+
+</body>
+
+</html>

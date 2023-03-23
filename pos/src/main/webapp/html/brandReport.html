@@ -1,0 +1,108 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head">
+
+</head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+
+
+<div class="container">
+
+
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;&nbsp;
+    </div>
+
+    <!-- Input for Brand Report-->
+    <div class="row">
+        <div class="col-12">
+            <form class="form-inline" id="brandReport-form">
+                <div class="form-group">
+                    <label for="brand-select" class="col-sm-2 col-form-label">Brand</label>
+
+                    <div>
+                        <select class="form-control" id="brand-select" style="width: 260px;">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="category-select" class="col-sm-2 col-form-label">Category</label>
+
+                    <div>
+                        <select class="form-control" id="category-select"  style="width: 260px;margin-left:20px;max-height:400px;overflow-y: auto;">
+                        </select>
+                    </div>
+                </div>
+                <input type="hidden" name="brand" >
+                <input type="hidden" name="category" >
+                <button type="button" class="btn btn-primary" id="brand-report" >Find Report</button>
+                &nbsp;
+                <button type="button" class="btn btn-success" id="download-brand-report">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                    </svg>
+                    Download
+                </button>
+            </form>
+
+        </div>
+    </div>
+    <!-- Blank Row -->
+    <div class="row">
+        &nbsp;&nbsp;
+    </div>
+
+
+    <div class="row">
+
+        <!-- Table -->
+        <div class="col-12 tableDiv">
+            <table class="table table-striped" id="brandReport-table">
+                <thead class="table-head">
+                <tr>
+                    <th scope="col" style="width:25%">S.No</th>
+                    <th scope="col" style="width:38%">Brand</th>
+                    <th scope="col" style="width:37%">Category</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Success Toast-->
+
+<div class="toast success " role="alert" id="success-modal" aria-live="assertive" aria-atomic="ture" style="width:400px">
+    <div class="toast-header" style="background-color: #90EE90" >
+
+        <strong class="mr-auto"  >Success </strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="toast-body"  >
+    </div>
+</div>
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/brandReport.js}"/></script>
+</body>
+
+
+</html>

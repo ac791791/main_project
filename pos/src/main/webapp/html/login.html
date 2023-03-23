@@ -1,0 +1,73 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_site_navbar"></nav>
+
+
+<div class="container">
+
+<div class="row">
+<div class="row">
+	<div style="width:800px;height:600px;background-color:white;">
+		<img th:src="@{/static/bg.svg}" style="width:800px;height:600px"  alt="Image">
+	</div>
+	<div class="card" style="width:360px;border:none">
+
+  	<div class="card-body">
+
+		<div class="img" style="display: flex;justify-content: center;margin-top:70px">
+			<img th:src="@{/static/avatar1.png}" style="width:100px" alt="Avtar Icon">
+
+		</div>
+
+
+		<form class="form" id="login-form" method="POST" th:action="@{/session/login}">
+			<div class="form-group">
+				<label for="email" class="col-sm-10 col-form-label">Email</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="email" id="email" placeholder="Email" style="width:280px">
+			    </div>
+			</div>
+			<div class="form-group">
+			    <label for="password" class="col-sm-10 col-form-label">Password</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" name="password" id="password" placeholder="Password" style="width:280px">
+
+			    </div>
+			</div >
+			<div style="display: flex;justify-content: right;margin-right:20px">
+				<a th:href="@{/site/init}">Didn't have account? Sign Up</a>
+			</div>
+				<!-- Blank Row -->
+			<div class="row">
+				&nbsp;
+			</div>
+
+			<button type="submit" class="btn btn-success" id="login" style="width:300px;border-radius: 10px;">Login</button>
+		</form>
+	</div>
+	<div class="card-footer text-danger" style="display: flex;justify-content: right;">
+		[[${info.getMessage()}]]
+		[[${info.setMessage("")}]]
+
+	</div>
+	
+	</div>
+	
+	
+
+</div> <!-- Col -->
+</div> <!-- Row -->
+
+</div> <!-- Container-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+</body>
+
+</html>

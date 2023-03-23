@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head">
+	<meta name="role" th:attr="content=${role}">
+</head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+
+ <!-- Top row with form-->
+<div >
+
+	<div  class="row" style="justify-content: center; align-items:center;">
+	<div class="col-2 icon" >
+		<a th:href="@{/ui/product}" title="Product">  <img th:src="@{/static/productUpdated1.jpeg}" width="170px"  alt="Product Icon"> </a>
+	</div>
+	<div class="col-2 icon">
+		<a th:href="@{/ui/order}" title="Order">  <img th:src="@{/static/orderUpdated.jpeg}" width="170px" alt="Order Icon"> </a>
+	</div>
+		<div class="col-2 icon" th:if="${role=='supervisor'}">
+			<a th:href="@{/ui/salesReport}" title="Reports">  <img th:src="@{/static/reports.png}" width="110px" alt="Report Icon"> </a>
+		</div>
+
+		<br>
+	</div>
+	<div  class="row" style="justify-content: center; align-items:center;">
+	<div class="col-2 icon" >
+		<a th:href="@{/ui/brand}" title="Brand">  <img th:src="@{/static/brandUpdated.png}" width="170px" alt="Brand Icon"> </a>
+	</div>
+
+	<div class="col-2 icon">
+		<a th:href="@{/ui/inventory}" title="Inventory">  <img th:src="@{/static/inventoryUpdated.jpeg}" width="170px" alt="Inventory Icon"> </a>
+	</div>
+	<div class="col-2 icon" th:if="${role=='supervisor'}">
+		<a th:href="@{/ui/user}" title="Users"> <img th:src="@{/static/userUpdated.jpeg}" width="170px" alt="Users Icon"> </a>
+	</div>
+	</div>
+
+</div> 
+
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+
+</body>	
+
+</html>
