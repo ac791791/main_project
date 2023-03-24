@@ -42,7 +42,7 @@ label .required {
   margin-left: 5px;
 }
 
-.tableButtons,.deleteButtons{
+.tableButtons,.deleteButtons,.disabledTableButtons{
     background-color:navajowhite;
     width: 80px;
     border-radius: 6px;

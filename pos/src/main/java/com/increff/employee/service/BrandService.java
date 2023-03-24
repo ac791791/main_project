@@ -30,6 +30,8 @@ public class BrandService {
 
 	}
 
+
+
 	@Transactional
 	public BrandPojo get(int id) {
 		return dao.select(id);

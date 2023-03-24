@@ -17,14 +17,14 @@
     </div>
 
 
-        <button type="submit" class="btn btn-primary" id="add-inventory" style="width:100px">Add</button>
+        <button type="submit" class="btn btn-primary" id="add-inventory" style="width:100px" th:if="${role=='supervisor'}">Add</button>
     &nbsp;
-        <button type="button" class="btn btn-primary" id="upload-data" style="width:100px">Upload</button>
+        <button type="button" class="btn btn-primary" id="upload-data" style="width:100px" th:if="${role=='supervisor'}">Upload</button>
 
 
 
     <!-- Blank Row -->
-    <div class="row">
+    <div class="row" th:if="${role=='supervisor'}">
         &nbsp;
     </div>
     <div class="row">

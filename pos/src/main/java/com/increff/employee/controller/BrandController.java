@@ -28,7 +28,11 @@ public class BrandController {
 	public void add(@RequestBody BrandForm form) throws ApiException {
 		dto.add(form);
 	}
-	
+	@ApiOperation(value = "Adding bulk brands")
+	@RequestMapping(value = "/bulk",method = RequestMethod.POST)
+	public void addBulk(@RequestBody List<BrandForm> forms) throws ApiException{
+		dto.add(forms);
+	}
 
 	@ApiOperation(value="Getting a brand by id")
 	@RequestMapping(value = "{id}",method = RequestMethod.GET)

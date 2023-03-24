@@ -8,8 +8,11 @@ function addToggle(){
     $('#add-brand-modal').modal('toggle');
 }
 
+var bulkList=[];
+
 var backupPage=1;
 var totalPages=1;
+
 
 //BUTTON ACTIONS
 function addBrand(event){
@@ -305,10 +308,24 @@ function successMessage(message){
 function displayBrandList(data){
 	var $tbody = $('#brand-table').find('tbody');
 	$tbody.empty();
+	var addButton = document.getElementById('add-brand-button');
+	if(addButton==null){
+	    var role="operator";
+	 }
+	 else{
+        var role ="supervisor";
+    }
+
 	for(var i in data){
 		var e = data[i];
 
-		 var buttonHtml = ' <button class="tableButtons" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
+        if (role === 'supervisor') {
+		    var buttonHtml = ' <button class="tableButtons" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
+		}
+		else{
+		    var buttonHtml='<button class="disabledTableButtons" disabled> Edit </button>';
+		}
+
 		var row = '<tr>'
 		if(e.brand.length>40){
 		    row+= '<td title='+e.brand+'>' + (e.brand).slice(0,40)+'...' + '</td>'

@@ -10,10 +10,22 @@
 <div class="container">
  <!-- Top row with form-->
  <div class="row">
-	 <div class="col-12">
-		You have been logged out successfully.
-		Login again
-	 </div>	
+	 <div class="col-md-6">
+	 <div style="width:50%;background-color:white">
+		 <img th:src="@{/static/thanku1.jpeg}"   alt="Image">
+	 </div>
+	 </div>
+		 <div class="col-md-6">
+	 <div  style="margin-top:200px;margin-left:150px">
+		<h1 style="font-size:70px">Logged Out</h1>
+<!--		<p>Thank you for using POS.</p>-->
+		 <!-- Blank Row -->
+		 <div class="row">
+			 &nbsp;
+		 </div>
+		 <a class="btn btn-success btn-lg" th:href="@{/site/login}" role="button" >Log In Again</a>
+	 </div>
+	 </div>
 </div> 
 
 </div> <!-- Container-->

@@ -193,11 +193,22 @@ function downloadErrors(){
 function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
+	var addButton = document.getElementById('add-product-button');
+    	if(addButton==null){
+    	    var role="operator";
+    	 }
+    	 else{
+            var role ="supervisor";
+        }
 	for(var i in data){
 		var e = data[i];
 
-
+        if (role === 'supervisor') {
 		var buttonHtml = ' <button class="tableButtons" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
+		}
+        else{
+            var buttonHtml='<button class="disabledTableButtons" disabled> Edit </button>';
+        }
 		var row = '<tr>'
 		if(e.barcode.length>15){
                 	row+= '<td title='+e.barcode+'>' + (e.barcode).slice(0,15)+'...' + '</td>'

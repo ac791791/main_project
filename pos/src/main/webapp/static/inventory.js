@@ -217,9 +217,22 @@ function downloadErrors(){
 function displayInventoryList(data){
 	var $tbody = $('#inventory-table').find('tbody');
 	$tbody.empty();
+	var addButton = document.getElementById('add-inventory');
+    if(addButton==null){
+        var role="operator";
+     }
+     else{
+        var role ="supervisor";
+    }
 	for(var i in data){
 		var e = data[i];
+
+		if (role === 'supervisor') {
 		var buttonHtml = ' <button class="tableButtons" onclick="displayEditInventory(' + e.id + ')">Edit</button>'
+		}
+        else{
+            var buttonHtml='<button class="disabledTableButtons" disabled> Edit </button>';
+        }
 
 		var row = '<tr>'
 		if(e.barcode.length>30){

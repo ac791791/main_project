@@ -48,7 +48,7 @@ function addUser(event){
 function changePassword(email){
 
     $("#edit-user-form input[name=email]").val(email);
-    console.log("Email "+email);
+
 
 	var url = getUserUrl();
 
@@ -267,10 +267,19 @@ function displayUserList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button class="deleteButtons" onclick="deleteUser(' + e.id + ')">delete</button>'
+
+		var role=e.role;
+
+		if(role=="operator"){
+		    var buttonHtml = '<button class="deleteButtons" onclick="deleteUser(' + e.id + ')">delete</button>'
+		}
+		 else{
+            var buttonHtml='<button class="disabledTableButtons" disabled> Delete </button>';
+        }
+
 		var row = '<tr>'
 		+ '<td>' + e.email + '</td>'
-		+ '<td>' + e.role + '</td>'
+		+ '<td>' + role + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);

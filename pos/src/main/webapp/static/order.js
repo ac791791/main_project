@@ -430,10 +430,14 @@ function displayOrderList(data){
         const formattedDate = date.toLocaleString('en-US', options);
         // Output: "Mon, Feb 27, 2023, 12:27:11 PM"
         console.log(formattedDate+"2nd");
-
-
-        		var buttonHtml = '<button class="deleteButtons" onclick="confirmDeleteOrder(' + e.id + ')">Delete</button>'
-        		buttonHtml += ' <button class="tableButtons"  onclick="displayOrder('+e.id+')">Edit</button>'
+                if(e.invoiceStatus==1){
+                    var buttonHtml = '<button class="disabledTableButtons" >Delete</button>'
+                    buttonHtml += ' <button class="disabledTableButtons" >Edit</button>'
+                }
+                else{
+                    var buttonHtml = '<button class="deleteButtons" onclick="confirmDeleteOrder(' + e.id + ')">Delete</button>'
+                    buttonHtml += ' <button class="tableButtons"  onclick="displayOrder('+e.id+')">Edit</button>'
+                 }
         		buttonHtml += ' <button class="tableButtons"  onclick="getOrderItemList(' + e.id + ')">View</button>'
     		var row = '<tr>'
     		+ '<td>' + e.id + '</td>'

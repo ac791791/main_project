@@ -10,16 +10,22 @@
 
 <div class="container">
 <div class="row">
-<div class="col-6">
- 
-<div class="jumbotron">
+<div class="col-md-6">
+
+<div style="width:50%;background-color:white">
+    <img th:src="@{/static/index.png}" style="width:600px;height:600px"  alt="Image">
+</div>
+</div>
+
+    <div class="col-md-6">
+<div  class="jumbotron" style="margin-left:100px;height:100%" >
   <h1 class="display-4">POS</h1>
   <p class="lead">Welcome to Point of Sale Application</p>
   <hr class="my-4">
   <p>This application will help you in Order Management. It will keep track of Brands , products and their inventory.
      It will assist you in data analysis through its brand report, inventory report, sales report. Additionally, it
      will create daily report for growth determination. </p>
-  <a class="btn btn-primary btn-lg" th:href="@{/site/login}" role="button">Get Started</a>
+  <a class="btn btn-success btn-lg" th:href="@{/site/login}" role="button" style="margin-left:210px">Get Started</a>
 </div>
 
 </div>

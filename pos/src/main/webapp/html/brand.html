@@ -4,6 +4,7 @@
 
 <head th:replace="snippets.html :: name_head">
     <title>Brands</title>
+    meta name="role" th:attr="content=${role}">
 </head>
 
 
@@ -18,12 +19,13 @@
         &nbsp;
     </div>
 
-    <button type="button" class="btn btn-primary" id="add-brand-button" style="width:100px">Add </button>
+
+    <button type="button" class="btn btn-primary" id="add-brand-button" style="width:100px" th:if="${role=='supervisor'}" >Add </button>
                 &nbsp
-    <button type="button" class="btn btn-primary" id="upload-data" style="width:100px">Upload</button>
+    <button type="button" class="btn btn-primary" id="upload-data" style="width:100px" th:if="${role=='supervisor'}">Upload</button>
 
         <!-- Blank Row -->
-    <div class="row">
+    <div class="row" th:if="${role=='supervisor'}">
         &nbsp;&nbsp;
     </div>
 
@@ -37,7 +39,7 @@
 
                     <th scope="col" style="width: 35%;">Brand</th>
                     <th scope="col" style="width: 35%;">Category</th>
-                    <th scope="col" style="width: 30%;">Actions</th>
+                    <th scope="col" style="width: 30%;" >Actions</th>
                 </tr>
                 </thead>
                 <tbody>
