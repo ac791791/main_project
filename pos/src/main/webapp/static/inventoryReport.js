@@ -143,15 +143,7 @@ function setupBrandCategorySelect(){
 
 }
 
-function successMessage(message){
 
-    $('.toast-body').text(message);
-    $('#success-modal').addClass('show');
-    $('.success').toast({delay: 2000});
-    $('.success').toast('show');
-
-
-}
 
 
 function init(){

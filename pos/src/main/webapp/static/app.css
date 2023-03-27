@@ -113,7 +113,7 @@ label .required {
 
 .toast {
   position: absolute !important;
-  top: 8px !important;
+  top:50px !important;
   right: 40px !important;
   z-index: 9999 !important;
 }

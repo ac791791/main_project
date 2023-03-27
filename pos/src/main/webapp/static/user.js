@@ -45,37 +45,7 @@ function addUser(event){
 	return false;
 }
 
-function changePassword(email){
 
-    $("#edit-user-form input[name=email]").val(email);
-
-
-	var url = getUserUrl();
-
-    event.preventDefault();
-	//Set the values to update
-	var $form = $("#edit-user-form");
-	var json = toJson($form);
-
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		successMessage("Password Changed");
-	   		$('#edit-user-modal').modal('toggle');
-
-	   },
-	   error: function(jqXHR, textStatus, errorThrown) {
-                   handleAjaxError(jqXHR, textStatus, errorThrown);
-              }
-	});
-
-	return false;
-}
 
 function getTotalPages(){
 
@@ -237,28 +207,7 @@ function displayPage(){
   }
 
 
-function handleAjaxError(xhr, textStatus, errorThrown) {
-  var errorMessage = "An error occurred while processing your request.";
-  if (xhr.responseJSON && xhr.responseJSON.message) {
-    errorMessage = xhr.responseJSON.message;
-  }
 
-  $('.toast-body').text(errorMessage);
-  $('#error-modal').addClass('show');
-  $('.error').toast({delay: 5000});
-  $('.error').toast('show');
-  $('#success-modal').removeClass('show');
-
-}
-  function successMessage(message){
-
-      $('.toast-body').text(message);
-      $('#success-modal').addClass('show');
-      $('.success').toast({delay: 2000});
-      $('.success').toast('show');
-      $('#error-modal').removeClass('show');
-
-  }
 //UI DISPLAY METHODS
 
 function displayUserList(data){

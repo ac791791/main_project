@@ -149,27 +149,6 @@ function setupBrandCategorySelect(){
 }
 
 
-function handleAjaxError(xhr, textStatus, errorThrown) {
-  var errorMessage = "An error occurred while processing your request.";
-  if (xhr.responseJSON && xhr.responseJSON.message) {
-    errorMessage = xhr.responseJSON.message;
-  }
-
-  $('.toast-body').text(errorMessage);
-  $('#error-modal').addClass('show');
-  $('.error').toast({delay: 5000});
-  $('.error').toast('show');
-  $('#success-modal').removeClass('show');
-}
-function successMessage(message){
-
-    $('.toast-body').text(message);
-    $('#success-modal').addClass('show');
-    $('.success').toast({delay: 2000});
-    $('.success').toast('show');
-    $('#error-modal').removeClass('show');
-
-}
 
 function init(){
 	$('#sales-report').click(getSalesReportList);

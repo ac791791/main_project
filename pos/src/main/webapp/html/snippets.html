@@ -85,19 +85,87 @@
     </ul>
     
     <ul class="navbar-nav ml-auto">
-	    <li class="navbar-text">
-<!--            <a class="nav-link" onclick="changePassword('${info.getEmail()}')"></a>-->
-            [[${info.getEmail()}]]
-            &nbsp;&gt;&nbsp;
-	    </li>
-	    <li class="nav-item">
-	    	<a class="nav-link" th:href="@{/session/logout}">Logout</a>
-	    </li>
+<!--	    <li class="navbar-text">-->
+<!--            <a class="nav-link" id="myLink" onclick="openChangePasswordModal()">[[${info.getEmail()}]]</a>-->
+
+
+<!--        </li>-->
+<!--	    <li class="nav-item">-->
+<!--	    	<a class="nav-link" th:href="@{/session/logout}">Logout</a>-->
+<!--	    </li>-->
+
+        <li class="nav-item " >
+            <div class="dropdown " >
+                <button type="button" class="btn btn-light dropdown-toggle"  id="myLink" data-toggle="dropdown" style="background-color::silver,">[[${info.getEmail()}]]</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item"  onclick="openChangePasswordModal()">Change Password</a>
+                    <a class="dropdown-item" th:href="@{/session/logout}">Logout</a>
+                </div>
+            </div>
+        </li>
+
     </ul>
     
         
   </div>
+
+    <!-- User Edit Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="edit-user-modal" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Change Password</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" id="edit-user-form">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="inputCurrentPassword" class="col-sm-2 col-form-label">Current Password<span class="required">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" name="currentPassword" id="inputCurrentPassword" placeholder="Current Password" required>
+                                    <p style="line-height:2em;"></p>
+                                </div>
+                            <div class="form-group">
+                                <label for="inputNewPassword" class="col-sm-2 col-form-label">New Password<span class="required">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" name="newPassword" id="inputNewPassword" placeholder="New Password" required>
+                                    <p style="line-height:2em;"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputConfirmPassword" class="col-sm-2 col-form-label">Confirm Password<span class="required">*</span></label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" name="confirmPassword" id="inputConfirmPassword" placeholder="Confirm Password" required>
+                                    <p style="line-height:2em;"></p>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="email">
+
+                            <div>
+                            </div>
+                            <br>
+                            <div style="display:inline-grid;width:220px"></div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:100px">Cancel</button>
+                                &nbsp;
+                            <button type="submit" class="btn btn-primary" id="edit-user"  style="width:100px">Change</button>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </nav>
+
+
 
 <footer class="footer  mt-1" th:fragment="name_footer">
 	Copyright Increff 2023
@@ -106,7 +174,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script th:src="@{/static/app.js}"/></script>
 	<script th:src="@{/static/papaparse.min.js}"/></script>
-<!--    <script th:src="@{/static/user.js}"/></script>-->
+
 	
 </footer>
 

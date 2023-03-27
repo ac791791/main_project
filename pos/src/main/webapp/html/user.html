@@ -113,51 +113,7 @@
 	</div>
 </div>
 
-<!-- User Edit Modal -->
-<div class="modal" tabindex="-1" role="dialog" id="edit-user-modal" data-backdrop="static">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title"><b>Change Password</b></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form class="form-inline" id="edit-user-form">
-					<div class="col-12">
-						<div class="form-group">
-							<label for="inputPreviousPassword" class="col-sm-2 col-form-label">Previous Password<span class="required">*</span></label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="previousPassword" id="inputPreviousPassword" placeholder="Enter Previous Password" required>
-								<p style="line-height:2em;"></p>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="inputCurrentPassword" class="col-sm-2 col-form-label">Current Password<span class="required">*</span></label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="currentPassword" id="inputCurrentPassword" placeholder="Enter Current Password" required>
-							</div>
-						</div>
-						<input type="hidden" name="email">
 
-						<div>
-						</div>
-						<br>
-						<div style="display:inline-grid;width:220px"></div>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:100px">Cancel</button>
-						<button type="submit" class="btn btn-primary" id="edit-user" disabled style="width:100px">Change</button>
-					</div>
-				</form>
-			</div>
-
-
-			<div class="modal-footer">
-
-			</div>
-		</div>
-	</div>
-</div>
 <!-- Error Toast-->
 <div class="toast error" role="alert" id="error-modal" aria-live="assertive" aria-atomic="ture" style="width:400px" >
 	<div class="toast-header"  style="background-color:tomato" >

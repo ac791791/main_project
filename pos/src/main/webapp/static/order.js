@@ -382,28 +382,6 @@ function checkInputs2() {
 
 
 
-function handleAjaxError(xhr, textStatus, errorThrown) {
-  var errorMessage = "An error occurred while processing your request.";
-  if (xhr.responseJSON && xhr.responseJSON.message) {
-    errorMessage = xhr.responseJSON.message;
-  }
-
-  $('.toast-body').text(errorMessage);
-  $('#error-modal').addClass('show');
-  $('.error').toast({delay: 5000});
-  $('.error').toast('show');
-  $('#success-modal').removeClass('show');
-
-}
-
- function successMessage(message){
-
-     $('.toast-body').text(message);
-     $('#success-modal').addClass('show');
-     $('.success').toast({delay: 2000});
-     $('.success').toast('show');
-     $('#error-modal').removeClass('show');
- }
 
 //UI DISPLAY METHODS
 
@@ -438,6 +416,7 @@ function displayOrderList(data){
                     var buttonHtml = '<button class="deleteButtons" onclick="confirmDeleteOrder(' + e.id + ')">Delete</button>'
                     buttonHtml += ' <button class="tableButtons"  onclick="displayOrder('+e.id+')">Edit</button>'
                  }
+
         		buttonHtml += ' <button class="tableButtons"  onclick="getOrderItemList(' + e.id + ')">View</button>'
     		var row = '<tr>'
     		+ '<td>' + e.id + '</td>'
