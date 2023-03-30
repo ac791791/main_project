@@ -10,15 +10,15 @@ import org.springframework.stereotype.Repository;
 
 import com.increff.pos.pojo.UserPojo;
 
-import static com.increff.pos.util.Constants.pageRows;
+import static com.increff.pos.util.Constants.pageSize;
 
 @Repository
 public class UserDao extends AbstractDao {
 
 	private static String delete_id = "delete from UserPojo p where id=:id";
-	private static String select_id = "select p from UserPojo p where id=:id";
+	private static String SELECT_ID = "select p from UserPojo p where id=:id";
 	private static String select_email = "select p from UserPojo p where email=:email";
-	private static String select_all = "select p from UserPojo p order by id desc";
+	private static String SELECT_ALL = "select p from UserPojo p order by id desc";
 	private static String total="Select count(*) from UserPojo p";
 
 	
@@ -34,7 +34,7 @@ public class UserDao extends AbstractDao {
 	}
 
 	public UserPojo select(int id) {
-		TypedQuery<UserPojo> query = getQuery(select_id, UserPojo.class);
+		TypedQuery<UserPojo> query = getQuery(SELECT_ID, UserPojo.class);
 		query.setParameter("id", id);
 		return getSingle(query);
 	}
@@ -46,19 +46,17 @@ public class UserDao extends AbstractDao {
 	}
 
 	public List<UserPojo> selectAll() {
-		TypedQuery<UserPojo> query = getQuery(select_all, UserPojo.class);
+		TypedQuery<UserPojo> query = getQuery(SELECT_ALL, UserPojo.class);
 		return query.getResultList();
 	}
 
-	public List<UserPojo> selectLimited(int page) {
-		TypedQuery<UserPojo> query = getQuery(select_all, UserPojo.class);
-		query.setFirstResult(pageRows*(page-1));
-		query.setMaxResults(pageRows);
+	public List<UserPojo> selectLimited(int pageNo) {
+		TypedQuery<UserPojo> query = getQuery(SELECT_ALL, UserPojo.class);
+		query.setFirstResult(pageSize*(pageNo-1));
+		query.setMaxResults(pageSize);
 		return query.getResultList();
 	}
 
-	public void update(UserPojo p) {
-	}
 
 	public int totalRows(){
 		TypedQuery<Long> query=em.createQuery(total, Long.class);

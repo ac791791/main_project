@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.Constants.pageRows;
+import static com.increff.pos.util.Constants.pageSize;
 import static com.increff.pos.util.NormalizeFunctions.normalize;
 import static org.junit.Assert.assertEquals;
 
@@ -78,21 +78,7 @@ public class ProductDtoTest extends AbstractUnitTest{
 
     }
 
-    @Test
-    public void testZeroBrandCategoryAdd() throws ApiException{
-        ProductForm form = new ProductForm();
-        form.setBarcode("b2000");
-        form.setbrandCategory(0);
-        form.setName("Name");
-        form.setMrp(50);
-        try {
-            dto.add(form);
-        }
-        catch (ApiException e){
-            assertEquals("Please Select Brand/Category Option",e.getMessage());
-        }
 
-    }
 
     @Test
     public void testEmptyNameAdd() throws ApiException{
@@ -121,7 +107,7 @@ public class ProductDtoTest extends AbstractUnitTest{
             dto.add(form);
         }
         catch (ApiException e){
-            assertEquals("Mrp can't be lesser than 0",e.getMessage());
+            assertEquals("Mrp can't be lesser than or equal to 0",e.getMessage());
         }
 
     }
@@ -219,8 +205,8 @@ public class ProductDtoTest extends AbstractUnitTest{
         List<ProductData> list1=dto.getLimited(1);
         List<ProductData> list2=dto.getLimited(2);
 
-        assertEquals(pageRows,list1.size());
-        assertEquals(16-pageRows,list2.size());
+        assertEquals(pageSize,list1.size());
+        assertEquals(16-pageSize,list2.size());
     }
 
     @Test

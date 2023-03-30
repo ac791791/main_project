@@ -7,7 +7,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(indexes = {@Index(columnList = "id,quantity")}, name="inventory")
-
 public class InventoryPojo {
 	
 	@Id

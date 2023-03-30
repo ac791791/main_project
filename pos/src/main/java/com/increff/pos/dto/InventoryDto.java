@@ -15,6 +15,7 @@ import static com.increff.pos.util.StringUtil.isEmpty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class InventoryDto {
@@ -26,39 +27,40 @@ public class InventoryDto {
 
 
     public InventoryData get(int id) {
-        InventoryData d=inventoryConvert(service.get(id));
-        ProductPojo productPojo= productService.get(d.getId());
-        d.setName(productPojo.getName());
-        d.setBarcode(productPojo.getBarcode());
-        return d;
+        InventoryData data=convertInventoryData(service.get(id));
+        ProductPojo productPojo= productService.get(data.getId());
+        data.setName(productPojo.getName());
+        data.setBarcode(productPojo.getBarcode());
+        return data;
 
     }
 
     public List<InventoryData> getAll(){
-        List<InventoryData> list1= new ArrayList<InventoryData>();
-        List<InventoryPojo> list2 = service.getAll();
-        for(InventoryPojo p: list2) {
-            InventoryData d=inventoryConvert(p);
-            ProductPojo productPojo= productService.get(d.getId());
-            d.setName(productPojo.getName());
-            d.setBarcode(productPojo.getBarcode());
-            list1.add(d);
+        List<InventoryData> inventoryDataList= new ArrayList<InventoryData>();
+        List<InventoryPojo> inventoryPojoList = service.getAll();
+
+        for(InventoryPojo pojo: inventoryPojoList) {
+            InventoryData data=convertInventoryData(pojo);
+            ProductPojo productPojo= productService.get(data.getId());
+            data.setName(productPojo.getName());
+            data.setBarcode(productPojo.getBarcode());
+            inventoryDataList.add(data);
         }
-        return list1;
+        return inventoryDataList;
 
     }
 
-    public List<InventoryData> getLimited(int page){
-        List<InventoryData> list1= new ArrayList<InventoryData>();
-        List<InventoryPojo> list2 = service.getLimited(page);
-        for(InventoryPojo p: list2) {
-            InventoryData d=inventoryConvert(p);
-            ProductPojo productPojo= productService.get(d.getId());
-            d.setName(productPojo.getName());
-            d.setBarcode(productPojo.getBarcode());
-            list1.add(d);
+    public List<InventoryData> getLimited(int pageNo){
+        List<InventoryData> inventoryDataList= new ArrayList<InventoryData>();
+        List<InventoryPojo> inventoryPojoList = service.getLimited(pageNo);
+        for(InventoryPojo pojo: inventoryPojoList) {
+            InventoryData data=convertInventoryData(pojo);
+            ProductPojo productPojo= productService.get(data.getId());
+            data.setName(productPojo.getName());
+            data.setBarcode(productPojo.getBarcode());
+            inventoryDataList.add(data);
         }
-        return list1;
+        return inventoryDataList;
 
     }
     public int totalInventory(){
@@ -66,24 +68,22 @@ public class InventoryDto {
     }
 
     public void update(int id,InventoryForm form) throws ApiException {
-        InventoryPojo p=inventoryConvert(form);
-        checkInputs(p);
-        service.update(id,p);
+        InventoryPojo pojo=convertInventoryPojo(form);
+        checkInputs(pojo);
+        service.update(id,pojo);
     }
 
     public void topUpdate(InventoryForm form) throws ApiException {
-        InventoryPojo p = inventoryConvert(form);
-        checkInputs(p);
+        InventoryPojo pojo = convertInventoryPojo(form);
+        checkInputs(pojo);
         if(isEmpty(form.getBarcode())){
             throw new ApiException("Barcode can't be empty");
         }
 
-        ProductPojo productPojo= productService.get(form.getBarcode());
-        if(productPojo==null){
-            throw new ApiException("Couldn't Update: Product with given barcode do not exist");
-        }
-        p.setId(productPojo.getId());
-        service.topUpdate(p);
+        ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
+
+        pojo.setId(existingProductPojo.getId());
+        service.topUpdate(pojo);
     }
 
 

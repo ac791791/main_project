@@ -23,21 +23,20 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
 public class ProductController {
 
 
 	@Autowired
 	private ProductDto dto;
 	
-	@ApiOperation(value = "Adding a Product")
+	@ApiOperation(value = "Add a Product")
 	@RequestMapping(method =RequestMethod.POST)
 	public void add(@RequestBody ProductForm form) throws ApiException {
 		dto.add(form);
 	}
 
-
-	@ApiOperation(value = "Getting a product of a given id")
+	@ApiOperation(value = "Get a product of a given id")
 	@RequestMapping(value ="/{id}", method=RequestMethod.GET)
 	public ProductData get(@PathVariable int id) {
 		return dto.get(id);
@@ -49,20 +48,21 @@ public class ProductController {
 //		return dto.getAll();
 //	}
 
-	@ApiOperation(value = "Getting limit products of a given page")
-	@RequestMapping(value = "/getLimited/{page}",method = RequestMethod.GET)
-	public List<ProductData> getLimited(@PathVariable int page){
-		return dto.getLimited(page);
+	@ApiOperation(value = "Get list of products of a given page")
+	@RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)
+	public List<ProductData> getLimited(@PathVariable int pageNo){
+		return dto.getLimited(pageNo);
 	}
 
 
-	@ApiOperation(value = "Getting total no of products")
-	@RequestMapping(value = "/totalProducts", method = RequestMethod.GET)
+	@ApiOperation(value = "Get total no of products")
+	@RequestMapping(value = "/total", method = RequestMethod.GET)
 	public int totalProducts(){
 		return dto.totalProducts();
 	}
-	
-	@ApiOperation(value = "Updating a Product")
+
+	//TODO: to use updateProductForm
+	@ApiOperation(value = "Update a Product")
 	@RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
 		dto.update(id,form);

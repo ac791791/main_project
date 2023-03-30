@@ -11,11 +11,12 @@ import java.util.List;
 @Repository
 public class OrderItemDao extends AbstractDao{
 
-    private static String delete_orderId ="delete from OrderItemPojo p where orderId=:orderId";
-    private static String delete_id ="delete from OrderItemPojo p where id=:id";
-//    private static String select_all="select p from OrderItemPojo p";
+    //TODO: how to write delete_orderId
+    private static String DELETE_ORDER_ID ="delete from OrderItemPojo p where orderId=:orderId";
+    private static String DELETE_ID ="delete from OrderItemPojo p where id=:id";
+//    private static String SELECT_ALL="select p from OrderItemPojo p";
     private static String select_orderId="select p from OrderItemPojo p where orderId=:orderId";
-    private static String select_id="select p from OrderItemPojo p where id=:id";
+    private static String SELECT_ID="select p from OrderItemPojo p where id=:id";
     private static String select_orderId_ProductId="select p from OrderItemPojo p where orderId=:orderId AND productId=:productId";
 
 
@@ -23,20 +24,20 @@ public class OrderItemDao extends AbstractDao{
     public void insert(OrderItemPojo p){
         em.persist(p);
     }
-    public void delete(int orderId){
-       Query query= em.createQuery(delete_orderId);
+    public void deleteByOrderId(int orderId){
+       Query query= em.createQuery(DELETE_ORDER_ID);
        query.setParameter("orderId",orderId);
        query.executeUpdate();
     }
 
-    public void delete_id(int id){
-        Query query= em.createQuery(delete_id);
+    public void delete(int id){
+        Query query= em.createQuery(DELETE_ID);
         query.setParameter("id",id);
         query.executeUpdate();
     }
 
-    public OrderItemPojo select_id(int id){
-        TypedQuery<OrderItemPojo> query=em.createQuery(select_id,OrderItemPojo.class);
+    public OrderItemPojo select(int id){
+        TypedQuery<OrderItemPojo> query=em.createQuery(SELECT_ID,OrderItemPojo.class);
         query.setParameter("id",id);
         return getSingle(query);
     }
@@ -47,13 +48,13 @@ public class OrderItemDao extends AbstractDao{
         query.setParameter("productId",productId);
         return getSingle(query);
     }
-    public List<OrderItemPojo> select(int orderId){
+    public List<OrderItemPojo> selectByOrderId(int orderId){
         TypedQuery<OrderItemPojo> query= em.createQuery(select_orderId,OrderItemPojo.class);
         query.setParameter("orderId",orderId);
         return query.getResultList();
     }
 //    public List<OrderItemPojo> selectAll(){
-//        TypedQuery<OrderItemPojo> query=em.createQuery(select_all,OrderItemPojo.class);
+//        TypedQuery<OrderItemPojo> query=em.createQuery(SELECT_ALL,OrderItemPojo.class);
 //        return query.getResultList();
 //    }
 

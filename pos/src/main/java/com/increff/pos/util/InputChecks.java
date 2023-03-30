@@ -29,8 +29,8 @@ public class InputChecks {
         if (isEmpty(p.getName())){
             throw new ApiException("Name can't be empty");
         }
-        if (p.getMrp()<0){
-            throw new ApiException("Mrp can't be lesser than 0");
+        if (p.getMrp()<=0){
+            throw new ApiException("Mrp can't be lesser than or equal to 0");
         }
         if (p.getMrp()>maxMrp) {
             throw new ApiException("Mrp can't be greater than 999999");

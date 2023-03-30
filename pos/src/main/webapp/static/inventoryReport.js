@@ -1,10 +1,10 @@
 function getInventoryReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/report/inventoryReport";
+	return baseUrl + "/api/reports/inventoryReport";
 }
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/brand";
+	return baseUrl + "/api/brands";
 }
 
 function getInventoryReportList(){

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Api
 @RestController
-@RequestMapping("/api/orderItem")
+@RequestMapping("/api/orderItems")
 public class OrderItemController {
 
 
@@ -22,7 +22,7 @@ public class OrderItemController {
     private OrderItemDto dto;
 
 
-    @ApiOperation(value = "Adding a OrderItem")
+    @ApiOperation(value = "Add a OrderItem")
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody OrderItemForm form) throws ApiException {
         dto.add(form);
@@ -30,23 +30,20 @@ public class OrderItemController {
 
     @ApiOperation(value = "Delete a order by its OrderItem id")
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-    public void delete_id(@PathVariable int id) throws ApiException {
-        dto.delete_id(id);
+    public void delete(@PathVariable int id) throws ApiException {
+        dto.delete(id);
     }
 
-
-    @ApiOperation(value = "Getting order details by given OrderId")
+    @ApiOperation(value = "Get an order details by given OrderId")
     @RequestMapping(value ="/{orderId}", method = RequestMethod.GET)
-    public List<OrderItemData> get(@PathVariable int orderId) {
-
-        return dto.get(orderId);
-
+    public List<OrderItemData> getByOrderId(@PathVariable int orderId) {
+        return dto.getByOrderId(orderId);
     }
 
-    @ApiOperation(value = "Getting a order by Its OrderItem Id")
+    @ApiOperation(value = "Get orderItem by it's OrderItem Id")
     @RequestMapping(value = "/single/{id}", method = RequestMethod.GET)
-    public OrderItemData get_id(@PathVariable int id) {
-        return dto.get_id(id);
+    public OrderItemData get(@PathVariable int id) {
+        return dto.get(id);
     }
 
 
@@ -57,7 +54,7 @@ public class OrderItemController {
 //        return dto.getAll();
 //    }
 
-    @ApiOperation(value = "Updating an orderItem by its id")
+    @ApiOperation(value = "Update an orderItem by it's id")
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody OrderItemForm form) throws ApiException{
         dto.update(id,form);

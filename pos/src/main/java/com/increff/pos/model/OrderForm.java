@@ -1,6 +1,12 @@
 package com.increff.pos.model;
 
 public class OrderForm {
+
+    private String barcode;
+    private int quantity;
+    private double sellingPrice;
+
+
     public String getBarcode() {
         return barcode;
     }
@@ -24,11 +30,4 @@ public class OrderForm {
     public void setSellingPrice(double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
-
-    private String barcode;
-    private int quantity;
-    private double sellingPrice;
-
-
-
 }

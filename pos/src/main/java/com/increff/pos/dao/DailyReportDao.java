@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public class DailyReportDao extends AbstractDao{
 
-    private static String select_id ="select p from DailyReportPojo p where date=:date";
-    private static String select_all="select p from DailyReportPojo p order by date desc";
+    private static String SELECT_ID ="select p from DailyReportPojo p where date=:date";
+    private static String SELECT_ALL="select p from DailyReportPojo p order by date desc";
 
 
     @Transactional
@@ -21,13 +21,13 @@ public class DailyReportDao extends AbstractDao{
     }
 
     public DailyReportPojo select(String date) {
-        TypedQuery<DailyReportPojo> query= em.createQuery(select_id,DailyReportPojo.class);
+        TypedQuery<DailyReportPojo> query= em.createQuery(SELECT_ID,DailyReportPojo.class);
         query.setParameter("date", date);
         return getSingle(query);
     }
 
     public List<DailyReportPojo> selectAll(){
-        TypedQuery<DailyReportPojo> query=em.createQuery(select_all, DailyReportPojo.class);
+        TypedQuery<DailyReportPojo> query=em.createQuery(SELECT_ALL, DailyReportPojo.class);
         return query.getResultList();
     }
 }

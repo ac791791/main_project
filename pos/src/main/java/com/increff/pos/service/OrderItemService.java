@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class OrderItemService {
 
     @Autowired
@@ -18,60 +20,52 @@ public class OrderItemService {
 
 
 
-    @Transactional
-    public void add(OrderItemPojo p, ProductPojo productPojo) throws ApiException {
+    public void add(OrderItemPojo p) throws ApiException {
+        OrderItemPojo existingOrderItemPojo = dao.select_orderIdAndProductId(p.getOrderId(),p.getProductId());
 
-
-        OrderItemPojo pojo= dao.select_orderIdAndProductId(p.getOrderId(),p.getProductId());
-        if(pojo!=null) {
-            if (pojo.getSellingPrice() != p.getSellingPrice()) {
+        if(Objects.nonNull(existingOrderItemPojo)) {
+            if (existingOrderItemPojo.getSellingPrice() != p.getSellingPrice())
                 throw new ApiException("Already present in cart. Selling Price can't be different.");
 
-            }
-            else{
-                int totalQuantity= pojo.getQuantity()+p.getQuantity();
-                pojo.setQuantity(totalQuantity);
-            }
+            int totalQuantity = existingOrderItemPojo.getQuantity()+p.getQuantity();
+            existingOrderItemPojo.setQuantity(totalQuantity);
         }
         else {
-
-                dao.insert(p);
-
+            dao.insert(p);
         }
     }
-    @Transactional
-    public void delete(int orderId) {
 
-        dao.delete(orderId);
+    public void deleteByOrderId(int orderId) {
+        dao.deleteByOrderId(orderId);
     }
 
-    @Transactional
-    public void delete_id(int id){
-        dao.delete_id(id);
+
+    public void delete(int id){
+        dao.delete(id);
     }
 
-    @Transactional
-    public List<OrderItemPojo> get(int orderId){
-        return dao.select(orderId);
+    public List<OrderItemPojo> getByOrderId(int orderId){
+        return dao.selectByOrderId(orderId);
     }
 
-    @Transactional
-    public OrderItemPojo get_id(int id){
-        return dao.select_id(id);
+    public OrderItemPojo getByOrderIdAndProductId(int orderId,int productId){
+        return getByOrderIdAndProductId(orderId,productId);
     }
+
+
+    public OrderItemPojo get(int id){
+        return dao.select(id);
+    }
+
 //    @Transactional
 //    public List<OrderItemPojo> getAll(){
 //        return dao.selectAll();
 //    }
 
-    @Transactional
+
     public void update(OrderItemPojo updatedPojo, OrderItemPojo p) throws ApiException {
-
-
             updatedPojo.setSellingPrice(p.getSellingPrice());
-
             updatedPojo.setQuantity(p.getQuantity());
-
     }
 
 

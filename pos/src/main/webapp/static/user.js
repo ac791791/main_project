@@ -1,7 +1,7 @@
 
 function getUserUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/user";
+	return baseUrl + "/api/users";
 }
 
 function addToggle(){
@@ -50,7 +50,7 @@ function addUser(event){
 function getTotalPages(){
 
 
-    var url = getUserUrl()+"/totalUsers";
+    var url = getUserUrl()+"/total";
     	$.ajax({
     	   url: url,
     	   type: 'GET',
@@ -81,11 +81,11 @@ function getUserList(){
 	});
 }
 
-function getLimitedUserList(page){
+function getLimitedUserList(pageNo){
 
     getTotalPages();
 
-    var url = getUserUrl()+"/getLimited/"+page;
+    var url = getUserUrl()+"/getLimited/"+pageNo;
     	$.ajax({
     	   url: url,
     	   type: 'GET',
@@ -129,6 +129,16 @@ function checkInputs() {
   } else {
     submitBtn.disabled = true;
   }
+
+    var passwordInput = document.getElementById("inputPassword");
+    var password = passwordInput.value;
+    var passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|[\]{};':"\\<>?,./~])/;
+    var passwordIsValid = passwordPattern.test(password) && password.length >= 8;
+    if (!passwordIsValid) {
+      passwordInput.setCustomValidity("Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long.");
+    } else {
+      passwordInput.setCustomValidity("");
+    }
 }
 function displayPage(){
 
@@ -155,7 +165,7 @@ function displayPage(){
 
   function check(){
 
-       getTotalPages();
+
       var page = document.getElementById("inputPage").value;
       var previousBtn=document.getElementById("previous-page");
       var nextBtn=document.getElementById("next-page");
@@ -220,7 +230,7 @@ function displayUserList(data){
 		var role=e.role;
 
 		if(role=="operator"){
-		    var buttonHtml = '<button class="deleteButtons" onclick="deleteUser(' + e.id + ')">delete</button>'
+		    var buttonHtml = '<button class="deleteButtons" onclick="deleteUser(' + e.id + ')">Delete</button>'
 		}
 		 else{
             var buttonHtml='<button class="disabledTableButtons" disabled> Delete </button>';

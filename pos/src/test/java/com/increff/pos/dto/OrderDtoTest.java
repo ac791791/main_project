@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.Constants.pageRows;
+import static com.increff.pos.util.Constants.pageSize;
 import static org.junit.Assert.assertEquals;
 
 public class OrderDtoTest extends AbstractUnitTest {
@@ -70,8 +70,8 @@ public class OrderDtoTest extends AbstractUnitTest {
         for (int i = 0; i < 15; i++) {
             dto.addOrder();
         }
-        assertEquals(pageRows, dto.getLimited(1).size());
-        assertEquals(16 - pageRows, dto.getLimited(2).size());
+        assertEquals(pageSize, dto.getLimited(1).size());
+        assertEquals(16 - pageSize, dto.getLimited(2).size());
     }
 
     @Test

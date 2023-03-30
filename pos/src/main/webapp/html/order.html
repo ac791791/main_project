@@ -86,7 +86,7 @@
                         <div class="form-group">
                             <label for="updateInputQuantity" class="col-sm-2 col-form-label">Quantity<span class="required">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" id="updateInputQuantity" min="0" oninput="checkInputs2()" onkeypress="return /[0-9]/i.test(event.key)" required>
+                                <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" id="updateInputQuantity" min="0" max="999999" oninput="checkInputs2()" onkeypress="return /[0-9]/i.test(event.key)" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -151,13 +151,13 @@
                         <div class="form-group">
                             <label for="addQuantity" class="col-sm-2 col-form-label">Quantity<span class="required">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" id="addQuantity" min="0" oninput="checkInputs1()" onkeypress="return /[0-9]/i.test(event.key)" required>
+                                <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" id="addQuantity" min="0" max="999999" oninput="checkInputs1()" onkeypress="return /[0-9]/i.test(event.key)" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="addMrp" class="col-sm-2 col-form-label">Selling Price<span class="required">*</span></label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="sellingPrice" placeholder="Enter Selling Price" id="addMrp"  min="0" step="any" oninput="checkInputs1()" onkeypress="return /[0-9.]/i.test(event.key)" required>
+                                <input type="number" class="form-control" name="sellingPrice" placeholder="Enter Selling Price" id="addMrp"  min="0" max="999999" step="any" oninput="checkInputs1()" onkeypress="return /[0-9.]/i.test(event.key)" required>
                             </div>
                         </div>
                         </div>
@@ -208,14 +208,14 @@
                         <div class="form-group">
                             <label for="newQuantity" class="col-sm-2 col-form-label">Quantity</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="quantity" id="newQuantity" placeholder="Enter Quantity" min="0" onkeypress="return /[0-9]/i.test(event.key)" required>
+                                <input type="number" class="form-control" name="quantity" id="newQuantity" placeholder="Enter Quantity" min="0" max="999999" onkeypress="return /[0-9]/i.test(event.key)" required>
                                 <p style="line-height:2em;"></p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="newSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="sellingPrice" id="newSellingPrice" placeholder="Enter Selling Price"  min="0" step="any" oninput="validity.valid||(value='');" required>
+                                <input type="number" class="form-control" name="sellingPrice" id="newSellingPrice" placeholder="Enter Selling Price"  min="0" max="999999" step="any" onkeypress="return /[0-9.]/i.test(event.key)" required>
                             </div>
                         </div>
                         <input type="hidden" name="id" >

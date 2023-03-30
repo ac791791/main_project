@@ -14,23 +14,21 @@ import java.util.List;
 import static com.increff.pos.util.StringUtil.isEmpty;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class ReportService {
 
     @Autowired
     private ReportDao dao;
 
-    @Transactional
     public List<SalesReportData> getSalesReport(SalesReportForm form) throws ApiException {
 
         return dao.getSalesReport(form);
     }
 
-    @Transactional
     public List<BrandReportData> getBrandReport(BrandReportForm form){
         return dao.getBrandReport(form);
     }
 
-    @Transactional
     public List<InventoryReportData> getInventoryReport(InventoryReportForm form){
         return dao.getInventoryReport(form);
     }

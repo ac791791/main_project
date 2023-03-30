@@ -1,6 +1,6 @@
 function getDailyReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/report/dailyReport";
+	return baseUrl + "/api/reports/dailyReport";
 }
 
 
@@ -52,7 +52,7 @@ function generateTsvData(table) {
   return data;
 }
 function downloadDailyReport(){
- let table = document.getElementById('dailyReport-table');
+  let table = document.getElementById('dailyReport-table');
   let tsvData = generateTsvData(table);
   let blob = new Blob([tsvData], {type: 'text/tab-separated-values;charset=utf-8'});
   let url = URL.createObjectURL(blob);

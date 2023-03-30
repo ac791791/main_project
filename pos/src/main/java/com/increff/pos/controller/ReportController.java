@@ -18,6 +18,7 @@ import java.util.List;
 
 @Api
 @RestController
+@RequestMapping("/api/reports")
 public class ReportController {
 
     @Autowired
@@ -26,26 +27,26 @@ public class ReportController {
     @Autowired
     private DailyReportService dailyReportService;
     @ApiOperation(value = "Getting Sales Report")
-    @RequestMapping(path = "/api/report/salesReport", method = RequestMethod.POST)
+    @RequestMapping(value = "/salesReport", method = RequestMethod.POST)
     public List<SalesReportData> getSalesReport(@RequestBody SalesReportForm form) throws ApiException {
 
         return service.getSalesReport(form);
     }
 
     @ApiOperation(value = "Getting Brand Report")
-    @RequestMapping(path = "api/report/brandReport", method = RequestMethod.POST)
+    @RequestMapping(value = "/brandReport", method = RequestMethod.POST)
     public List<BrandReportData> getBrandReport(@RequestBody BrandReportForm form){
         return service.getBrandReport(form);
     }
 
     @ApiOperation(value = "Getting inventory Report")
-    @RequestMapping(path = "api/report/inventoryReport", method = RequestMethod.POST)
+    @RequestMapping(value = "/inventoryReport", method = RequestMethod.POST)
     public List<InventoryReportData> getInventoryReport(@RequestBody InventoryReportForm form){
         return service.getInventoryReport(form);
     }
 
     @ApiOperation(value = "Getting Daily Reports")
-    @RequestMapping(path = "api/report/dailyReport", method = RequestMethod.GET)
+    @RequestMapping(value = "/dailyReport", method = RequestMethod.GET)
     public List<DailyReportData> getDailyReport(){
         return dailyReportService.getAll();
     }

@@ -10,7 +10,7 @@ public class ConvertFunction {
 
 
     //BrandDto Converts
-    public static BrandData convert(BrandPojo p) {
+    public static BrandData convertBrandData(BrandPojo p) {
         BrandData d = new BrandData();
         d.setId(p.getId());
         d.setBrand(p.getBrand());
@@ -18,7 +18,7 @@ public class ConvertFunction {
         return d;
     }
 
-    public static BrandPojo convert(BrandForm f) {
+    public static BrandPojo convertBrandPojo(BrandForm f) {
         BrandPojo p= new BrandPojo();
         p.setBrand(f.getBrand());
         p.setCategory(f.getCategory());
@@ -26,20 +26,20 @@ public class ConvertFunction {
     }
 
     // ProductDto converts
-    public static ProductPojo productConvert(ProductForm f) {
+    public static ProductPojo convertProductPojo(ProductForm f) {
         ProductPojo p= new ProductPojo() ;
         p.setBarcode(f.getBarcode());
         p.setbrandCategory(f.getbrandCategory());
         p.setName(f.getName());
 
-        double mrp = f.getMrp();
-        double formattedMrp = Double.parseDouble(String.format("%.2f", mrp));
-        p.setMrp(formattedMrp);
+        double mrp = (f.getMrp()*100.0)/100.0;
+//        double formattedMrp = Double.parseDouble(String.format("%.2f", mrp));
+        p.setMrp(mrp);
 
         return p;
     }
 
-    public static ProductData productConvert(ProductPojo p) {
+    public static ProductData convertProductData(ProductPojo p) {
 
         ProductData d= new ProductData();
         d.setId(p.getId());
@@ -59,14 +59,14 @@ public class ConvertFunction {
     }
     // Inventory Converts
 
-    public static InventoryPojo inventoryConvert(InventoryForm f) {
+    public static InventoryPojo convertInventoryPojo(InventoryForm f) {
         InventoryPojo p = new InventoryPojo();
         p.setId(f.getId());
         p.setQuantity(f.getQuantity());
         return p;
     }
 
-    public static InventoryData inventoryConvert(InventoryPojo p) {
+    public static InventoryData convertInventoryData(InventoryPojo p) {
         InventoryData d= new InventoryData();
         d.setId(p.getId());
         d.setQuantity(p.getQuantity());
@@ -75,7 +75,7 @@ public class ConvertFunction {
     }
 
     //Order Convert
-    public static OrderData orderConvert(OrderPojo p){
+    public static OrderData convertOrderData(OrderPojo p){
         OrderData d= new OrderData();
         d.setId(p.getId());
         d.setTime(p.getTime());
@@ -85,7 +85,7 @@ public class ConvertFunction {
 
     //OrderItem Converts
 
-    public static OrderItemData orderItemConvert(OrderItemPojo p){
+    public static OrderItemData convertOrderItemData(OrderItemPojo p){
         OrderItemData d= new OrderItemData();
         d.setId(p.getId());
         d.setOrderId(p.getOrderId());
@@ -95,7 +95,7 @@ public class ConvertFunction {
         return d;
     }
 
-    public static OrderItemPojo orderItemConvert(OrderItemForm f) throws ApiException {
+    public static OrderItemPojo convertOrderItemPojo(OrderItemForm f) throws ApiException {
 
 
         OrderItemPojo p= new OrderItemPojo();
@@ -109,8 +109,24 @@ public class ConvertFunction {
         return p;
     }
 
+    //User Converts
+    public static UserPojo convertUserPojo(UserForm f) {
+        UserPojo p = new UserPojo();
+        p.setEmail(f.getEmail());
+        p.setRole("operator");
+        p.setPassword(f.getPassword());
+        return p;
+    }
+    public static UserData convertUserData(UserPojo p) {
+        UserData d = new UserData();
+        d.setEmail(p.getEmail());
+        d.setRole(p.getRole());
+        d.setId(p.getId());
+        return d;
+    }
+
     //Daily Report Convert
-    public static DailyReportData dailyReportConvert(DailyReportPojo p){
+    public static DailyReportData convertDailyReportData(DailyReportPojo p){
 
         DailyReportData data=new DailyReportData();
         data.setDate(p.getDate());
@@ -119,5 +135,6 @@ public class ConvertFunction {
         data.setTotalRevenue(p.getTotalRevenue());
         return data;
     }
+
 
 }

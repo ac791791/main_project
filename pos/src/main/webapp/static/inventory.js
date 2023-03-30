@@ -113,11 +113,11 @@ function getInventoryList(){
 	});
 }
 
-function getLimitedInventoryList(page){
+function getLimitedInventoryList(pageNo){
 
     getTotalPages();
     check();
-    var url = getInventoryUrl()+"/getLimited/"+page;
+    var url = getInventoryUrl()+"/getLimited/"+pageNo;
     	$.ajax({
     	   url: url,
     	   type: 'GET',

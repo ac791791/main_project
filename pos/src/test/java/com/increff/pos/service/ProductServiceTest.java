@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.Constants.pageRows;
+import static com.increff.pos.util.Constants.pageSize;
 import static org.junit.Assert.assertEquals;
 
 public class ProductServiceTest extends AbstractUnitTest {
@@ -165,8 +165,8 @@ public class ProductServiceTest extends AbstractUnitTest {
             p.setMrp(50.25 + i);
             service.add(p);
         }
-        assertEquals(pageRows, service.getLimited(1).size());
-        assertEquals(16-pageRows,service.getLimited(2).size());
+        assertEquals(pageSize, service.getLimited(1).size());
+        assertEquals(16-pageSize,service.getLimited(2).size());
 
     }
 

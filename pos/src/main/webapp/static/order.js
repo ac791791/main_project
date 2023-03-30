@@ -1,10 +1,10 @@
 function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/order";
+	return baseUrl + "/api/orders";
 }
 function getOrderItemUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/orderItem";
+	return baseUrl + "/api/orderItems";
 }
 function getInvoiceUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -102,7 +102,7 @@ function createOrder(){
 function getTotalPages(){
 
 
-    var url = getOrderUrl()+"/totalOrders";
+    var url = getOrderUrl()+"/total";
     	$.ajax({
     	   url: url,
     	   type: 'GET',
@@ -123,11 +123,11 @@ function getTotalPages(){
 
 
 
-function getLimitedOrderList(page){
+function getLimitedOrderList(pageNo){
 
     getTotalPages();
 
-    var url = getOrderUrl()+"/getLimited/"+page;
+    var url = getOrderUrl()+"/getLimited/"+pageNo;
     	$.ajax({
     	   url: url,
     	   type: 'GET',
@@ -409,8 +409,8 @@ function displayOrderList(data){
         // Output: "Mon, Feb 27, 2023, 12:27:11 PM"
         console.log(formattedDate+"2nd");
                 if(e.invoiceStatus==1){
-                    var buttonHtml = '<button class="disabledTableButtons" >Delete</button>'
-                    buttonHtml += ' <button class="disabledTableButtons" >Edit</button>'
+                    var buttonHtml = '<button class="disabledTableButtons" disabled>Delete</button>'
+                    buttonHtml += ' <button class="disabledTableButtons" disabled>Edit</button>'
                 }
                 else{
                     var buttonHtml = '<button class="deleteButtons" onclick="confirmDeleteOrder(' + e.id + ')">Delete</button>'

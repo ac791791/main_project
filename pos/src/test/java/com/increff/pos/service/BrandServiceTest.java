@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.Constants.pageRows;
+import static com.increff.pos.util.Constants.pageSize;
 import static org.junit.Assert.assertEquals;
 
 public class BrandServiceTest extends AbstractUnitTest {
@@ -173,8 +173,8 @@ public class BrandServiceTest extends AbstractUnitTest {
         }
         List<BrandPojo> list1=service.getLimited(1);
         List<BrandPojo> list2=service.getLimited(2);
-        assertEquals(pageRows,list1.size());
-        assertEquals(16-pageRows,list2.size());
+        assertEquals(pageSize,list1.size());
+        assertEquals(16-pageSize,list2.size());
     }
 
 

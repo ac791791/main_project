@@ -15,7 +15,6 @@ import java.util.List;
 import static com.increff.pos.util.ConvertFunction.*;
 import static com.increff.pos.util.InputChecks.checkInputs;
 import static com.increff.pos.util.NormalizeFunctions.normalize;
-import static com.increff.pos.util.StringUtil.isEmpty;
 
 @Repository
 public class BrandDto {
@@ -25,8 +24,7 @@ public class BrandDto {
 
 
     public void add(BrandForm form) throws ApiException {
-
-        BrandPojo p=convert(form);
+        BrandPojo p = convertBrandPojo(form);
         checkInputs(p);
         service.add(normalize(p));
     }
@@ -40,28 +38,28 @@ public class BrandDto {
 
     public BrandData get(int id) {
         BrandPojo p= service.get(id);
-        return convert(p);
+        return convertBrandData(p);
     }
 
     //Used in products and reports to display brand category in select
     public List<BrandData> getAll(){
-        List<BrandData> list1= new ArrayList<BrandData>();
-        List<BrandPojo> list2=service.getAll();
+        List<BrandData> brandDataList= new ArrayList<BrandData>();
+        List<BrandPojo> brandPojoList=service.getAll();
 
-        for(BrandPojo p:list2) {
-            list1.add(convert(p));
+        for(BrandPojo p:brandPojoList) {
+            brandDataList.add(convertBrandData(p));
         }
-        return list1;
+        return brandDataList;
     }
 
-    public List<BrandData> getLimited(int page){
-        List<BrandData> list1= new ArrayList<BrandData>();
-        List<BrandPojo> list2=service.getLimited(page);
+    public List<BrandData> getLimited(int pageNo){
+        List<BrandData> brandDataList= new ArrayList<BrandData>();
+        List<BrandPojo> brandPojoList=service.getLimited(pageNo);
 
-        for(BrandPojo p:list2) {
-            list1.add(convert(p));
+        for(BrandPojo p:brandPojoList) {
+            brandDataList.add(convertBrandData(p));
         }
-        return list1;
+        return brandDataList;
     }
 
     public int totalBrands(){
@@ -71,11 +69,10 @@ public class BrandDto {
 
     public void update(int id,BrandForm form) throws ApiException {
 
-        BrandPojo p= convert(form);
+        BrandPojo p= convertBrandPojo(form);
         checkInputs(p);
         service.update(id,normalize(p));
     }
-
 
 
 }

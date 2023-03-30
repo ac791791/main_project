@@ -29,22 +29,16 @@ public class InventoryController {
 	@Autowired
 	private InventoryDto dto;
 
-	@ApiOperation(value = "Getting a inventory by given id")
+	@ApiOperation(value = "Gets a inventory by given id")
 	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
 	public InventoryData get(@PathVariable int id) {
 		return dto.get(id);
 	}
-
-//	@ApiOperation(value = "Getting all inventory")
-//	@RequestMapping(method = RequestMethod.GET)
-//	public List<InventoryData> getAll() {
-//		return dto.getAll();
-//
-//	}
-	@ApiOperation(value = "Getting limit Inventory of a given page")
-	@RequestMapping(value = "/getLimited/{page}",method = RequestMethod.GET)
-	public List<InventoryData> getLimited(@PathVariable int page){
-		return dto.getLimited(page);
+	
+	@ApiOperation(value = "Gets list of Inventory of a given page")
+	@RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)
+	public List<InventoryData> getLimited(@PathVariable int pageNo){
+		return dto.getLimited(pageNo);
 	}
 
 	@ApiOperation(value = "Getting total no of Inventory")
@@ -62,7 +56,6 @@ public class InventoryController {
 	@ApiOperation(value = "Updating top Inventory")
 	@RequestMapping(method = RequestMethod.PUT)
 	public void topUpdate(@RequestBody InventoryForm form) throws ApiException {
-		System.out.println(form.getQuantity()+" quantity");
 		dto.topUpdate(form);
 	}
 

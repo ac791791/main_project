@@ -98,6 +98,18 @@ function changePassword(){
 	return false;
 }
 
+function checkPassword() {
+  var passwordInput = document.getElementById("inputNewPassword");
+  var password = passwordInput.value;
+  var passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|[\]{};':"\\<>?,./~])/;
+  var passwordIsValid = passwordPattern.test(password) && password.length >= 8;
+  if (!passwordIsValid) {
+    passwordInput.setCustomValidity("Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long.");
+  } else {
+    passwordInput.setCustomValidity("");
+  }
+}
+
 function handleAjaxError(xhr, textStatus, errorThrown) {
   var errorMessage = "An error occurred while processing your request.";
   if (xhr.responseJSON && xhr.responseJSON.message) {

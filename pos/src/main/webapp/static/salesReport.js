@@ -1,12 +1,12 @@
 
 function getSalesReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/report/salesReport";
+	return baseUrl + "/api/reports/salesReport";
 }
 
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/brand";
+	return baseUrl + "/api/brands";
 }
 function getSalesReportList(){
 

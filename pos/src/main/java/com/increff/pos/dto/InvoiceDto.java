@@ -46,7 +46,7 @@ public class InvoiceDto {
 
 
     public void getOrderItems(int orderId,HttpServletResponse response) throws ApiException, IOException{
-        List<OrderItemPojo> orderItemPojoList= orderItemService.get(orderId);
+        List<OrderItemPojo> orderItemPojoList= orderItemService.getByOrderId(orderId);
         List<InvoiceItem> invoiceItemList= new ArrayList<InvoiceItem>();
 
         for(OrderItemPojo pojo: orderItemPojoList){

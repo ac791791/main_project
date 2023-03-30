@@ -21,4 +21,7 @@ public abstract class AbstractDao {
 		return em;
 	}
 
+
+
+
 }

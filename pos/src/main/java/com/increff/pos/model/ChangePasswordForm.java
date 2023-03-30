@@ -27,7 +27,7 @@ public class ChangePasswordForm {
         return newPassword;
     }
 
-    public void setPreviousPassword(String previousPassword) {
+    public void setNewPassword(String previousPassword) {
         this.newPassword = previousPassword;
     }
 

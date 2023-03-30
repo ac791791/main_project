@@ -149,7 +149,7 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     public void testGetByOrderId(){
         List<OrderData> orderDataList=orderDto.getAll();
         for (OrderData orderData : orderDataList) {
-           List<OrderItemData> orderItemDataList=dto.get(orderData.getId());
+           List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
 
            for(OrderItemData data: orderItemDataList){
                assertEquals("b1",data.getBarcode());
@@ -164,10 +164,10 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     public void testGetByOrderItemId(){
         List<OrderData> orderDataList=orderDto.getAll();
         for (OrderData orderData : orderDataList) {
-            List<OrderItemData> orderItemDataList=dto.get(orderData.getId());
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
 
             for(OrderItemData data: orderItemDataList){
-                OrderItemData getData=dto.get_id(data.getId());
+                OrderItemData getData=dto.get(data.getId());
                 assertEquals("b1",getData.getBarcode());
                 assertEquals(10,getData.getQuantity());
                 assertEquals(100.00,getData.getSellingPrice(),0.01);
@@ -179,12 +179,12 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     public void testDelete() throws ApiException {
         List<OrderData> orderDataList=orderDto.getAll();
         for (OrderData orderData : orderDataList) {
-            List<OrderItemData> orderItemDataList=dto.get(orderData.getId());
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
 
             for(OrderItemData data: orderItemDataList){
-                dto.delete_id(data.getId());
+                dto.delete(data.getId());
             }
-            List<OrderItemData> orderItemDataList1=dto.get(orderData.getId());
+            List<OrderItemData> orderItemDataList1=dto.getByOrderId(orderData.getId());
             assertEquals(0,orderItemDataList1.size());
         }
 
@@ -199,22 +199,138 @@ public class OrderItemDtoTest extends AbstractUnitTest{
         }
 
         for (OrderData orderData : orderDataList) {
-            List<OrderItemData> orderItemDataList=dto.get(orderData.getId());
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
 
             for(OrderItemData data: orderItemDataList){
                 try {
-                    dto.delete_id(data.getId());
+                    dto.delete(data.getId());
                 }
                 catch (ApiException e){
                     assertEquals("Can't Delete: Invoice is generated",e.getMessage());
                 }
 
             }
-            List<OrderItemData> orderItemDataList1=dto.get(orderData.getId());
+            List<OrderItemData> orderItemDataList1=dto.getByOrderId(orderData.getId());
             assertEquals(1,orderItemDataList1.size());
         }
+    }
 
+    @Test
+    public void testUpdate() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+
+            form.setOrderId(orderData.getId());
+            form.setBarcode("b1");
+            form.setQuantity(5);
+            form.setSellingPrice(50.12);
+
+            List<OrderItemData> itemDataList=dto.getByOrderId(orderData.getId());
+            for(OrderItemData itemData: itemDataList) {
+                dto.update(itemData.getId(), form);
+            }
+
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
+
+            for(OrderItemData orderItemData: orderItemDataList){
+                assertEquals(5,orderItemData.getQuantity());
+                assertEquals(50.12,orderItemData.getSellingPrice(),0.01);
+            }
+        }
+    }
+
+    @Test
+    public void testInvoicedUpdate() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+        for (OrderData data : orderDataList) {
+            orderService.changeInvoiceStatus(data.getId());
+        }
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+
+            form.setOrderId(orderData.getId());
+            form.setBarcode("b1");
+            form.setQuantity(5);
+            form.setSellingPrice(50.12);
+            try {
+                List<OrderItemData> itemDataList=dto.getByOrderId(orderData.getId());
+                for(OrderItemData itemData: itemDataList) {
+                    dto.update(itemData.getId(), form);
+                }
+            }
+            catch (ApiException e){
+                assertEquals("Can't Edit: Invoice is generated",e.getMessage());
+            }
+
+
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
+
+            for(OrderItemData orderItemData: orderItemDataList){
+                assertEquals(10,orderItemData.getQuantity());
+                assertEquals(100,orderItemData.getSellingPrice(),0.01);
+            }
+        }
     }
 
 
+    @Test
+    public void testDifferentBarcodeUpdate() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+
+            form.setOrderId(orderData.getId());
+            form.setBarcode("differentBarcode");
+            form.setQuantity(5);
+            form.setSellingPrice(50.12);
+            try {
+                List<OrderItemData> itemDataList=dto.getByOrderId(orderData.getId());
+                for(OrderItemData itemData: itemDataList) {
+                    dto.update(itemData.getId(), form);
+                }
+            }
+            catch (ApiException e){
+                assertEquals("Sorry, differentBarcode do not exist.",e.getMessage());
+            }
+
+
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
+
+            for(OrderItemData orderItemData: orderItemDataList){
+                assertEquals(10,orderItemData.getQuantity());
+                assertEquals(100,orderItemData.getSellingPrice(),0.01);
+            }
+        }
+    }
+
+
+    @Test
+    public void testSellingPriceGreaterThanMrpUpdate() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+
+            form.setOrderId(orderData.getId());
+            form.setBarcode("b1");
+            form.setQuantity(5);
+            form.setSellingPrice(101);
+            try {
+                dto.update(orderData.getId(), form);
+            }
+            catch (ApiException e){
+                assertEquals("Selling Price is greater than Mrp: 100.0" ,e.getMessage());
+            }
+
+
+            List<OrderItemData> orderItemDataList=dto.getByOrderId(orderData.getId());
+
+            for(OrderItemData orderItemData: orderItemDataList){
+                assertEquals(10,orderItemData.getQuantity());
+                assertEquals(100,orderItemData.getSellingPrice(),0.01);
+            }
+        }
+    }
 }

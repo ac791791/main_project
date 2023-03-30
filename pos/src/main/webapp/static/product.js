@@ -5,11 +5,11 @@ var totalPages=1;
 
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/product";
+	return baseUrl + "/api/products";
 }
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/brand";
+	return baseUrl + "/api/brands";
 }
 function addToggle(){
     document.getElementById("product-form").reset();
@@ -86,7 +86,7 @@ function updateProduct(event){
 
 function getTotalPages(){
 
-    var url = getProductUrl()+"/totalProducts";
+    var url = getProductUrl()+"/total";
     	$.ajax({
     	   url: url,
     	   type: 'GET',
@@ -104,11 +104,11 @@ function getTotalPages(){
 
 
 
-function getLimitedProductList(page){
+function getLimitedProductList(pageNo){
 
     check();
     getTotalPages();
-    var url = getProductUrl()+"/getLimited/"+page;
+    var url = getProductUrl()+"/getLimited/"+pageNo;
     	$.ajax({
     	   url: url,
     	   type: 'GET',

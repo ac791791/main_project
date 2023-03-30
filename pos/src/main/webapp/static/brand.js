@@ -1,7 +1,7 @@
 
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/brand";
+	return baseUrl + "/api/brands";
 }
 function addToggle(){
     document.getElementById("brand-form").reset();
@@ -83,7 +83,7 @@ function updateBrand(event){
 function getTotalPages(){
 
 
-    var url = getBrandUrl()+"/totalBrands";
+    var url = getBrandUrl()+"/total";
     	$.ajax({
     	   url: url,
     	   type: 'GET',
@@ -98,11 +98,11 @@ function getTotalPages(){
 }
 
 
-function getLimitedBrandList(page){
+function getLimitedBrandList(pageNo){
 
     getTotalPages();
     check();
-    var url = getBrandUrl()+"/getLimited/"+page;
+    var url = getBrandUrl()+"/getLimited/"+pageNo;
     	$.ajax({
     	   url: url,
     	   type: 'GET',
