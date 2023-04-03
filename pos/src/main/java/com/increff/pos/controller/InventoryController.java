@@ -4,7 +4,6 @@ package com.increff.pos.controller;
 import java.util.List;
 
 import com.increff.pos.dto.InventoryDto;
-import com.increff.pos.model.BrandData;
 import com.increff.pos.service.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +36,7 @@ public class InventoryController {
 	
 	@ApiOperation(value = "Gets list of Inventory of a given page")
 	@RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)
-	public List<InventoryData> getLimited(@PathVariable int pageNo){
+	public List<InventoryData> getLimited(@PathVariable int pageNo) throws ApiException {
 		return dto.getLimited(pageNo);
 	}
 

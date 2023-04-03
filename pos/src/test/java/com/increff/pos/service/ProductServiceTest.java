@@ -1,9 +1,6 @@
 package com.increff.pos.service;
 
 import com.increff.pos.dto.AbstractUnitTest;
-import com.increff.pos.model.ProductForm;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,11 +101,11 @@ public class ProductServiceTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testGetBarcode(){
+    public void testGetBarcode() throws ApiException {
         List<ProductPojo> list=service.getAll();
 
         for(ProductPojo pojo: list){
-            ProductPojo p=service.get(pojo.getBarcode());
+            ProductPojo p=service.getCheck(pojo.getBarcode());
             assertEquals(barcode,p.getBarcode());
             assertEquals(brandCategory,p.getbrandCategory());
             assertEquals(name,p.getName());

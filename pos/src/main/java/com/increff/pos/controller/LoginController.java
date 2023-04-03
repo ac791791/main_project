@@ -42,9 +42,14 @@ public class LoginController {
 
 
 		UserPojo p = service.get(f.getEmail());
-		boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
-		if (!authenticated) {
-			info.setMessage("Invalid username or password");
+		boolean userAuthenticated = (p != null);
+		if (!userAuthenticated) {
+			info.setMessage("User not found");
+			return new ModelAndView("redirect:/site/login");
+		}
+		boolean passwordAuthenticated = (Objects.equals(p.getPassword(), f.getPassword()));
+		if (!passwordAuthenticated) {
+			info.setMessage("Invalid Password");
 			return new ModelAndView("redirect:/site/login");
 		}
 

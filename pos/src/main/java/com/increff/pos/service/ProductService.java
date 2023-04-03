@@ -18,14 +18,10 @@ public class ProductService {
 	@Autowired
 	private ProductDao dao;
 
-
-
 	public void add(ProductPojo p) throws ApiException {
-
-		ProductPojo existingPojo= dao.select(p.getBarcode());
+		ProductPojo existingPojo = dao.select(p.getBarcode());
 		if(Objects.nonNull(existingPojo))
 			throw new ApiException("Couldn't Add: Given Barcode already exist");
-
 		dao.insert(p);
 	}
 
@@ -34,10 +30,9 @@ public class ProductService {
 	}
 
 	public ProductPojo getCheck(String barcode) throws ApiException {
-		ProductPojo pojo= dao.select(barcode);
+		ProductPojo pojo = dao.select(barcode);
 		if(Objects.isNull(pojo))
 			throw new ApiException("Sorry, "+barcode+" is not present.");
-
 		return dao.select(barcode);
 	}
 
@@ -45,7 +40,7 @@ public class ProductService {
 		return dao.selectAll();
 	}
 
-	public  List<ProductPojo> getLimited(int pageNo){
+	public  List<ProductPojo> getLimited(int pageNo) {
 		return dao.selectLimited(pageNo);
 	}
 
@@ -53,17 +48,10 @@ public class ProductService {
 		return dao.totalRows();
 	}
 
-//	@Transactional
-//	public List<ProductPojo> getByBrandCategory(int brandCategory ){
-//		return dao.selectByBrandCategory(brandCategory);
-//	}
-
 	public void update(int id, ProductPojo p) throws ApiException {
-
 		ProductPojo updatedPojo = dao.select(id);
 		updatedPojo.setName(p.getName());
 		updatedPojo.setMrp(p.getMrp());
 	}
-
 
 }

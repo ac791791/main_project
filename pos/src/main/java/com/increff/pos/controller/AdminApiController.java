@@ -17,7 +17,6 @@ import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,8 +26,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api/users")
 public class AdminApiController {
 
-	@Autowired
-	private UserService service;
 
 	@Autowired
 	private UserDto dto;
@@ -54,7 +51,7 @@ public class AdminApiController {
 
 	@ApiOperation(value = "Gets list of users of a given page")
 	@RequestMapping(value = "/getLimited/{pageNo}", method = RequestMethod.GET)
-	public List<UserData> getLimitedUser(@PathVariable int pageNo) {
+	public List<UserData> getLimitedUser(@PathVariable int pageNo) throws ApiException {
 		return dto.getLimited(pageNo);
 	}
 

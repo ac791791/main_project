@@ -26,12 +26,10 @@ public class InventoryService {
 	public InventoryPojo get(int id) {
 		return dao.select(id);
 	}
-	
 
 	public List<InventoryPojo> getAll(){
 		return dao.selectAll();
 	}
-
 
 	public List<InventoryPojo> getLimited(int pageNo){
 		return dao.selectLimited(pageNo);
@@ -54,10 +52,11 @@ public class InventoryService {
 		updatedPojo.setQuantity(quantity);
 	}
 
-	public void decreaseInventory(InventoryPojo p, int quantity) throws ApiException {
+	public void decreaseInventory(ProductPojo productPojo, int quantity) throws ApiException {
+		InventoryPojo p = get(productPojo.getId());
 		int inventoryQuantity = p.getQuantity();
 		if(inventoryQuantity < quantity)
-			throw new ApiException("Sorry, this much quantity is not present. Max Quantity: "
+			throw new ApiException(quantity+" quantity is not present. Max Quantity: "
 					+ inventoryQuantity);
 
 		else
@@ -65,7 +64,7 @@ public class InventoryService {
 	}
 
 	public void increaseInventory(InventoryPojo p, int quantity){
-		int inventoryQuantity=p.getQuantity();
-		p.setQuantity(inventoryQuantity+quantity);
+		int inventoryQuantity = p.getQuantity();
+		p.setQuantity(inventoryQuantity + quantity);
 	}
 }

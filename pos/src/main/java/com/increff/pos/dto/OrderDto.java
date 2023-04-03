@@ -2,7 +2,7 @@ package com.increff.pos.dto;
 
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderForm;
-import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -12,10 +12,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.increff.pos.util.ConvertFunction.*;
+import static com.increff.pos.util.InputChecks.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 @Repository
 public class OrderDto {
@@ -29,11 +30,11 @@ public class OrderDto {
     @Autowired
     private InventoryService inventoryService;
 
-    public void addOrder(){
-        OrderPojo p= new OrderPojo();
-        p.setTime(java.time.LocalDateTime.now());
-        p.setInvoiceStatus(0);
-        service.addOrder(p);
+    public int checkOrderForm(OrderForm form) throws ApiException {
+        ProductPojo productPojo=productService.getCheck(form.getBarcode());
+        InventoryPojo inventoryPojo=inventoryService.get(productPojo.getId());
+        validateOrderForm(form, productPojo,inventoryPojo);
+        return inventoryPojo.getQuantity();
     }
 
     @Transactional(rollbackFor = ApiException.class)
@@ -44,29 +45,22 @@ public class OrderDto {
         service.addOrder(orderPojo);
 
         for(OrderForm form:forms){
-            ProductPojo productPojo= productService.getCheck(form.getBarcode());
-
-            OrderItemPojo orderItemPojo= new OrderItemPojo();
-            orderItemPojo.setOrderId(orderPojo.getId());
-            orderItemPojo.setQuantity(form.getQuantity());
-            orderItemPojo.setSellingPrice(form.getSellingPrice());
-            orderItemPojo.setProductId(productPojo.getId());
-
+            ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
+            OrderItemPojo orderItemPojo = convertOrderItemPojo(orderPojo,form,existingProductPojo);
             orderItemService.add(orderItemPojo);
+            inventoryService.decreaseInventory(existingProductPojo, form.getQuantity());
         }
-
-
     }
     public void delete(int orderId) throws ApiException {
         OrderPojo existingOrderPojo= service.get(orderId);
-        if(existingOrderPojo.getInvoiceStatus()==1){
+        if(existingOrderPojo.getInvoiceStatus() == 1)
             throw new ApiException("Can't Delete: Invoice is generated");
-        }
+
         service.delete(orderId);
         List<OrderItemPojo> orderItemPojos= orderItemService.getByOrderId(orderId);
-        for(OrderItemPojo p:orderItemPojos){
+        for(OrderItemPojo p:orderItemPojos)
             inventoryService.increaseInventory(inventoryService.get(p.getProductId()),p.getQuantity());
-        }
+
         orderItemService.deleteByOrderId(orderId);
     }
 
@@ -74,21 +68,19 @@ public class OrderDto {
         return convertOrderData(service.get(orderId));
     }
 
-    public OrderData getRecentOrder(){
-        return convertOrderData(service.getRecentOrder());
-    }
-
     public List<OrderData> getAll(){
-        List<OrderData> orderDataList= new ArrayList<OrderData>();
-        List<OrderPojo> orderPojoList= service.getAll();
+        List<OrderData> orderDataList = new ArrayList<OrderData>();
+        List<OrderPojo> orderPojoList = service.getAll();
         for(OrderPojo pojo:orderPojoList){
             orderDataList.add(convertOrderData(pojo));
         }
         return orderDataList;
     }
-    public List<OrderData> getLimited(int pageNo){
-        List<OrderData> orderDataList= new ArrayList<OrderData>();
-        List<OrderPojo> orderPojoList= service.getLimited(pageNo);
+    public List<OrderData> getLimited(int pageNo) throws ApiException {
+        if(pageNo<1)
+            throw new ApiException("Page No can't be less than 1");
+        List<OrderData> orderDataList = new ArrayList<OrderData>();
+        List<OrderPojo> orderPojoList = service.getLimited(pageNo);
         for(OrderPojo pojo:orderPojoList){
             orderDataList.add(convertOrderData(pojo));
         }

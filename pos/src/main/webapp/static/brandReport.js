@@ -41,10 +41,20 @@ function displayBrandReportList(data){
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
-		+ '<td>' + num++ + '</td>'
-		+ '<td>' + e.brand + '</td>'
-		+ '<td>' + e.category + '</td>'
-		+ '</tr>';
+		row+= '<td>' + num++ + '</td>'
+		if(e.brand.length>30){
+            row+= '<td title='+e.brand+'>' + (e.brand).slice(0,30)+'...' + '</td>'
+        }
+        else{
+            row+= '<td>' + e.brand + '</td>'
+        }
+        if(e.category.length>30){
+            row+= '<td title='+e.category+'>' + (e.category).slice(0,30)+'...' + '</td>'
+        }
+        else{
+            row+= '<td>' + e.category + '</td>'
+        }
+		row+= '</tr>';
         $tbody.append(row);
 	}
     successMessage(num-1+" records found");

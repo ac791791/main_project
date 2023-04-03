@@ -45,7 +45,7 @@ public class InitApiController extends AbstractUiController {
 			form.setRole("supervisor");
 			UserPojo p = convert(form);
 			service.add(p);
-			info.setMessage("Application initialized");
+			info.setMessage("Application initialized. You can Login now.");
 		}
 		return mav("init.html");
 	}

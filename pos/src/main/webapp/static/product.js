@@ -132,6 +132,11 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#productFile')[0].files[0];
+	var fileSize = file.size;
+    if(fileSize>5000){
+        errorMessage("Can't upload file greater than 5000 rows");
+        return;
+    }
 	readFileData(file, readFileDataCallback);
 }
 
@@ -180,7 +185,7 @@ function uploadRows(){
 
 function downloadErrors(){
 	if(errorData.length==0){
-            successMessage("Nothing to download");
+            errorMessage("Nothing to download");
      }
      else{
         	writeFileData(errorData);
@@ -203,12 +208,7 @@ function displayProductList(data){
 	for(var i in data){
 		var e = data[i];
 
-        if (role === 'supervisor') {
-		var buttonHtml = ' <button class="tableButtons" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
-		}
-        else{
-            var buttonHtml='<button class="disabledTableButtons" disabled> Edit </button>';
-        }
+
 		var row = '<tr>'
 		if(e.barcode.length>15){
                 	row+= '<td title='+e.barcode+'>' + (e.barcode).slice(0,15)+'...' + '</td>'
@@ -235,7 +235,11 @@ function displayProductList(data){
               row+= '<td>' + e.name + '</td>'
         }
 		row+= '<td>'  + parseFloat(e.mrp).toFixed(2) + '</td>'
-		row+= '<td>' + buttonHtml + '</td>'
+		if (role === 'supervisor') {
+        	var buttonHtml = ' <button class="tableButtons" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
+            row+= '<td>' + buttonHtml + '</td>'
+        }
+
 		row+= '</tr>';
         $tbody.append(row);
 	}

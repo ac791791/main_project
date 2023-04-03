@@ -15,7 +15,6 @@ public class OrderService {
     @Autowired
     private OrderDao dao;
 
-
     public void addOrder(OrderPojo p){
         dao.insert(p);
     }
@@ -42,10 +41,6 @@ public class OrderService {
         return dao.totalRows();
     }
 
-
-    public OrderPojo getRecentOrder(){
-        return dao.selectRecentOrder();
-    }
 
     public void changeInvoiceStatus(int orderId){
         OrderPojo orderPojo=dao.select(orderId);

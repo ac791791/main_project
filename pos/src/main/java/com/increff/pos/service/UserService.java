@@ -44,7 +44,7 @@ public class UserService {
 		return dao.selectAll();
 	}
 
-	public List<UserPojo> getLimited(int pageNo) {
+	public List<UserPojo> getLimited(int pageNo){
 		return dao.selectLimited(pageNo);
 	}
 

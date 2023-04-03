@@ -156,6 +156,11 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
+	var fileSize = file.size;
+    if(fileSize>5000){
+        errorMessage("Can't upload file greater than 5000 rows");
+        return;
+    }
 	readFileData(file, readFileDataCallback);
 }
 
@@ -205,7 +210,7 @@ function uploadRows(){
 
 function downloadErrors(){
     if(errorData.length==0 ){
-    successMessage("Nothing to download");
+    errorMessage("Nothing to download");
     }
     else{
 	writeFileData(errorData);
@@ -227,13 +232,6 @@ function displayInventoryList(data){
 	for(var i in data){
 		var e = data[i];
 
-		if (role === 'supervisor') {
-		var buttonHtml = ' <button class="tableButtons" onclick="displayEditInventory(' + e.id + ')">Edit</button>'
-		}
-        else{
-            var buttonHtml='<button class="disabledTableButtons" disabled> Edit </button>';
-        }
-
 		var row = '<tr>'
 		if(e.barcode.length>30){
              row+= '<td title='+e.barcode+'>' + (e.barcode).slice(0,30)+'...' + '</td>'
@@ -248,13 +246,18 @@ function displayInventoryList(data){
              row+= '<td>' + e.name + '</td>'
         }
 		row+= '<td>' + e.quantity + '</td>'
-		row+= '<td>' + buttonHtml + '</td>'
+		if (role === 'supervisor') {
+        	var buttonHtml = ' <button class="tableButtons" onclick="displayEditInventory(' + e.id + ')">Edit</button>'
+            row+= '<td>' + buttonHtml + '</td>'
+        }
+
 		row+= '</tr>';
         $tbody.append(row);
 	}
 }
 
 function displayEditInventory(id){
+
 	var url = getInventoryUrl() + "/" + id;
 	$.ajax({
 	   url: url,
@@ -377,6 +380,7 @@ function displayUploadData(){
 function displayInventory(data){
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
 	$("#inventory-edit-form input[name=id]").val(data.id);
+	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
 	$('#edit-inventory-modal').modal('toggle');
 }
 

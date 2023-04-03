@@ -15,7 +15,6 @@ public class OrderDao extends AbstractDao {
     private static String SELECT_ID="select p from OrderPojo p where id=:id";
     private static String SELECT_ALL="select p from OrderPojo p order by id desc";
     private static String DELETE_ID="delete from OrderPojo where id=:id";
-    private static String SELECT_MAX_ID="select p from OrderPojo p where id=(select max(id) from OrderPojo)";
     private static String TOTAL_ROWS="Select count(*) from OrderPojo p";
 
     @Transactional
@@ -35,10 +34,6 @@ public class OrderDao extends AbstractDao {
         return getSingle(query);
     }
 
-    public OrderPojo selectRecentOrder(){
-        TypedQuery<OrderPojo> query=em.createQuery(SELECT_MAX_ID,OrderPojo.class);
-        return getSingle(query);
-    }
 
     public List<OrderPojo> selectAll(){
         TypedQuery<OrderPojo> query=em.createQuery(SELECT_ALL,OrderPojo.class);
@@ -47,7 +42,7 @@ public class OrderDao extends AbstractDao {
 
     public List<OrderPojo> selectLimited(int pageNo){
         TypedQuery<OrderPojo> query=em.createQuery(SELECT_ALL,OrderPojo.class);
-        query.setFirstResult(pageSize*(pageNo-1));
+        query.setFirstResult(pageSize*(Math.max(pageNo-1,0)));
         query.setMaxResults(pageSize);
         return query.getResultList();
     }

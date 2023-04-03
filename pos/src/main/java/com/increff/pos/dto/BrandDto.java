@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.increff.pos.util.ConvertFunction.*;
-import static com.increff.pos.util.InputChecks.checkInputs;
+import static com.increff.pos.util.InputChecks.validateBrandForm;
 import static com.increff.pos.util.NormalizeFunctions.normalize;
 
 @Repository
@@ -24,27 +24,21 @@ public class BrandDto {
 
 
     public void add(BrandForm form) throws ApiException {
+        validateBrandForm(form);
         BrandPojo p = convertBrandPojo(form);
-        checkInputs(p);
         service.add(normalize(p));
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    public void add(List<BrandForm> forms) throws ApiException{
-        for(BrandForm form: forms){
-            add(form);
-        }
-    }
 
     public BrandData get(int id) {
-        BrandPojo p= service.get(id);
+        BrandPojo p = service.get(id);
         return convertBrandData(p);
     }
 
     //Used in products and reports to display brand category in select
     public List<BrandData> getAll(){
-        List<BrandData> brandDataList= new ArrayList<BrandData>();
-        List<BrandPojo> brandPojoList=service.getAll();
+        List<BrandData> brandDataList = new ArrayList<BrandData>();
+        List<BrandPojo> brandPojoList = service.getAll();
 
         for(BrandPojo p:brandPojoList) {
             brandDataList.add(convertBrandData(p));
@@ -52,9 +46,12 @@ public class BrandDto {
         return brandDataList;
     }
 
-    public List<BrandData> getLimited(int pageNo){
-        List<BrandData> brandDataList= new ArrayList<BrandData>();
-        List<BrandPojo> brandPojoList=service.getLimited(pageNo);
+    public List<BrandData> getLimited(int pageNo) throws ApiException {
+        if(pageNo<1)
+            throw new ApiException("Page No can't be less than 1");
+
+        List<BrandData> brandDataList = new ArrayList<BrandData>();
+        List<BrandPojo> brandPojoList = service.getLimited(pageNo);
 
         for(BrandPojo p:brandPojoList) {
             brandDataList.add(convertBrandData(p));
@@ -68,11 +65,9 @@ public class BrandDto {
 
 
     public void update(int id,BrandForm form) throws ApiException {
-
-        BrandPojo p= convertBrandPojo(form);
-        checkInputs(p);
+        validateBrandForm(form);
+        BrandPojo p = convertBrandPojo(form);
         service.update(id,normalize(p));
     }
-
 
 }

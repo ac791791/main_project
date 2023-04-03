@@ -29,18 +29,13 @@ public class BrandController {
 		dto.add(form);
 	}
 
-	@ApiOperation(value = "Add multiple brand and category combinations")
-	@RequestMapping(value = "/bulk",method = RequestMethod.POST)
-	public void addBulk(@RequestBody List<BrandForm> forms) throws ApiException{
-		dto.add(forms);
-	}
 
 	@ApiOperation(value="Gets a brand by id")
 	@RequestMapping(value = "{id}",method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) {
 		return dto.get(id);
 	}
-	
+
 	@ApiOperation(value = "Gets list of all brands")
 	@RequestMapping(method = RequestMethod.GET)
 	public List<BrandData> getAll(){
@@ -49,7 +44,7 @@ public class BrandController {
 
 	@ApiOperation(value = "Gets list of brands of a given page")
 	@RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)
-	public List<BrandData> getLimited(@PathVariable int pageNo){
+	public List<BrandData> getLimited(@PathVariable int pageNo) throws ApiException {
 		return dto.getLimited(pageNo);
 	}
 
@@ -58,12 +53,11 @@ public class BrandController {
 	public int totalBrands(){
 		return dto.totalBrands();
 	}
-	
+
 	@ApiOperation(value ="Updating Brand-Category")
 	@RequestMapping(value ="/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException {
 		dto.update(id,form);
-		
 	}
 
 }

@@ -42,7 +42,7 @@ label .required {
   margin-left: 5px;
 }
 
-.tableButtons,.deleteButtons,.disabledTableButtons{
+.tableButtons,.deleteButtons{
     background-color:#FFBC79;
     width: 80px;
     border-radius: 6px;
@@ -50,6 +50,13 @@ label .required {
     outline:none;
 }
 
+.disabledTableButtons{
+    background-color:#FFE1C2;
+    width: 80px;
+    border-radius: 6px;
+    border:none;
+    outline:none;
+}
 
 .tableButtons:hover {
   background-color: #4CAF50; /* Green */

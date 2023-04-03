@@ -52,7 +52,7 @@ public class UserDao extends AbstractDao {
 
 	public List<UserPojo> selectLimited(int pageNo) {
 		TypedQuery<UserPojo> query = getQuery(SELECT_ALL, UserPojo.class);
-		query.setFirstResult(pageSize*(pageNo-1));
+		query.setFirstResult(pageSize*(Math.max(pageNo-1,0)));
 		query.setMaxResults(pageSize);
 		return query.getResultList();
 	}

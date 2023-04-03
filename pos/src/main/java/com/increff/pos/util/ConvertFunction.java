@@ -4,6 +4,10 @@ import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.ApiException;
 
+import javax.persistence.Tuple;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ConvertFunction {
 
@@ -39,7 +43,7 @@ public class ConvertFunction {
         return p;
     }
 
-    public static ProductData convertProductData(ProductPojo p) {
+    public static ProductData convertProductData(ProductPojo p,BrandPojo brandPojo) {
 
         ProductData d= new ProductData();
         d.setId(p.getId());
@@ -47,6 +51,8 @@ public class ConvertFunction {
         d.setbrandCategory(p.getbrandCategory());
         d.setName(p.getName());
         d.setMrp(p.getMrp());
+        d.setBrand(brandPojo.getBrand());
+        d.setCategory(brandPojo.getCategory());
 
         return d;
     }
@@ -66,13 +72,15 @@ public class ConvertFunction {
         return p;
     }
 
-    public static InventoryData convertInventoryData(InventoryPojo p) {
+    public static InventoryData convertInventoryData(InventoryPojo p,ProductPojo productPojo) {
         InventoryData d= new InventoryData();
         d.setId(p.getId());
         d.setQuantity(p.getQuantity());
-
+        d.setName(productPojo.getName());
+        d.setBarcode(productPojo.getBarcode());
         return d;
     }
+
 
     //Order Convert
     public static OrderData convertOrderData(OrderPojo p){
@@ -82,16 +90,25 @@ public class ConvertFunction {
         d.setInvoiceStatus(p.getInvoiceStatus());
         return d;
     }
+    public static OrderItemPojo convertOrderItemPojo(OrderPojo orderPojo, OrderForm form, ProductPojo existingProductPojo){
+        OrderItemPojo orderItemPojo= new OrderItemPojo();
+        orderItemPojo.setOrderId(orderPojo.getId());
+        orderItemPojo.setQuantity(form.getQuantity());
+        orderItemPojo.setSellingPrice(form.getSellingPrice());
+        orderItemPojo.setProductId(existingProductPojo.getId());
+        return orderItemPojo;
+    }
 
     //OrderItem Converts
 
-    public static OrderItemData convertOrderItemData(OrderItemPojo p){
+    public static OrderItemData convertOrderItemData(OrderItemPojo p,ProductPojo productPojo){
         OrderItemData d= new OrderItemData();
         d.setId(p.getId());
         d.setOrderId(p.getOrderId());
         d.setProductId(p.getProductId());
         d.setQuantity(p.getQuantity());
         d.setSellingPrice(p.getSellingPrice());
+        d.setBarcode(productPojo.getBarcode());
         return d;
     }
 
@@ -136,5 +153,47 @@ public class ConvertFunction {
         return data;
     }
 
+    //BrandReport Convert
+    public static List<BrandReportData> convertBrandReportData(List<Tuple> tuples){
+        List<BrandReportData> brandReportDataList=new ArrayList<BrandReportData>();
 
+        for(Tuple tuple:tuples){
+            BrandReportData data= new BrandReportData();
+            data.setBrand(String.valueOf(tuple.get("brand")));
+            data.setCategory(String.valueOf(tuple.get("category")));
+            brandReportDataList.add(data);
+        }
+        return brandReportDataList;
+
+    }
+
+    //InventoryReport Convert
+    public static List<InventoryReportData> convertInventoryReportData(List<Tuple> tuples){
+        List<InventoryReportData> inventoryReportDataList= new ArrayList<InventoryReportData>();
+
+        for(Tuple tuple:tuples){
+            InventoryReportData data= new InventoryReportData();
+            data.setBrand(String.valueOf(tuple.get("brand")));
+            data.setCategory(String.valueOf(tuple.get("category")));
+            data.setQuantity(Integer.parseInt(tuple.get("quantity").toString()));
+            data.setBarcode(String.valueOf(tuple.get("barcode")));
+            data.setName(String.valueOf(tuple.get("name")));
+            inventoryReportDataList.add(data);
+        }
+        return inventoryReportDataList;
+    }
+    //SalesReport Convert
+    public  static List<SalesReportData> convertSalesReportData(List<Tuple> tuples){
+        List<SalesReportData> salesReportDataList= new ArrayList<SalesReportData>();
+
+        for(Tuple tuple:tuples){
+            SalesReportData data= new SalesReportData();
+            data.setBrand(String.valueOf(tuple.get("brand")));
+            data.setCategory(String.valueOf(tuple.get("category")));
+            data.setQuantity(Integer.parseInt(tuple.get("quantity").toString()));
+            data.setRevenue(Double.parseDouble(tuple.get("revenue").toString()));
+            salesReportDataList.add(data);
+        }
+        return salesReportDataList;
+    }
 }

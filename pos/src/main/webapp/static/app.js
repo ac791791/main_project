@@ -1,4 +1,6 @@
 
+
+
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
@@ -132,6 +134,15 @@ function successMessage(message){
     $('.success').toast({delay: 2000});
     $('.success').toast('show');
     $('#error-modal').removeClass('show');
+
+}
+function errorMessage(message){
+
+    $('.toast-body').text(message);
+    $('#error-modal').addClass('show');
+    $('.error').toast({delay: 5000});
+    $('.error').toast('show');
+    $('#success-modal').removeClass('show');
 
 }
 

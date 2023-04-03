@@ -31,7 +31,7 @@ public class ProductController {
 	private ProductDto dto;
 	
 	@ApiOperation(value = "Add a Product")
-	@RequestMapping(method =RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public void add(@RequestBody ProductForm form) throws ApiException {
 		dto.add(form);
 	}
@@ -41,19 +41,12 @@ public class ProductController {
 	public ProductData get(@PathVariable int id) {
 		return dto.get(id);
 	}
-	
-//	@ApiOperation(value = "Getting all Products")
-//	@RequestMapping(method = RequestMethod.GET)
-//	public List<ProductData> getAll(){
-//		return dto.getAll();
-//	}
 
 	@ApiOperation(value = "Get list of products of a given page")
 	@RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)
-	public List<ProductData> getLimited(@PathVariable int pageNo){
+	public List<ProductData> getLimited(@PathVariable int pageNo) throws ApiException {
 		return dto.getLimited(pageNo);
 	}
-
 
 	@ApiOperation(value = "Get total no of products")
 	@RequestMapping(value = "/total", method = RequestMethod.GET)
@@ -63,12 +56,10 @@ public class ProductController {
 
 	//TODO: to use updateProductForm
 	@ApiOperation(value = "Update a Product")
-	@RequestMapping(value ="/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
 		dto.update(id,form);
 	}
-	
-	
 	
 
 }

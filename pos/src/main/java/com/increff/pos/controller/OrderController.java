@@ -22,14 +22,15 @@ public class OrderController {
     private OrderDto dto;
 
 
-    @ApiOperation(value = "Add an Order")
-    @RequestMapping(method = RequestMethod.POST)
-    public void addOrder(){
-        dto.addOrder();
+
+    @ApiOperation(value = "Validating OrderForm")
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    public int validateOrderForm(@RequestBody OrderForm form) throws ApiException {
+        return dto.checkOrderForm(form);
     }
 
     @ApiOperation(value = "Add an Order with orderItems")
-    @RequestMapping(value = "/experiment", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     public void add(@RequestBody List<OrderForm> forms) throws ApiException {
         dto.add(forms);
     }
@@ -46,12 +47,6 @@ public class OrderController {
         return dto.get(orderId);
     }
 
-    @ApiOperation(value = "Get recent order")
-    @RequestMapping(value ="/recentOrder",method = RequestMethod.GET)
-    public OrderData getRecentOrder(){
-        return dto.getRecentOrder();
-    }
-
 
 //    @ApiOperation(value = "Getting all orders")
 //    @RequestMapping(method = RequestMethod.GET)
@@ -61,7 +56,7 @@ public class OrderController {
 
     @ApiOperation(value = "Get list of Orders of a given page")
     @RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)
-    public List<OrderData> getLimited(@PathVariable int pageNo){
+    public List<OrderData> getLimited(@PathVariable int pageNo) throws ApiException {
         return dto.getLimited(pageNo);
     }
 

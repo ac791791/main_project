@@ -13,9 +13,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 import static com.increff.pos.util.ConvertFunction.*;
+import static com.increff.pos.util.InputChecks.checkOrderItemParameters;
+import static com.increff.pos.util.InputChecks.validateOrderItemForm;
 
 @Repository
 public class OrderItemDto {
@@ -31,25 +33,17 @@ public class OrderItemDto {
 
 
     public void add(OrderItemForm form) throws ApiException {
-        OrderItemPojo pojo=convertOrderItemPojo(form);
-        OrderPojo existingOrderPojo= orderService.get(pojo.getOrderId());
-        if(existingOrderPojo.getInvoiceStatus()==1)
-            throw new ApiException("Can't Add: Invoice is generated");
-
-
+        validateOrderItemForm(form);
+        OrderItemPojo pojo = convertOrderItemPojo(form);
+        OrderPojo existingOrderPojo = orderService.get(pojo.getOrderId());
         ProductPojo existingProductPojo=productService.getCheck(form.getBarcode());
         InventoryPojo inventoryPojo=inventoryService.get(existingOrderPojo.getId());
-
-        if(inventoryPojo.getQuantity() < pojo.getQuantity())
-            throw new ApiException("This much quantity is not present. Max Quantity: "+inventoryPojo.getQuantity());
-
         pojo.setProductId(existingProductPojo.getId());
-        if (pojo.getSellingPrice() > existingProductPojo.getMrp()) {
-            throw new ApiException("Selling Price is greater than Mrp: " + existingProductPojo.getMrp());
-        }
+
+        checkOrderItemParameters(pojo,existingOrderPojo,existingProductPojo,inventoryPojo);
 
         service.add(pojo);
-        inventoryService.decreaseInventory(inventoryService.get(pojo.getProductId()), pojo.getQuantity());
+        inventoryService.decreaseInventory(existingProductPojo, pojo.getQuantity());
 
     }
     public void delete(int id) throws ApiException {
@@ -69,9 +63,8 @@ public class OrderItemDto {
         List<OrderItemPojo> orderItemPojoList= service.getByOrderId(orderId);
 
         for(OrderItemPojo pojo: orderItemPojoList){
-            OrderItemData data=convertOrderItemData(pojo);
             ProductPojo productPojo=productService.get(pojo.getProductId());
-            data.setBarcode(productPojo.getBarcode());
+            OrderItemData data=convertOrderItemData(pojo,productPojo);
             orderItemDataList.add(data);
         }
 
@@ -80,10 +73,10 @@ public class OrderItemDto {
     }
 
     public OrderItemData get(int id){
-        OrderItemData data=convertOrderItemData(service.get(id));
-        ProductPojo productPojo=productService.get(data.getProductId());
-        data.setBarcode(productPojo.getBarcode());
-         return data;
+        OrderItemPojo pojo=service.get(id);
+        ProductPojo productPojo=productService.get(pojo.getProductId());
+        OrderItemData data=convertOrderItemData(pojo,productPojo);
+        return data;
     }
 
 //    public List<OrderItemData> getAll(){
@@ -100,35 +93,20 @@ public class OrderItemDto {
 
 
     public void update(int id,OrderItemForm form) throws ApiException{
-
+        validateOrderItemForm(form);
         OrderItemPojo pojo=convertOrderItemPojo(form);
         OrderPojo existingOrderPojo= orderService.get(pojo.getOrderId());
-        if(existingOrderPojo.getInvoiceStatus()==1)
-            throw new ApiException("Can't Edit: Invoice is generated");
-
         ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
-
         InventoryPojo inventoryPojo=inventoryService.get(existingOrderPojo.getId());
-        if(inventoryPojo.getQuantity() < pojo.getQuantity())
-            throw new ApiException("This much quantity is not present. Max Quantity: "+inventoryPojo.getQuantity());
-
-        if(pojo.getSellingPrice()>existingProductPojo.getMrp())
-            throw new ApiException("Selling Price is greater than Mrp: "+existingProductPojo.getMrp());
-
-
         pojo.setProductId(existingProductPojo.getId());
 
+        checkOrderItemParameters(pojo,existingOrderPojo,existingProductPojo,inventoryPojo);
         OrderItemPojo updatedPojo=service.get(id);
-
         service.update(updatedPojo,pojo);
-
         inventoryService.increaseInventory(inventoryPojo,updatedPojo.getQuantity());
-        inventoryService.decreaseInventory(inventoryPojo,pojo.getQuantity());
+        inventoryService.decreaseInventory(existingProductPojo,pojo.getQuantity());
 
     }
-
-
-
 
 }
 

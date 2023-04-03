@@ -10,12 +10,10 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static com.increff.pos.util.ConvertFunction.*;
-import static com.increff.pos.util.InputChecks.checkInputs;
-import static com.increff.pos.util.StringUtil.isEmpty;
+import static com.increff.pos.util.InputChecks.validateInventoryForm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class InventoryDto {
@@ -27,37 +25,35 @@ public class InventoryDto {
 
 
     public InventoryData get(int id) {
-        InventoryData data=convertInventoryData(service.get(id));
-        ProductPojo productPojo= productService.get(data.getId());
-        data.setName(productPojo.getName());
-        data.setBarcode(productPojo.getBarcode());
+        ProductPojo productPojo = productService.get(id);
+        InventoryPojo inventoryPojo = service.get(id);
+        InventoryData data = convertInventoryData(inventoryPojo,productPojo);
         return data;
 
     }
 
     public List<InventoryData> getAll(){
-        List<InventoryData> inventoryDataList= new ArrayList<InventoryData>();
+        List<InventoryData> inventoryDataList = new ArrayList<InventoryData>();
         List<InventoryPojo> inventoryPojoList = service.getAll();
 
+
         for(InventoryPojo pojo: inventoryPojoList) {
-            InventoryData data=convertInventoryData(pojo);
-            ProductPojo productPojo= productService.get(data.getId());
-            data.setName(productPojo.getName());
-            data.setBarcode(productPojo.getBarcode());
+            ProductPojo productPojo = productService.get(pojo.getId());
+            InventoryData data = convertInventoryData(pojo,productPojo);
             inventoryDataList.add(data);
         }
         return inventoryDataList;
 
     }
 
-    public List<InventoryData> getLimited(int pageNo){
-        List<InventoryData> inventoryDataList= new ArrayList<InventoryData>();
+    public List<InventoryData> getLimited(int pageNo) throws ApiException {
+        if(pageNo<1)
+            throw new ApiException("Page No can't be less than 1");
+        List<InventoryData> inventoryDataList = new ArrayList<InventoryData>();
         List<InventoryPojo> inventoryPojoList = service.getLimited(pageNo);
-        for(InventoryPojo pojo: inventoryPojoList) {
-            InventoryData data=convertInventoryData(pojo);
-            ProductPojo productPojo= productService.get(data.getId());
-            data.setName(productPojo.getName());
-            data.setBarcode(productPojo.getBarcode());
+        for(InventoryPojo pojo : inventoryPojoList) {
+            ProductPojo productPojo = productService.get(pojo.getId());
+            InventoryData data = convertInventoryData(pojo,productPojo);
             inventoryDataList.add(data);
         }
         return inventoryDataList;
@@ -68,20 +64,15 @@ public class InventoryDto {
     }
 
     public void update(int id,InventoryForm form) throws ApiException {
-        InventoryPojo pojo=convertInventoryPojo(form);
-        checkInputs(pojo);
+        validateInventoryForm(form);
+        InventoryPojo pojo = convertInventoryPojo(form);
         service.update(id,pojo);
     }
 
     public void topUpdate(InventoryForm form) throws ApiException {
+        validateInventoryForm(form);
         InventoryPojo pojo = convertInventoryPojo(form);
-        checkInputs(pojo);
-        if(isEmpty(form.getBarcode())){
-            throw new ApiException("Barcode can't be empty");
-        }
-
-        ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
-
+        ProductPojo existingProductPojo = productService.getCheck(form.getBarcode());
         pojo.setId(existingProductPojo.getId());
         service.topUpdate(pojo);
     }

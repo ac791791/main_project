@@ -123,7 +123,11 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#brandFile')[0].files[0];
-
+    var fileSize = file.size;
+    if(fileSize>5000){
+        errorMessage("Can't upload file greater than 5000 rows");
+        return;
+    }
 	readFileData(file, readFileDataCallback);
 }
 
@@ -179,7 +183,7 @@ function uploadRows(){
 function downloadErrors(){
 
 	if(errorData.length==0){
-        successMessage("Nothing to download");
+        errorMessage("Nothing to download");
         }
         else{
     	writeFileData(errorData);
@@ -296,27 +300,24 @@ function displayBrandList(data){
 	for(var i in data){
 		var e = data[i];
 
-        if (role === 'supervisor') {
-		    var buttonHtml = ' <button class="tableButtons" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
-		}
-		else{
-		    var buttonHtml='<button class="disabledTableButtons" disabled> Edit </button>';
-		}
-
 		var row = '<tr>'
-		if(e.brand.length>40){
-		    row+= '<td title='+e.brand+'>' + (e.brand).slice(0,40)+'...' + '</td>'
+		if(e.brand.length>30){
+		    row+= '<td title='+e.brand+'>' + (e.brand).slice(0,30)+'...' + '</td>'
 		}
 		else{
 		    row+= '<td>' + e.brand + '</td>'
 		}
-		if(e.category.length>40){
-        	row+= '<td title='+e.category+'>' + (e.category).slice(0,40)+'...' + '</td>'
+		if(e.category.length>30){
+        	row+= '<td title='+e.category+'>' + (e.category).slice(0,30)+'...' + '</td>'
         }
         else{
         	row+= '<td>' + e.category + '</td>'
         }
-		row+= '<td>' + buttonHtml + '</td>'
+        if (role === 'supervisor') {
+        	var buttonHtml = ' <button class="tableButtons" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
+            row+= '<td>' + buttonHtml + '</td>'
+        }
+
 		row+= '</tr>';
         $tbody.append(row);
 	}

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.increff.pos.util.ConvertFunction.*;
+import static com.increff.pos.util.InputChecks.validateUserForm;
 
 @Repository
 public class UserDto {
@@ -23,6 +24,7 @@ public class UserDto {
     private UserService service;
 
     public void add(UserForm form) throws ApiException {
+        validateUserForm(form);
         UserPojo pojo = convertUserPojo(form);
         service.add(pojo);
     }
@@ -40,7 +42,9 @@ public class UserDto {
         return userDataList;
     }
 
-    public List<UserData> getLimited(int pageNo) {
+    public List<UserData> getLimited(int pageNo) throws ApiException {
+        if(pageNo<1)
+            throw new ApiException("Page No can't be less than 1");
         List<UserPojo> userPojoList = service.getLimited(pageNo);
         List<UserData> userDataList = new ArrayList<UserData>();
         for (UserPojo pojo : userPojoList) {

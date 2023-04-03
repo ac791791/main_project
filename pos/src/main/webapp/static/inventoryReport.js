@@ -42,13 +42,33 @@ function displayInventoryReportList(data){
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
-		+ '<td>' + num++ + '</td>'
-		+ '<td>' + e.brand + '</td>'
-		+ '<td>' + e.category + '</td>'
-		+ '<td>' + e.barcode + '</td>'
-		+ '<td>' + e.name + '</td>'
-		+ '<td>'  + e.quantity + '</td>'
-		+ '</tr>';
+		row+= '<td>' + num++ + '</td>'
+		if(e.brand.length>15){
+            row+= '<td title='+e.brand+'>' + (e.brand).slice(0,15)+'...' + '</td>'
+        }
+        else{
+            row+= '<td>' + e.brand + '</td>'
+        }
+        if(e.category.length>15){
+             row+= '<td title='+e.category+'>' + (e.category).slice(0,15)+'...' + '</td>'
+        }
+        else{
+             row+= '<td>' + e.category + '</td>'
+        }
+		if(e.barcode.length>15){
+             row+= '<td title='+e.barcode+'>' + (e.barcode).slice(0,15)+'...' + '</td>'
+        }
+        else{
+              row+= '<td>' + e.barcode + '</td>'
+        }
+		if(e.name.length>15){
+             row+= '<td title='+e.name+'>' + (e.name).slice(0,15)+'...' + '</td>'
+        }
+        else{
+              row+= '<td>' + e.name + '</td>'
+        }
+		row+= '<td>'  + e.quantity + '</td>'
+		row+= '</tr>';
         $tbody.append(row);
         total=total+e.quantity;
 	}

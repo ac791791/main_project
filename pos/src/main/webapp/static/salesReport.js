@@ -45,12 +45,22 @@ function displaySalesReportList(data){
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
-		+ '<td>' + num++ + '</td>'
-		+ '<td>' + e.brand + '</td>'
-		+ '<td>' + e.category + '</td>'
-		+ '<td>'  + e.quantity + '</td>'
-		+ '<td>' + parseFloat(e.revenue).toFixed(2) + '</td>'
-		+ '</tr>';
+		row+= '<td>' + num++ + '</td>'
+		if(e.brand.length>20){
+            row+= '<td title='+e.brand+'>' + (e.brand).slice(0,20)+'...' + '</td>'
+        }
+        else{
+            row+= '<td>' + e.brand + '</td>'
+        }
+        if(e.category.length>20){
+             row+= '<td title='+e.category+'>' + (e.category).slice(0,20)+'...' + '</td>'
+        }
+        else{
+             row+= '<td>' + e.category + '</td>'
+        }
+		row+= '<td>'  + e.quantity + '</td>'
+		row+= '<td>' + parseFloat(e.revenue).toFixed(2) + '</td>'
+		row+= '</tr>';
         $tbody.append(row);
         total=total+e.revenue;
 	}

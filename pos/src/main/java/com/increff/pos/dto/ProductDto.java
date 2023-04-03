@@ -13,12 +13,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 import static com.increff.pos.util.ConvertFunction.*;
-import static com.increff.pos.util.InputChecks.checkInputs;
+import static com.increff.pos.util.InputChecks.*;
 import static com.increff.pos.util.NormalizeFunctions.normalize;
-import static com.increff.pos.util.StringUtil.isEmpty;
 
 @Repository
 public class ProductDto {
@@ -31,16 +30,10 @@ public class ProductDto {
     private InventoryService inventoryService;
 
     public void add(ProductForm form) throws ApiException {
-        ProductPojo pojo= convertProductPojo(form);
-        checkInputs(pojo);  // used to check basic input parameters like name is empty or not , mrp >0 or not
-        if (isEmpty(pojo.getBarcode())){
-            throw new ApiException("Barcode can't be empty");
-        }
-
-        BrandPojo existingBrandPojo= brandService.get(pojo.getbrandCategory());
-        if(Objects.isNull(existingBrandPojo)){
-            throw new ApiException("Brand Category is not found for this product");
-        }
+        validateProductForm(form);
+        ProductPojo pojo = convertProductPojo(form);
+        BrandPojo existingBrandPojo = brandService.get(pojo.getbrandCategory());
+        checkAddProductsParameters(pojo,existingBrandPojo);
         
         service.add(normalize(pojo));
         inventoryService.add(createInventoryPojo(pojo));
@@ -48,42 +41,34 @@ public class ProductDto {
 
 
     public ProductData get(int id) {
-        ProductPojo pojo= service.get(id);
-        //TODO make different function for it
-        ProductData data= convertProductData(pojo);
-        BrandPojo brandPojo= brandService.get(pojo.getbrandCategory());
-        data.setBrand(brandPojo.getBrand());
-        data.setCategory(brandPojo.getCategory());
-
+        ProductPojo pojo = service.get(id);
+        BrandPojo brandPojo = brandService.get(pojo.getbrandCategory());
+        ProductData data = convertProductData(pojo, brandPojo);
         return data;
     }
 
     public List<ProductData> getAll(){
-        List<ProductData> productDataList= new ArrayList<ProductData>();
-        List<ProductPojo> productPojoList= service.getAll();
+        List<ProductData> productDataList = new ArrayList<ProductData>();
+        List<ProductPojo> productPojoList = service.getAll();
 
         for(ProductPojo pojo: productPojoList) {
-            ProductData data= convertProductData(pojo);
-            BrandPojo brandPojo= brandService.get(pojo.getbrandCategory());
-            data.setBrand(brandPojo.getBrand());
-            data.setCategory(brandPojo.getCategory());
-
+            BrandPojo brandPojo = brandService.get(pojo.getbrandCategory());
+            ProductData data = convertProductData(pojo,brandPojo);
             productDataList.add(data);
         }
         return productDataList;
     }
 
-    public List<ProductData> getLimited(int pageNo){
+    public List<ProductData> getLimited(int pageNo) throws ApiException {
+        if(pageNo<1)
+            throw new ApiException("Page No can't be less than 1");
 
-        List<ProductData> productDataList= new ArrayList<ProductData>();
-        List<ProductPojo> productPojoList= service.getLimited(pageNo);
+        List<ProductData> productDataList = new ArrayList<ProductData>();
+        List<ProductPojo> productPojoList = service.getLimited(pageNo);
 
         for(ProductPojo pojo: productPojoList) {
-            ProductData data= convertProductData(pojo);
-            BrandPojo brandPojo= brandService.get(pojo.getbrandCategory());
-            data.setBrand(brandPojo.getBrand());
-            data.setCategory(brandPojo.getCategory());
-
+            BrandPojo brandPojo = brandService.get(pojo.getbrandCategory());
+            ProductData data = convertProductData(pojo,brandPojo);
             productDataList.add(data);
         }
         return productDataList;
@@ -93,17 +78,12 @@ public class ProductDto {
         return service.totalProducts();
     }
 
-//    public List<ProductPojo> getByBrandCategory(int brandCategory ){
-//        return service.getByBrandCategory(brandCategory);
-//    }
-
     //TODO to use UpdateProductForm
     public void update(int id, ProductForm form) throws ApiException {
-        ProductPojo pojo=convertProductPojo(form);
-        checkInputs(pojo);
+        validateProductForm(form);
+        ProductPojo pojo = convertProductPojo(form);
         service.update(id, normalize(pojo));
     }
-
 
 
 

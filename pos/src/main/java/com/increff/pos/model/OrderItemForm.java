@@ -4,8 +4,6 @@ public class OrderItemForm {
 
     private int orderId;
 
-
-
     private String barcode;
     private int quantity;
     private double sellingPrice;

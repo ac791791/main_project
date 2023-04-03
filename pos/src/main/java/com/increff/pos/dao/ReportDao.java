@@ -45,42 +45,28 @@ public class ReportDao extends AbstractDao{
             "GROUP BY brandPojo.brand,brandPojo.category";
 
 
+    public List<Tuple> getBrandReport(String brand, String category){
+        TypedQuery<Tuple> query=em.createQuery(brandReport,Tuple.class);
+        query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
+        query.setParameter("category", category != null && !category.isEmpty() ? category : "");
 
+        List<Tuple> tuples= query.getResultList();
+        return tuples;
 
-    public List<SalesReportData> getSalesReport(SalesReportForm form) throws ApiException {
+    }
+
+    public List<Tuple> getInventoryReport(String brand,String category){
+        TypedQuery<Tuple> query=em.createQuery(inventoryReport,Tuple.class);
+        query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
+        query.setParameter("category", category != null && !category.isEmpty() ? category : "");
+
+        List<Tuple> tuples= query.getResultList();
+        return tuples;
+
+    }
+
+    public List<Tuple> getSalesReport( LocalDateTime start, LocalDateTime end, String brand, String category) throws ApiException {
         TypedQuery<Tuple> query=em.createQuery(salesReport,Tuple.class);
-
-        LocalDateTime end;
-        LocalDateTime start;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        if(isEmpty(form.getStartDate())){
-            LocalDateTime now = LocalDateTime.now();
-            start = now.minusDays(364);
-        }
-        else {
-            LocalDate startDate = LocalDate.parse(form.getStartDate(), formatter);
-            start = startDate.atTime(LocalTime.MIN);
-        }
-        if(isEmpty(form.getEndDate())) {
-            end=java.time.LocalDateTime.now();
-
-        }
-        else{
-            LocalDate endDate = LocalDate.parse(form.getEndDate(), formatter);
-            end = endDate.atTime(LocalTime.MAX);
-        }
-
-        if(start.compareTo(end)>0){
-            throw new ApiException("Start date can't exceed End Date");
-        }
-        long daysBetween = ChronoUnit.DAYS.between(start, end);
-        if (daysBetween > 365) {
-            throw new ApiException("Maximum gap allowed is 356 days");
-        }
-
-        String brand = form.getBrand();
-        String category = form.getCategory();
 
         query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
         query.setParameter("category", category != null && !category.isEmpty() ? category : "");
@@ -89,81 +75,12 @@ public class ReportDao extends AbstractDao{
         query.setParameter("endDate",end);
 
         List<Tuple> tuples= query.getResultList();
-        return salesConvert(tuples);
-
-
-    }
-
-    public List<BrandReportData> getBrandReport(BrandReportForm form){
-        TypedQuery<Tuple> query=em.createQuery(brandReport,Tuple.class);
-
-        String brand = form.getBrand();
-        String category = form.getCategory();
-
-        query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
-        query.setParameter("category", category != null && !category.isEmpty() ? category : "");
-
-        List<Tuple> tuples= query.getResultList();
-        return brandConvert(tuples);
-
-    }
-
-    public List<InventoryReportData> getInventoryReport(InventoryReportForm form){
-        TypedQuery<Tuple> query=em.createQuery(inventoryReport,Tuple.class);
-
-        String brand = form.getBrand();
-        String category = form.getCategory();
-
-        query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
-        query.setParameter("category", category != null && !category.isEmpty() ? category : "");
-
-        List<Tuple> tuples= query.getResultList();
-        return inventoryConvert(tuples);
+        return tuples;
 
     }
 
 
-    private List<SalesReportData> salesConvert(List<Tuple> tuples){
-        List<SalesReportData> list= new ArrayList<SalesReportData>();
 
-        for(Tuple tuple:tuples){
-            SalesReportData data= new SalesReportData();
-            data.setBrand(String.valueOf(tuple.get("brand")));
-            data.setCategory(String.valueOf(tuple.get("category")));
-            data.setQuantity(Integer.parseInt(tuple.get("quantity").toString()));
-            data.setRevenue(Double.parseDouble(tuple.get("revenue").toString()));
-            list.add(data);
-        }
-        return list;
-    }
-
-    private List<BrandReportData> brandConvert(List<Tuple> tuples){
-        List<BrandReportData> list=new ArrayList<BrandReportData>();
-
-        for(Tuple tuple:tuples){
-            BrandReportData data= new BrandReportData();
-            data.setBrand(String.valueOf(tuple.get("brand")));
-            data.setCategory(String.valueOf(tuple.get("category")));
-            list.add(data);
-        }
-        return list;
-
-    }
-
-    private List<InventoryReportData> inventoryConvert(List<Tuple> tuples){
-        List<InventoryReportData> list= new ArrayList<InventoryReportData>();
-
-        for(Tuple tuple:tuples){
-            InventoryReportData data= new InventoryReportData();
-            data.setBrand(String.valueOf(tuple.get("brand")));
-            data.setCategory(String.valueOf(tuple.get("category")));
-            data.setQuantity(Integer.parseInt(tuple.get("quantity").toString()));
-            data.setBarcode(String.valueOf(tuple.get("barcode")));
-            data.setName(String.valueOf(tuple.get("name")));
-            list.add(data);
-        }
-        return list;
-    }
 
 
 }

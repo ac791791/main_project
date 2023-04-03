@@ -134,7 +134,7 @@
             <div class="modal-content" style="width:700px;">
                 <div class="modal-header">
                     <h5 class="modal-title"><b>Add Order</b></h5>
-                    <button type="button" class="close" id="cancelTop-order">
+                    <button type="button" class="close" id="top-cancel-order">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -162,10 +162,9 @@
                         </div>
                         </div>
 
-                        <input type="hidden" name="orderId" >
                         <div>
 
-                            <button type="submit" class="btn btn-primary" id="addItem-button" style="margin-left:560px" disabled>Add Item</button>
+                            <button type="button" class="btn btn-primary" id="addItem-button" style="margin-left:560px" disabled>Add Item</button>
                         </div>
 
                     </form>
@@ -184,7 +183,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancel-order">Cancel</button>
+                    <button type="button" class="btn btn-secondary" id="bottom-cancel-order" style="width:100px">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-order" style="width:100px" disabled>Save </button>
                     <button type="button" class="btn btn-primary" id="add-order" disabled>Add Order</button>
                 </div>
             </div>
