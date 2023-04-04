@@ -26,6 +26,7 @@ public class OrderController {
     @ApiOperation(value = "Validating OrderForm")
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     public int validateOrderForm(@RequestBody OrderForm form) throws ApiException {
+        System.out.println("Check Validate form");
         return dto.checkOrderForm(form);
     }
 

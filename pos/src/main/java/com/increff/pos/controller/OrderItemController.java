@@ -7,6 +7,7 @@ import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,9 @@ public class OrderItemController {
     @ApiOperation(value = "Add a OrderItem")
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody OrderItemForm form) throws ApiException {
+        System.out.println("check1");
         dto.add(form);
+
     }
 
 

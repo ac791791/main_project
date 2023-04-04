@@ -92,6 +92,7 @@ public class InputChecks {
     public static void validateOrderForm(OrderForm form, ProductPojo productPojo, InventoryPojo inventoryPojo) throws ApiException {
         if(form.getSellingPrice() > productPojo.getMrp() )
             throw new ApiException("Selling Price is greater than Mrp: " + productPojo.getMrp());
+        System.out.println(inventoryPojo.getQuantity());
         if(inventoryPojo.getQuantity() < form.getQuantity())
             throw new ApiException("This much quantity is not present. Max Quantity: "+inventoryPojo.getQuantity());
     }
@@ -112,10 +113,13 @@ public class InputChecks {
         if(existingOrderPojo.getInvoiceStatus()==1)
             throw new ApiException("Can't Add: Invoice is generated");
 
-        if(inventoryPojo.getQuantity() < pojo.getQuantity())
-            throw new ApiException("This much quantity is not present. Max Quantity: "+inventoryPojo.getQuantity());
+        if(inventoryPojo.getQuantity()<pojo.getQuantity()) {
+            throw new ApiException("This much quantity is not present. Max Quantity: " + inventoryPojo.getQuantity());
+        }
 
-        if (pojo.getSellingPrice() > existingProductPojo.getMrp())
+        if (pojo.getSellingPrice()>existingProductPojo.getMrp())
             throw new ApiException("Selling Price is greater than Mrp: " + existingProductPojo.getMrp());
+
+
     }
 }

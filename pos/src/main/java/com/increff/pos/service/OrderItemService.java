@@ -31,6 +31,7 @@ public class OrderItemService {
             existingOrderItemPojo.setQuantity(totalQuantity);
         }
         else {
+            System.out.println("check3");
             dao.insert(p);
         }
     }

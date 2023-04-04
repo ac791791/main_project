@@ -37,11 +37,10 @@ public class OrderItemDto {
         OrderItemPojo pojo = convertOrderItemPojo(form);
         OrderPojo existingOrderPojo = orderService.get(pojo.getOrderId());
         ProductPojo existingProductPojo=productService.getCheck(form.getBarcode());
-        InventoryPojo inventoryPojo=inventoryService.get(existingOrderPojo.getId());
+        InventoryPojo inventoryPojo=inventoryService.get(existingProductPojo.getId());
+
         pojo.setProductId(existingProductPojo.getId());
-
         checkOrderItemParameters(pojo,existingOrderPojo,existingProductPojo,inventoryPojo);
-
         service.add(pojo);
         inventoryService.decreaseInventory(existingProductPojo, pojo.getQuantity());
 
@@ -97,7 +96,7 @@ public class OrderItemDto {
         OrderItemPojo pojo=convertOrderItemPojo(form);
         OrderPojo existingOrderPojo= orderService.get(pojo.getOrderId());
         ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
-        InventoryPojo inventoryPojo=inventoryService.get(existingOrderPojo.getId());
+        InventoryPojo inventoryPojo=inventoryService.get(existingProductPojo.getId());
         pojo.setProductId(existingProductPojo.getId());
 
         checkOrderItemParameters(pojo,existingOrderPojo,existingProductPojo,inventoryPojo);

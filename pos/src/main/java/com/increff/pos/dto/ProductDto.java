@@ -78,7 +78,7 @@ public class ProductDto {
         return service.totalProducts();
     }
 
-    //TODO to use UpdateProductForm
+
     public void update(int id, ProductForm form) throws ApiException {
         validateProductForm(form);
         ProductPojo pojo = convertProductPojo(form);

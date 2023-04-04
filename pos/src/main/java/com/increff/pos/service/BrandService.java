@@ -27,7 +27,6 @@ public class BrandService {
 		dao.insert(p);
 	}
 
-
 	public BrandPojo get(int id) {
 		return dao.select(id);
 	}
