@@ -19,11 +19,11 @@ import static com.increff.pos.util.StringUtil.isEmpty;
 @Repository
 public class ReportDao extends AbstractDao{
 
-    private static String brandReport=" SELECT brand AS brand, category AS category from BrandPojo "+
+    private static String BRAND_REPORT=" SELECT brand AS brand, category AS category from BrandPojo "+
             "WHERE (:brand = '' OR brand = :brand) " +
             "AND (:category = '' OR category = :category)";
 
-    private static String inventoryReport="Select brandPojo.brand AS brand, brandPojo.category AS category,"+
+    private static String INVENTORY_REPORT="Select brandPojo.brand AS brand, brandPojo.category AS category,"+
             "productPojo.barcode AS barcode, productPojo.name AS name,inventoryPojo.quantity AS quantity "+
             "FROM BrandPojo brandPojo "+
             "INNER JOIN ProductPojo productPojo ON brandPojo.id=productPojo.brandCategory "+
@@ -33,7 +33,7 @@ public class ReportDao extends AbstractDao{
             "AND quantity>0"+
             "order by brandPojo.brand,brandPojo.category";
 
-    private static String salesReport= "SELECT brandPojo.brand AS brand, brandPojo.category AS category," +
+    private static String SALES_REPORT= "SELECT brandPojo.brand AS brand, brandPojo.category AS category," +
             "SUM(orderItemPojo.quantity) AS quantity,SUM(orderItemPojo.sellingPrice) AS revenue "+
             "FROM OrderPojo orderPojo "+
             "INNER JOIN OrderItemPojo orderItemPojo ON orderPojo.id=orderItemPojo.orderId "+
@@ -46,7 +46,7 @@ public class ReportDao extends AbstractDao{
 
 
     public List<Tuple> getBrandReport(String brand, String category){
-        TypedQuery<Tuple> query=em.createQuery(brandReport,Tuple.class);
+        TypedQuery<Tuple> query=em.createQuery(BRAND_REPORT,Tuple.class);
         query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
         query.setParameter("category", category != null && !category.isEmpty() ? category : "");
 
@@ -56,7 +56,7 @@ public class ReportDao extends AbstractDao{
     }
 
     public List<Tuple> getInventoryReport(String brand,String category){
-        TypedQuery<Tuple> query=em.createQuery(inventoryReport,Tuple.class);
+        TypedQuery<Tuple> query=em.createQuery(INVENTORY_REPORT,Tuple.class);
         query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
         query.setParameter("category", category != null && !category.isEmpty() ? category : "");
 
@@ -66,7 +66,7 @@ public class ReportDao extends AbstractDao{
     }
 
     public List<Tuple> getSalesReport( LocalDateTime start, LocalDateTime end, String brand, String category) throws ApiException {
-        TypedQuery<Tuple> query=em.createQuery(salesReport,Tuple.class);
+        TypedQuery<Tuple> query=em.createQuery(SALES_REPORT,Tuple.class);
 
         query.setParameter("brand", brand != null && !brand.isEmpty() ? brand : "");
         query.setParameter("category", category != null && !category.isEmpty() ? category : "");

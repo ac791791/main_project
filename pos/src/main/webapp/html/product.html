@@ -83,8 +83,8 @@
                 <form class="form-row" id="product-form">
 
                         <div class="form-group form-inline" >
-                            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode<span class="required">*</span></label>
-                            <div class="col-sm-10">
+                            <label for="inputBarcode" class="col-sm-2 col-form-label" >Barcode<span class="required">*</span></label>
+                            <div class="col-sm-10" style="padding-left:20px">
                                 <input type="text" class="form-control" name="barcode" id="inputBarcode" oninput="checkInputs()" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Barcode" required style="width: 260px;">
                             </div>
                         </div>
@@ -101,13 +101,13 @@
 
                     <div class="form-group form-inline" >
                             <label for="inputName" class="col-sm-2 col-form-label">Name<span class="required">*</span></label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10" style="padding-left:22px">
                                 <input type="text"  class="form-control" name="name" id="inputName" oninput="checkInputs()" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)"  placeholder="Enter Name" required style="width: 260px;">
                             </div>
                         </div>
                         <div class="form-group form-inline">
                             <label for="inputMrp" class="col-sm-2 col-form-label">Mrp<span class="required">*</span></label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10" style="padding-left:24px">
                                 <input type="number" class="form-control" name="mrp" id="inputMrp" placeholder="Enter Mrp" min="0" max="999999" step="any" oninput="checkInputs()" onkeypress="return /[0-9.]/i.test(event.key)" required style="width: 260px;">
                             </div>
                         </div>

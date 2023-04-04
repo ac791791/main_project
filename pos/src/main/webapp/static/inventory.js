@@ -64,8 +64,8 @@ function topUpdateInventory(event){
 	   success: function(response) {
             var submitBtn = document.getElementById("topUpdate-inventory");
             submitBtn.disabled = true;
-            document.getElementById("inputPage").value=1;
-            getLimitedInventoryList(1);
+            document.getElementById("inputPage").value=backupPage;
+            getLimitedInventoryList(backupPage);
             document.getElementById("inventory-form").reset();
             successMessage("Inventory Added")
             $('#add-inventory-modal').modal('toggle');

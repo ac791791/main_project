@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.increff.pos.dto.ProductDto;
+import com.increff.pos.model.ProductUpdateForm;
 import com.increff.pos.service.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +58,7 @@ public class ProductController {
 	//TODO: to use updateProductForm
 	@ApiOperation(value = "Update a Product")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
+	public void update(@PathVariable int id, @RequestBody ProductUpdateForm form) throws ApiException {
 		dto.update(id,form);
 	}
 	

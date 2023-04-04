@@ -234,6 +234,12 @@ function cancelOrder(){
     $("#add-order-modal").modal("hide");
 }
 
+function cancelViewModal(){
+    document.getElementById("inputPage").value=backupPage;
+    getLimitedOrderList(backupPage);
+    $("#view-order-modal").modal("hide");
+}
+
 function getTotalPages(){
 
 
@@ -711,6 +717,8 @@ function init(){
 	$('#add-order').click(addOrder);
 	$('#top-cancel-order').click(cancelOrder);
 	$('#bottom-cancel-order').click(cancelOrder);
+	$('#top-cancel-view-order').click(cancelViewModal);
+    $('#bottom-cancel-view-order').click(cancelViewModal);
 	$('#download-invoice').click(downloadInvoice);
 
 }

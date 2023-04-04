@@ -41,15 +41,31 @@ public class InputChecks {
         if (form.getMrp()>maxMrp) {
             throw new ApiException("Mrp can't be greater than "+maxMrp);
         }
-        if(form.getBarcode().length()>maxStringLength){
-            throw new ApiException("Length of barcode can't exceed "+maxStringLength);
-        }
         if(form.getName().length()>maxStringLength){
             throw new ApiException("Length of name can't exceed "+maxStringLength);
         }
     }
+    public static void validateProductUpdateForm(ProductUpdateForm form) throws ApiException {
+
+        if (isEmpty(form.getName())){
+            throw new ApiException("Name can't be empty");
+        }
+        if (form.getMrp()<=0){
+            throw new ApiException("Mrp can't be lesser than or equal to 0");
+        }
+        if (form.getMrp()>maxMrp) {
+            throw new ApiException("Mrp can't be greater than "+maxMrp);
+        }
+        if(form.getName().length()>maxStringLength){
+            throw new ApiException("Length of name can't exceed "+maxStringLength);
+        }
+
+    }
 
     public static void checkAddProductsParameters(ProductPojo pojo,BrandPojo existingBrandPojo) throws ApiException {
+        if(pojo.getBarcode().length()>maxStringLength){
+            throw new ApiException("Length of barcode can't exceed "+maxStringLength);
+        }
         if (isEmpty(pojo.getBarcode())){
             throw new ApiException("Barcode can't be empty");
         }
@@ -65,7 +81,7 @@ public class InputChecks {
 
     //For InventoryPojo
 
-    public static void validateInventoryForm(InventoryForm form) throws ApiException{
+    public static void validateInventoryAddForm(InventoryAddForm form) throws ApiException{
         if(form.getQuantity()<0){
             throw new ApiException("Quantity can't be less than 0");
         }
@@ -80,6 +96,17 @@ public class InputChecks {
         }
     }
 
+    public static void validateInventoryUpdateForm(InventoryUpdateForm form) throws ApiException{
+        if(form.getQuantity()<0){
+            throw new ApiException("Quantity can't be less than 0");
+        }
+        if(Math.ceil(form.getQuantity())!=form.getQuantity()){
+            throw new ApiException("Quantity can't be in Decimals");
+        }
+        if(form.getQuantity()>maxQuantity){
+            throw new ApiException("Quantity can't be greater than "+maxQuantity);
+        }
+    }
     public static void validateUserForm(UserForm form) throws ApiException {
         if(form.getEmail().length()>30){
             throw new ApiException("Length of email can't exceed "+40);

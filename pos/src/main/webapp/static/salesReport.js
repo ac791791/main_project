@@ -114,7 +114,7 @@ function downloadSalesReport(){
 
 function displayBrandSelect(brandCategoryList){
     var brandSelect = document.getElementById('brand-select');
-    brandSelect.innerHTML = "<option value='' selected>Choose Brand</option>";
+    brandSelect.innerHTML = "<option value='' selected>All</option>";
     var uniqueBrands = [];
     for (var i = 0; i < brandCategoryList.length; i++) {
         var brand = brandCategoryList[i].brand;
@@ -130,7 +130,7 @@ function displayBrandSelect(brandCategoryList){
 
 function displayCategorySelect(brandCategoryList){
     var categorySelect = document.getElementById('category-select');
-    categorySelect.innerHTML = "<option value='' selected>Choose Category</option>";
+    categorySelect.innerHTML = "<option value='' selected>All</option>";
     var uniqueCategories = [];
     for (var i = 0; i < brandCategoryList.length; i++) {
         var category = brandCategoryList[i].category;

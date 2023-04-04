@@ -34,13 +34,11 @@ public class InvoiceDto {
     @Autowired
     private InvoiceClient invoiceClient;
     public void generateInvoice(int orderId, HttpServletResponse response) throws ApiException, IOException {
-
         OrderPojo orderPojo= orderService.get(orderId);
         if(orderPojo==null)
         {
             throw new ApiException("No Order with OrderId exist");
         }
-
         getOrderItems(orderPojo.getId(),response);
     }
 

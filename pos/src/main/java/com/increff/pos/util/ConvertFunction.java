@@ -65,9 +65,8 @@ public class ConvertFunction {
     }
     // Inventory Converts
 
-    public static InventoryPojo convertInventoryPojo(InventoryForm f) {
+    public static InventoryPojo convertInventoryPojo(InventoryAddForm f) {
         InventoryPojo p = new InventoryPojo();
-        p.setId(f.getId());
         p.setQuantity(f.getQuantity());
         return p;
     }

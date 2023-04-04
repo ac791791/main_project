@@ -15,8 +15,6 @@ public class ProductServiceTest extends AbstractUnitTest {
 
     @Autowired
     private ProductService service;
-    @Autowired
-    private InventoryService inventoryService;
 
     private final String barcode="b1000";
     private final int brandCategory=1;
@@ -121,17 +119,14 @@ public class ProductServiceTest extends AbstractUnitTest {
         List<ProductPojo> list=service.getAll();
 
         for (ProductPojo pojo: list){
-            ProductPojo p= new ProductPojo();
-            p.setBarcode(pojo.getBarcode());
-            p.setbrandCategory(pojo.getbrandCategory());
-            p.setName("puma");
-            p.setMrp(100.08);
+           String name="puma";
+           double mrp=100.08;
 
-            service.update(pojo.getId(), p);
+            service.update(pojo.getId(), name,mrp);
 
             ProductPojo newPojo= service.get(pojo.getId());
-            assertEquals("puma",newPojo.getName());
-            assertEquals(100.08,newPojo.getMrp(),0.01);
+            assertEquals(name,newPojo.getName());
+            assertEquals(mrp,newPojo.getMrp(),0.01);
         }
     }
 

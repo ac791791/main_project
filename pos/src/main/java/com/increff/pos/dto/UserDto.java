@@ -29,7 +29,7 @@ public class UserDto {
         service.add(pojo);
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws ApiException {
         service.delete(id);
     }
 

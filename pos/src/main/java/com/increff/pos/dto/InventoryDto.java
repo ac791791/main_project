@@ -1,7 +1,8 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.model.InventoryAddForm;
 import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.InventoryUpdateForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -10,7 +11,7 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static com.increff.pos.util.ConvertFunction.*;
-import static com.increff.pos.util.InputChecks.validateInventoryForm;
+import static com.increff.pos.util.InputChecks.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +64,13 @@ public class InventoryDto {
         return service.totalInventory();
     }
 
-    public void update(int id,InventoryForm form) throws ApiException {
-        validateInventoryForm(form);
-        InventoryPojo pojo = convertInventoryPojo(form);
-        service.update(id,pojo);
+    public void update(int id, InventoryUpdateForm form) throws ApiException {
+        validateInventoryUpdateForm(form);
+        service.update(id,form.getQuantity());
     }
 
-    public void topUpdate(InventoryForm form) throws ApiException {
-        validateInventoryForm(form);
+    public void topUpdate(InventoryAddForm form) throws ApiException {
+        validateInventoryAddForm(form);
         InventoryPojo pojo = convertInventoryPojo(form);
         ProductPojo existingProductPojo = productService.getCheck(form.getBarcode());
         pojo.setId(existingProductPojo.getId());

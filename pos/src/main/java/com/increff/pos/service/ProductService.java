@@ -48,10 +48,12 @@ public class ProductService {
 		return dao.totalRows();
 	}
 
-	public void update(int id, ProductPojo p) throws ApiException {
+	public void update(int id, String name, double mrp) throws ApiException {
 		ProductPojo updatedPojo = dao.select(id);
-		updatedPojo.setName(p.getName());
-		updatedPojo.setMrp(p.getMrp());
+		if(Objects.isNull(updatedPojo))
+			throw new ApiException("Product with given id "+ id+" doees not exist");
+		updatedPojo.setName(name);
+		updatedPojo.setMrp(mrp);
 	}
 
 }

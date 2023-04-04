@@ -2,10 +2,9 @@ package com.increff.pos.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.transaction.Transactional;
-
-import com.increff.pos.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -48,10 +47,12 @@ public class UserService {
 		return dao.selectLimited(pageNo);
 	}
 
-	public void delete(int id) {
+	public void delete(int id) throws ApiException {
+		UserPojo pojo = dao.select(id);
+		if(Objects.isNull(pojo))
+			throw new ApiException("User with given id "+id+" does not exist");
 		dao.delete(id);
 	}
-
 
 	public void changePassword(String email, String password){
 		UserPojo updatedPojo= dao.select(email);
@@ -76,7 +77,5 @@ public class UserService {
 	public int totalUsers(){
 		return dao.totalRows();
 	}
-
-
 
 }

@@ -70,7 +70,7 @@ public class UserDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() throws ApiException {
         List<UserData> list=dto.getAll();
 
         for(UserData data:list){

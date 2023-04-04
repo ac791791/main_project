@@ -45,6 +45,5 @@ public class InventoryDao extends AbstractDao {
 		TypedQuery<Long> query = em.createQuery(TOTAL_ROWS, Long.class);
 		int rows = Integer.parseInt(String.valueOf(getSingle(query)));
 		return rows;
-
 	}
 }

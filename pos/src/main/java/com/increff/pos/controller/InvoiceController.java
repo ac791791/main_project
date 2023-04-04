@@ -23,7 +23,6 @@ public class InvoiceController {
     @ApiOperation("returns Base64 encoded string for invoice")
     @RequestMapping(path = "/api/generateInvoice/{orderId}",method = RequestMethod.GET)
     public void generateInvoice(@PathVariable int orderId, HttpServletResponse response) throws ApiException, IOException {
-        System.out.println("Check 1");
         dto.generateInvoice(orderId,response);
     }
 }

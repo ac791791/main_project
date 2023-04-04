@@ -2,14 +2,10 @@ package com.increff.pos.dao;
 
 import java.util.List;
 import javax.transaction.Transactional;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
-import com.increff.pos.pojo.ProductPojo;
 import org.springframework.stereotype.Repository;
 
 import com.increff.pos.pojo.BrandPojo;
-
 import static com.increff.pos.util.Constants.pageSize;
 
 
@@ -41,12 +37,10 @@ public class BrandDao extends AbstractDao {
 		return  getSingle(query);
 	}
 
-	//TODO: to move this to abstract dao
 	public List<BrandPojo> selectAll(){
 		TypedQuery<BrandPojo> query = em.createQuery(SELECT_ALL, BrandPojo.class);
 		return query.getResultList();
 	}
-
 
 	// Used to get only limited records for a particular page
 	public List<BrandPojo> selectLimited(int pageNo){
@@ -61,9 +55,6 @@ public class BrandDao extends AbstractDao {
 		TypedQuery<Long> query=em.createQuery(TOTAL_ROWS, Long.class);
 		int rows=Integer.parseInt(String.valueOf(getSingle(query)));
 		return rows;
-
 	}
-
-
 	
 }

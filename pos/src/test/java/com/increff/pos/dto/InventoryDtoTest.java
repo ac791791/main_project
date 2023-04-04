@@ -1,11 +1,10 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.model.InventoryAddForm;
 import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.ProductData;
+import com.increff.pos.model.InventoryUpdateForm;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
@@ -122,8 +121,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
     public void testUpdate() throws ApiException {
         List<InventoryData> list=dto.getAll();
         for(InventoryData data:list){
-            InventoryForm form=new InventoryForm();
-            form.setId(data.getId());
+            InventoryUpdateForm form=new InventoryUpdateForm();
             form.setQuantity(10);
             dto.update(data.getId(), form);
 
@@ -137,8 +135,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
     public void testTopUpdate() throws ApiException {
         List<InventoryData> list=dto.getAll();
         for(InventoryData data:list){
-            InventoryForm form=new InventoryForm();
-            form.setId(data.getId());
+            InventoryAddForm form=new InventoryAddForm();
             form.setQuantity(10);
             form.setBarcode(barcode);
             dto.topUpdate(form);
@@ -153,8 +150,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
         List<InventoryData> list=dto.getAll();
         try {
             for(InventoryData data:list){
-                InventoryForm form=new InventoryForm();
-                form.setId(data.getId());
+                InventoryAddForm form=new InventoryAddForm();
                 form.setQuantity(10);
                 dto.topUpdate(form);
 
@@ -172,8 +168,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
         List<InventoryData> list=dto.getAll();
         try {
             for(InventoryData data:list){
-                InventoryForm form=new InventoryForm();
-                form.setId(data.getId());
+                InventoryAddForm form=new InventoryAddForm();
                 form.setQuantity(10);
                 form.setBarcode("differentBarcode");
                 dto.topUpdate(form);
@@ -183,7 +178,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
             }
 
         }catch (ApiException e){
-            assertEquals("Couldn't Update: Product with given barcode do not exist",e.getMessage());
+            assertEquals("Sorry, differentBarcode is not present.",e.getMessage());
         }
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional(rollbackOn = ApiException.class)
@@ -20,7 +21,10 @@ public class OrderService {
     }
 
 
-    public void delete(int orderId){
+    public void delete(int orderId) throws ApiException {
+        OrderPojo pojo=get(orderId);
+        if(Objects.isNull(pojo))
+            throw new ApiException("Order with given id "+orderId+" does not exist");
         dao.delete(orderId);
     }
 

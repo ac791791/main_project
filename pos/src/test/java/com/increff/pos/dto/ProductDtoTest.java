@@ -3,6 +3,7 @@ package com.increff.pos.dto;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.ProductUpdateForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -213,7 +214,7 @@ public class ProductDtoTest extends AbstractUnitTest{
     public void testUpdate() throws ApiException {
         List<ProductData> list=dto.getAll();
         for(ProductData data:list){
-            ProductForm form = new ProductForm();
+            ProductUpdateForm form = new ProductUpdateForm();
             form.setName("Name");
             form.setMrp(50.22);
             dto.update(data.getId(),form);

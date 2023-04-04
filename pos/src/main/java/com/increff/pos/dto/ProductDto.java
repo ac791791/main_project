@@ -2,12 +2,14 @@ package com.increff.pos.dto;
 
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.ProductUpdateForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
+import com.increff.pos.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -79,10 +81,10 @@ public class ProductDto {
     }
 
 
-    public void update(int id, ProductForm form) throws ApiException {
-        validateProductForm(form);
-        ProductPojo pojo = convertProductPojo(form);
-        service.update(id, normalize(pojo));
+    public void update(int id, ProductUpdateForm form) throws ApiException {
+        validateProductUpdateForm(form);
+        String name=StringUtil.toLowerCase(form.getName());
+        service.update(id,name,form.getMrp());
     }
 
 
