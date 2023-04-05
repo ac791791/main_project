@@ -32,8 +32,8 @@ public class BrandController {
 
 	@ApiOperation(value="Gets a brand by id")
 	@RequestMapping(value = "{id}",method = RequestMethod.GET)
-	public BrandData get(@PathVariable int id) {
-		return dto.get(id);
+	public BrandData getCheck(@PathVariable int id) throws ApiException {
+		return dto.getCheck(id);
 	}
 
 	@ApiOperation(value = "Gets list of all brands")

@@ -2,7 +2,6 @@ package com.increff.pos.dto;
 
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class BrandDtoTest extends AbstractUnitTest{
             dto.add(form);
         }
         catch (ApiException e){
-            assertEquals("Brand can't be empty. ",e.getMessage());
+            assertEquals("Brand can't be null/empty. ",e.getMessage());
         }
     }
 
@@ -58,7 +57,7 @@ public class BrandDtoTest extends AbstractUnitTest{
             dto.add(form);
         }
         catch (ApiException e){
-            assertEquals("Brand can't be empty. ",e.getMessage());
+            assertEquals("Brand can't be null/empty. ",e.getMessage());
         }
     }
 
@@ -71,7 +70,7 @@ public class BrandDtoTest extends AbstractUnitTest{
             dto.add(form);
         }
         catch (ApiException e){
-            assertEquals("Category can't be empty. ",e.getMessage());
+            assertEquals("Category can't be null/empty. ",e.getMessage());
         }
     }
 
@@ -84,7 +83,7 @@ public class BrandDtoTest extends AbstractUnitTest{
             dto.add(form);
         }
         catch (ApiException e){
-            assertEquals("Category can't be empty. ",e.getMessage());
+            assertEquals("Category can't be null/empty. ",e.getMessage());
         }
     }
     @Test
@@ -105,10 +104,10 @@ public class BrandDtoTest extends AbstractUnitTest{
 
     }
     @Test
-    public void testGet(){
+    public void testGetCheck() throws ApiException {
         List<BrandData> list=dto.getAll();
         for(BrandData data:list){
-            BrandData getData=dto.get(data.getId());
+            BrandData getData=dto.getCheck(data.getId());
             assertEquals(data.getBrand(),getData.getBrand());
             assertEquals(data.getCategory(),getData.getCategory());
 
@@ -124,7 +123,7 @@ public class BrandDtoTest extends AbstractUnitTest{
             form.setCategory("new_category");
             dto.update(data.getId(),form);
 
-            BrandData getData= dto.get(data.getId());
+            BrandData getData= dto.getCheck(data.getId());
             assertEquals("new_brand",getData.getBrand());
             assertEquals("new_category",getData.getCategory());
         }
@@ -149,37 +148,22 @@ public class BrandDtoTest extends AbstractUnitTest{
         assertEquals(16-pageSize,list2.size());
     }
 
+    @Test
+    public void testGetLimitedNegativePageNo() throws ApiException {
+        for(int i=0;i<15;i++){
+            BrandForm form=new BrandForm();
+            form.setBrand("Brand"+i);
+            form.setCategory("Category"+i);
+            dto.add(form);
+        }
+        try {
+            List<BrandData> list1=dto.getLimited(-1);
+        }
+        catch (ApiException e){
+            assertEquals("Page No can't be less than 1",e.getMessage());
+        }
 
-//    @Test
-//    public void testNormalize(){
-//        BrandPojo pojo= new BrandPojo();
-//        pojo.setBrand("Brand");
-//        pojo.setCategory("Category");
-//        dto.normalize(pojo);
-//        assertEquals("brand",pojo.getBrand());
-//        assertEquals("category",pojo.getCategory());
-//    }
-//
-//    @Test
-//    public void testPojoToDataCovert(){
-//        BrandPojo p= new BrandPojo();
-//        p.setBrand("brand");
-//        p.setCategory("category");
-//
-//        BrandData data= dto.convert(p);
-//        assertEquals("brand",data.getBrand());
-//        assertEquals("category",data.getCategory());
-//    }
-//
-//    @Test
-//    public void testFormToPojoConvert(){
-//        BrandForm f= new BrandForm();
-//        f.setBrand("brand");
-//        f.setCategory("category");
-//
-//        BrandPojo p= dto.convert(f);
-//        assertEquals("brand",p.getBrand());
-//        assertEquals("category",p.getCategory());
-//    }
+    }
+
 }
 

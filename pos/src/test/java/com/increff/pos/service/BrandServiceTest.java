@@ -47,7 +47,7 @@ public class BrandServiceTest extends AbstractUnitTest {
             service.add(pojo);
         }
         catch (ApiException e){
-            assertEquals("Couldn't Add: Given Brand Category already exist",e.getMessage());
+            assertEquals("Couldn't Add: "+brand+" "+ category+" already exist",e.getMessage());
         }
     }
 
@@ -70,10 +70,10 @@ public class BrandServiceTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testGet(){
+    public void testGet() throws ApiException {
         List<BrandPojo> list=service.getAll();
         for(BrandPojo pojo: list){
-            BrandPojo getPojo= service.get(pojo.getId());
+            BrandPojo getPojo= service.getCheck(pojo.getId());
             assertEquals(pojo.getBrand(),getPojo.getBrand());
             assertEquals(pojo.getCategory(),getPojo.getCategory());
 
@@ -99,7 +99,7 @@ public class BrandServiceTest extends AbstractUnitTest {
             newPojo.setCategory("new_category");
             service.update(pojo.getId(), newPojo);
 
-            BrandPojo getPojo= service.get(pojo.getId());
+            BrandPojo getPojo= service.getCheck(pojo.getId());
             assertEquals("new_brand",newPojo.getBrand());
             assertEquals("new_category",newPojo.getCategory());
         }
@@ -115,7 +115,7 @@ public class BrandServiceTest extends AbstractUnitTest {
             newPojo.setCategory(category);
             service.update(pojo.getId(), newPojo);
 
-            BrandPojo getPojo= service.get(pojo.getId());
+            BrandPojo getPojo= service.getCheck(pojo.getId());
             assertEquals(brand,newPojo.getBrand());
             assertEquals(category,newPojo.getCategory());
         }
@@ -137,7 +137,7 @@ public class BrandServiceTest extends AbstractUnitTest {
                 newPojo.setCategory(category);
                 service.update(pojo.getId(), newPojo);
 
-                BrandPojo getPojo = service.get(pojo.getId());
+                BrandPojo getPojo = service.getCheck(pojo.getId());
                 assertEquals(brand, newPojo.getBrand());
                 assertEquals(category, newPojo.getCategory());
             }

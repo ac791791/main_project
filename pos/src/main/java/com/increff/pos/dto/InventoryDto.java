@@ -25,21 +25,21 @@ public class InventoryDto {
     private ProductService productService;
 
 
-    public InventoryData get(int id) {
-        ProductPojo productPojo = productService.get(id);
+    public InventoryData get(int id) throws ApiException {
+        ProductPojo productPojo = productService.getCheck(id);
         InventoryPojo inventoryPojo = service.get(id);
         InventoryData data = convertInventoryData(inventoryPojo,productPojo);
         return data;
 
     }
 
-    public List<InventoryData> getAll(){
+    public List<InventoryData> getAll() throws ApiException {
         List<InventoryData> inventoryDataList = new ArrayList<InventoryData>();
         List<InventoryPojo> inventoryPojoList = service.getAll();
 
 
         for(InventoryPojo pojo: inventoryPojoList) {
-            ProductPojo productPojo = productService.get(pojo.getId());
+            ProductPojo productPojo = productService.getCheck(pojo.getId());
             InventoryData data = convertInventoryData(pojo,productPojo);
             inventoryDataList.add(data);
         }
@@ -53,7 +53,7 @@ public class InventoryDto {
         List<InventoryData> inventoryDataList = new ArrayList<InventoryData>();
         List<InventoryPojo> inventoryPojoList = service.getLimited(pageNo);
         for(InventoryPojo pojo : inventoryPojoList) {
-            ProductPojo productPojo = productService.get(pojo.getId());
+            ProductPojo productPojo = productService.getCheck(pojo.getId());
             InventoryData data = convertInventoryData(pojo,productPojo);
             inventoryDataList.add(data);
         }

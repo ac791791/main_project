@@ -28,9 +28,7 @@ public class OrderItemController {
     public void add(@RequestBody OrderItemForm form) throws ApiException {
         System.out.println("check1");
         dto.add(form);
-
     }
-
 
     @ApiOperation(value = "Delete a order by its OrderItem id")
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
@@ -40,23 +38,15 @@ public class OrderItemController {
 
     @ApiOperation(value = "Get an order details by given OrderId")
     @RequestMapping(value ="/{orderId}", method = RequestMethod.GET)
-    public List<OrderItemData> getByOrderId(@PathVariable int orderId) {
+    public List<OrderItemData> getByOrderId(@PathVariable int orderId) throws ApiException {
         return dto.getByOrderId(orderId);
     }
 
     @ApiOperation(value = "Get orderItem by it's OrderItem Id")
     @RequestMapping(value = "/single/{id}", method = RequestMethod.GET)
-    public OrderItemData get(@PathVariable int id) {
-        return dto.get(id);
+    public OrderItemData getCheck(@PathVariable int id) throws ApiException {
+        return dto.getCheck(id);
     }
-
-
-//    @ApiOperation(value = "Getting all order Details")
-//    @RequestMapping( method = RequestMethod.GET)
-//    public List<OrderItemData> getAll() {
-//
-//        return dto.getAll();
-//    }
 
     @ApiOperation(value = "Update an orderItem by it's id")
     @RequestMapping(value ="/{id}", method = RequestMethod.PUT)

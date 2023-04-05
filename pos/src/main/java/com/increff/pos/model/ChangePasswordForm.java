@@ -3,8 +3,8 @@ package com.increff.pos.model;
 public class ChangePasswordForm {
 
     String email;
-    String newPassword;
     String currentPassword;
+    String newPassword;
     String confirmPassword;
 
     public String getConfirmPassword() {

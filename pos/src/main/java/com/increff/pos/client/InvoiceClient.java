@@ -4,6 +4,7 @@ import com.increff.pos.model.InvoiceDetails;
 import com.increff.pos.model.InvoiceItem;
 import com.increff.pos.pojo.DailyReportPojo;
 import com.increff.pos.pojo.OrderPojo;
+import com.increff.pos.service.ApiException;
 import com.increff.pos.service.DailyReportService;
 import com.increff.pos.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class InvoiceClient {
     private String fopUrl;
     @Value("${pdf.path}")
     private String path;
-    public void generateInvoice(InvoiceDetails invoiceDetails,HttpServletResponse response1) throws IOException {
+    public void generateInvoice(InvoiceDetails invoiceDetails,HttpServletResponse response1) throws IOException, ApiException {
         int orderId= invoiceDetails.getOrderId();
         String filePath = path + "invoice" + orderId + ".pdf";
         File file = new File(filePath);
@@ -88,9 +89,9 @@ public class InvoiceClient {
     }
 
 
-    public void status(InvoiceDetails invoiceDetails){
+    public void status(InvoiceDetails invoiceDetails) throws ApiException {
         int orderId= invoiceDetails.getOrderId();
-        OrderPojo orderPojo=orderService.get(orderId);
+        OrderPojo orderPojo=orderService.getCheck(orderId);
 
         if(orderPojo.getInvoiceStatus()==0){
 

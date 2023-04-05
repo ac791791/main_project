@@ -86,11 +86,11 @@ public class ProductServiceTest extends AbstractUnitTest {
 
 
     @Test
-    public void testGetId(){
+    public void testGetId() throws ApiException {
         List<ProductPojo> list=service.getAll();
 
         for(ProductPojo pojo: list){
-            ProductPojo p=service.get(pojo.getId());
+            ProductPojo p=service.getCheck(pojo.getId());
             assertEquals(barcode,p.getBarcode());
             assertEquals(brandCategory,p.getbrandCategory());
             assertEquals(name,p.getName());
@@ -124,7 +124,7 @@ public class ProductServiceTest extends AbstractUnitTest {
 
             service.update(pojo.getId(), name,mrp);
 
-            ProductPojo newPojo= service.get(pojo.getId());
+            ProductPojo newPojo= service.getCheck(pojo.getId());
             assertEquals(name,newPojo.getName());
             assertEquals(mrp,newPojo.getMrp(),0.01);
         }

@@ -59,6 +59,22 @@ public class UserDtoTest extends AbstractUnitTest{
     }
 
     @Test
+    public void testGetLimitedNegativePageNo() throws ApiException {
+        for(int i=0;i<15;i++){
+            UserForm form=new UserForm();
+            form.setEmail(i+"s1@gmail.com");
+            form.setPassword(i+"password");
+            dto.add(form);
+        }
+       try {
+           List<UserData> userDataList = dto.getLimited(-1);
+       }
+       catch (ApiException e){
+           assertEquals("Page No can't be less than 1",e.getMessage());
+       }
+    }
+
+    @Test
     public void testTotalUsers() throws ApiException {
         assertEquals(1,dto.totalUsers());
         UserForm form=new UserForm();

@@ -45,7 +45,7 @@ public class InventoryService {
 	public void update(int id, int quantity) throws ApiException {
 		InventoryPojo updatedPojo = dao.select(id);
 		if(Objects.isNull(updatedPojo))
-			throw new ApiException("Inventory with given id "+id+" does not exist");
+			throw new ApiException("Product with given id "+id+" does not exist");
 		updatedPojo.setQuantity(quantity);
 	}
 
@@ -66,8 +66,9 @@ public class InventoryService {
 			p.setQuantity(inventoryQuantity-quantity);
 	}
 
-	public void increaseInventory(InventoryPojo p, int quantity){
-		int inventoryQuantity = p.getQuantity();
-		p.setQuantity(inventoryQuantity + quantity);
+	public void increaseInventory(int id, int quantity){
+		InventoryPojo pojo = get(id);
+		int inventoryQuantity = pojo.getQuantity();
+		pojo.setQuantity(inventoryQuantity + quantity);
 	}
 }

@@ -34,10 +34,10 @@ public class InvoiceDto {
     @Autowired
     private InvoiceClient invoiceClient;
     public void generateInvoice(int orderId, HttpServletResponse response) throws ApiException, IOException {
-        OrderPojo orderPojo= orderService.get(orderId);
+        OrderPojo orderPojo= orderService.getCheck(orderId);
         if(orderPojo==null)
         {
-            throw new ApiException("No Order with OrderId exist");
+            throw new ApiException("No Order with given order id "+orderId+" exist");
         }
         getOrderItems(orderPojo.getId(),response);
     }
@@ -50,7 +50,7 @@ public class InvoiceDto {
         for(OrderItemPojo pojo: orderItemPojoList){
             InvoiceItem item= new InvoiceItem();
 
-            ProductPojo productPojo= productService.get(pojo.getProductId());
+            ProductPojo productPojo= productService.getCheck(pojo.getProductId());
             item.setName(productPojo.getName());
             item.setQuantity(pojo.getQuantity());
             item.setPrice(pojo.getSellingPrice());
@@ -59,15 +59,13 @@ public class InvoiceDto {
         }
         InvoiceDetails invoiceDetails=new InvoiceDetails();
 
-        LocalDateTime time=orderService.get(orderId).getTime();
+        LocalDateTime time=orderService.getCheck(orderId).getTime();
         invoiceDetails.setTime(time);
         invoiceDetails.setOrderId(orderId);
         invoiceDetails.setItems(invoiceItemList);
 
-        System.out.println("Check 3");
 
         invoiceClient.generateInvoice(invoiceDetails,response);
-        System.out.println("Check Final");
 
     }
 }

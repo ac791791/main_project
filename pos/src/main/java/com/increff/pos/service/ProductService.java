@@ -25,15 +25,18 @@ public class ProductService {
 		dao.insert(p);
 	}
 
-	public ProductPojo get(int id) {
-		return dao.select(id);
+	public ProductPojo getCheck(int id) throws ApiException {
+		ProductPojo pojo = dao.select(id);
+		if(Objects.isNull(pojo))
+			throw new ApiException("Product with given id "+id+" does not exist");
+		return pojo;
 	}
 
 	public ProductPojo getCheck(String barcode) throws ApiException {
 		ProductPojo pojo = dao.select(barcode);
 		if(Objects.isNull(pojo))
-			throw new ApiException("Sorry, "+barcode+" is not present.");
-		return dao.select(barcode);
+			throw new ApiException("Product with given barcode "+barcode+" does not exist");
+		return pojo;
 	}
 
 	public List<ProductPojo> getAll(){
@@ -49,9 +52,8 @@ public class ProductService {
 	}
 
 	public void update(int id, String name, double mrp) throws ApiException {
-		ProductPojo updatedPojo = dao.select(id);
-		if(Objects.isNull(updatedPojo))
-			throw new ApiException("Product with given id "+ id+" doees not exist");
+		ProductPojo updatedPojo = getCheck(id);
+
 		updatedPojo.setName(name);
 		updatedPojo.setMrp(mrp);
 	}

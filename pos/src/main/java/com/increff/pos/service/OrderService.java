@@ -22,14 +22,14 @@ public class OrderService {
 
 
     public void delete(int orderId) throws ApiException {
-        OrderPojo pojo=get(orderId);
-        if(Objects.isNull(pojo))
-            throw new ApiException("Order with given id "+orderId+" does not exist");
         dao.delete(orderId);
     }
 
-    public OrderPojo get(int id){
-        return dao.select(id);
+    public OrderPojo getCheck(int id) throws ApiException {
+        OrderPojo pojo = dao.select(id);
+        if(Objects.isNull(pojo))
+            throw new ApiException("Order with given id "+id+" does not exist");
+        return pojo;
     }
 
     public List<OrderPojo> getAll(){

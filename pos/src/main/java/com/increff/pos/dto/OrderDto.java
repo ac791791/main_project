@@ -39,12 +39,15 @@ public class OrderDto {
 
     @Transactional(rollbackFor = ApiException.class)
     public void add(List<OrderForm> forms) throws ApiException {
+        if(forms.size()==0)
+            throw new ApiException("Can't Add: No orderItem present ");
         OrderPojo orderPojo= new OrderPojo();
         orderPojo.setTime(java.time.LocalDateTime.now());
         orderPojo.setInvoiceStatus(0);
         service.addOrder(orderPojo);
 
         for(OrderForm form:forms){
+            validateOrderForm(form);
             ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
             OrderItemPojo orderItemPojo = convertOrderItemPojo(orderPojo,form,existingProductPojo);
             orderItemService.add(orderItemPojo);
@@ -52,20 +55,20 @@ public class OrderDto {
         }
     }
     public void delete(int orderId) throws ApiException {
-        OrderPojo existingOrderPojo= service.get(orderId);
+        OrderPojo existingOrderPojo= service.getCheck(orderId);
         if(existingOrderPojo.getInvoiceStatus() == 1)
             throw new ApiException("Can't Delete: Invoice is generated");
 
         service.delete(orderId);
         List<OrderItemPojo> orderItemPojos= orderItemService.getByOrderId(orderId);
         for(OrderItemPojo p:orderItemPojos)
-            inventoryService.increaseInventory(inventoryService.get(p.getProductId()),p.getQuantity());
+            inventoryService.increaseInventory(p.getProductId(),p.getQuantity());
 
         orderItemService.deleteByOrderId(orderId);
     }
 
-    public OrderData get(int orderId){
-        return convertOrderData(service.get(orderId));
+    public OrderData get(int orderId) throws ApiException {
+        return convertOrderData(service.getCheck(orderId));
     }
 
     public List<OrderData> getAll(){

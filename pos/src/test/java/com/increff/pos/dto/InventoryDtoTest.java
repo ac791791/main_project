@@ -74,7 +74,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void testGet(){
+    public void testGet() throws ApiException {
         List<InventoryData> list=dto.getAll();
 
         for(InventoryData data:list){
@@ -97,6 +97,23 @@ public class InventoryDtoTest extends AbstractUnitTest{
 
         assertEquals(pageSize,list1.size());
         assertEquals(16-pageSize,list2.size());
+    }
+    @Test
+    public void testGetLimitedNegativePageNo() throws ApiException {
+        for(int i=0;i<15;i++){
+            ProductForm form = new ProductForm();
+            form.setBarcode("b"+i);
+            form.setbrandCategory(brandCategory);
+            form.setName("Name"+i);
+            form.setMrp(50+i);
+            productDto.add(form);
+        }
+        try {
+            List<InventoryData> list1=dto.getLimited(-1);
+        }
+        catch (ApiException e){
+            assertEquals("Page No can't be less than 1",e.getMessage());
+        }
     }
 
     @Test
@@ -146,7 +163,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void testTopUpdateWithoutBarcode(){
+    public void testTopUpdateWithoutBarcode() throws ApiException {
         List<InventoryData> list=dto.getAll();
         try {
             for(InventoryData data:list){
@@ -159,12 +176,12 @@ public class InventoryDtoTest extends AbstractUnitTest{
             }
 
         }catch (ApiException e){
-            assertEquals("Barcode can't be empty",e.getMessage());
+            assertEquals("Barcode can't be null/empty",e.getMessage());
         }
     }
 
     @Test
-    public void testTopUpdateDifferentBarcode(){
+    public void testTopUpdateDifferentBarcode() throws ApiException {
         List<InventoryData> list=dto.getAll();
         try {
             for(InventoryData data:list){
@@ -178,7 +195,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
             }
 
         }catch (ApiException e){
-            assertEquals("Sorry, differentBarcode is not present.",e.getMessage());
+            assertEquals("Product with given barcode differentBarcode does not exist",e.getMessage());
         }
     }
 

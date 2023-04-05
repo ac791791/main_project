@@ -23,11 +23,14 @@ public class BrandService {
 	public void add(BrandPojo p) throws ApiException {
 		BrandPojo existingPojo = dao.selectByBrandCategory(p.getBrand(),p.getCategory());
 		if(Objects.nonNull(existingPojo))
-			throw new ApiException("Couldn't Add: Given Brand Category already exist, brand: " + existingPojo.getBrand());
+			throw new ApiException("Couldn't Add: "+ p.getBrand()+" "+p.getCategory()+" already exist");
 		dao.insert(p);
 	}
 
-	public BrandPojo get(int id) {
+	public BrandPojo getCheck(int id) throws ApiException {
+		BrandPojo pojo = dao.select(id);
+		if(Objects.isNull(pojo))
+			throw new ApiException("Brand with given id "+id+" does not exist");
 		return dao.select(id);
 	}
 
@@ -52,12 +55,12 @@ public class BrandService {
 
 
 	public void update(int id, BrandPojo p) throws ApiException {
+		BrandPojo updatedPojo = getCheck(id);
 
 		BrandPojo existingPojo = dao.selectByBrandCategory(p.getBrand(),p.getCategory());
 		if(existingPojo!= null && existingPojo.getId()!=id)
 			throw new ApiException("Couldn't Update: Given Brand Category already exist");
 
-		BrandPojo updatedPojo = dao.select(id);
 		updatedPojo.setBrand(p.getBrand());
 		updatedPojo.setCategory(p.getCategory());
 	}

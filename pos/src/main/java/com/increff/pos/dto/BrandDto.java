@@ -30,8 +30,8 @@ public class BrandDto {
     }
 
 
-    public BrandData get(int id) {
-        BrandPojo p = service.get(id);
+    public BrandData getCheck(int id) throws ApiException {
+        BrandPojo p = service.getCheck(id);
         return convertBrandData(p);
     }
 

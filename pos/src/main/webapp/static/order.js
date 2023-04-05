@@ -17,8 +17,7 @@ var map={};
 var backupPage=1;
 var totalPages=1;
 
-// Later will be updated with maximum orderId and will be used in Deleting a order while canceling.
-var maxOrderId=0;
+
 
 
 //BUTTON ACTIONS
@@ -314,25 +313,6 @@ function getOrderItemUpdateList(){
 	});
 }
 
-function getOrderItemAddList(){
-
-    var orderId = maxOrderId;
-	var url = getOrderItemUrl() + "/" + orderId;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayOrderItemAddList(data);
-	   },
-	   error: function(jqXHR, textStatus, errorThrown) {
-                                   handleAjaxError(jqXHR, textStatus, errorThrown);
-                           }
-	});
-}
-
-
-
-
 
 function deleteOrder(id){
 	var url = getOrderUrl() + "/" + id;
@@ -363,7 +343,6 @@ function deleteOrderItem(id){
     	   success: function(data) {
 
     	   		getOrderItemUpdateList(id);
-    	   		getOrderItemAddList();
     	   },
     	   error: function(jqXHR, textStatus, errorThrown) {
                                        handleAjaxError(jqXHR, textStatus, errorThrown);
@@ -396,7 +375,6 @@ function updateOrderItem(event){
 	   success: function(response) {
 	        document.getElementById("orderItem-edit-form").reset();
 	   		getOrderItemUpdateList();
-            getOrderItemAddList();
             $('#edit-orderItem-modal').modal('hide');
 	   },
 	   error: function(jqXHR, textStatus, errorThrown) {
@@ -676,7 +654,7 @@ function displayOrder(id){
 	$("#order-edit-form input[name=orderId]").val(id);
 	$('#edit-order-modal').modal('toggle');
 	getOrderItemUpdateList();
-	getOrderItemAddList();
+
 }
 
 

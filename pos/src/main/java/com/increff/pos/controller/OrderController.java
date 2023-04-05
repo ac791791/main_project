@@ -44,7 +44,7 @@ public class OrderController {
 
     @ApiOperation(value = "Get a order by OrderId")
     @RequestMapping(value ="/{orderId}", method = RequestMethod.GET)
-    public OrderData get(@PathVariable int orderId){
+    public OrderData get(@PathVariable int orderId) throws ApiException {
         return dto.get(orderId);
     }
 

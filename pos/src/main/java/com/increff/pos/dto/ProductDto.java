@@ -34,27 +34,26 @@ public class ProductDto {
     public void add(ProductForm form) throws ApiException {
         validateProductForm(form);
         ProductPojo pojo = convertProductPojo(form);
-        BrandPojo existingBrandPojo = brandService.get(pojo.getbrandCategory());
-        checkAddProductsParameters(pojo,existingBrandPojo);
-        
+        BrandPojo existingBrandPojo = brandService.getCheck(pojo.getbrandCategory());
+
         service.add(normalize(pojo));
         inventoryService.add(createInventoryPojo(pojo));
     }
 
 
-    public ProductData get(int id) {
-        ProductPojo pojo = service.get(id);
-        BrandPojo brandPojo = brandService.get(pojo.getbrandCategory());
+    public ProductData getCheck(int id) throws ApiException {
+        ProductPojo pojo = service.getCheck(id);
+        BrandPojo brandPojo = brandService.getCheck(pojo.getbrandCategory());
         ProductData data = convertProductData(pojo, brandPojo);
         return data;
     }
 
-    public List<ProductData> getAll(){
+    public List<ProductData> getAll() throws ApiException {
         List<ProductData> productDataList = new ArrayList<ProductData>();
         List<ProductPojo> productPojoList = service.getAll();
 
         for(ProductPojo pojo: productPojoList) {
-            BrandPojo brandPojo = brandService.get(pojo.getbrandCategory());
+            BrandPojo brandPojo = brandService.getCheck(pojo.getbrandCategory());
             ProductData data = convertProductData(pojo,brandPojo);
             productDataList.add(data);
         }
@@ -69,7 +68,7 @@ public class ProductDto {
         List<ProductPojo> productPojoList = service.getLimited(pageNo);
 
         for(ProductPojo pojo: productPojoList) {
-            BrandPojo brandPojo = brandService.get(pojo.getbrandCategory());
+            BrandPojo brandPojo = brandService.getCheck(pojo.getbrandCategory());
             ProductData data = convertProductData(pojo,brandPojo);
             productDataList.add(data);
         }
@@ -86,9 +85,6 @@ public class ProductDto {
         String name=StringUtil.toLowerCase(form.getName());
         service.update(id,name,form.getMrp());
     }
-
-
-
 
 }
 

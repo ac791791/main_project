@@ -3,7 +3,6 @@ package com.increff.pos.model;
 public class OrderItemForm {
 
     private int orderId;
-
     private String barcode;
     private int quantity;
     private double sellingPrice;

@@ -31,7 +31,7 @@ public class InventoryController {
 
 	@ApiOperation(value = "Gets a inventory by given id")
 	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
-	public InventoryData get(@PathVariable int id) {
+	public InventoryData get(@PathVariable int id) throws ApiException {
 		return dto.get(id);
 	}
 	

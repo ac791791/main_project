@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.increff.pos.util.ConvertFunction.*;
+import static com.increff.pos.util.InputChecks.validateChangePasswordForm;
 import static com.increff.pos.util.InputChecks.validateUserForm;
 
 @Repository
@@ -58,22 +59,17 @@ public class UserDto {
     }
 
     public void changePassword(ChangePasswordForm form) throws ApiException {
-
+        validateChangePasswordForm(form);
         UserPojo pojo= service.get(form.getEmail());
         if(Objects.equals(pojo.getPassword(), form.getCurrentPassword())){
             if(Objects.equals(form.getNewPassword(), form.getConfirmPassword())){
                 service.changePassword(form.getEmail(), form.getNewPassword());
             }
-            else{
+            else
                 throw new ApiException("Confirm Password didn't Matched");
-            }
-
         }
-        else{
+        else
             throw new ApiException("Current password is Wrong");
-        }
     }
-
-
 
 }

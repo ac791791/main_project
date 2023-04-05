@@ -35,7 +35,7 @@ public class OrderItemDto {
     public void add(OrderItemForm form) throws ApiException {
         validateOrderItemForm(form);
         OrderItemPojo pojo = convertOrderItemPojo(form);
-        OrderPojo existingOrderPojo = orderService.get(pojo.getOrderId());
+        OrderPojo existingOrderPojo = orderService.getCheck(pojo.getOrderId());
         ProductPojo existingProductPojo=productService.getCheck(form.getBarcode());
         InventoryPojo inventoryPojo=inventoryService.get(existingProductPojo.getId());
 
@@ -46,23 +46,24 @@ public class OrderItemDto {
 
     }
     public void delete(int id) throws ApiException {
-        OrderItemPojo p=service.get(id);
+        OrderItemPojo p=service.getCheck(id);
 
-        OrderPojo orderPojo= orderService.get(p.getOrderId());
+        OrderPojo orderPojo= orderService.getCheck(p.getOrderId());
         if(orderPojo.getInvoiceStatus()==1) {
             throw new ApiException("Can't Delete: Invoice is generated");
         }
         InventoryPojo inventoryPojo=inventoryService.get(p.getProductId());
         service.delete(id);
-        inventoryService.increaseInventory(inventoryPojo,p.getQuantity());
+        inventoryService.increaseInventory(p.getProductId(),p.getQuantity());
     }
 
-    public List<OrderItemData> getByOrderId(int orderId){
+    public List<OrderItemData> getByOrderId(int orderId) throws ApiException {
+        OrderPojo orderPojo = orderService.getCheck(orderId);
         List<OrderItemData> orderItemDataList= new ArrayList<OrderItemData>();
         List<OrderItemPojo> orderItemPojoList= service.getByOrderId(orderId);
 
         for(OrderItemPojo pojo: orderItemPojoList){
-            ProductPojo productPojo=productService.get(pojo.getProductId());
+            ProductPojo productPojo=productService.getCheck(pojo.getProductId());
             OrderItemData data=convertOrderItemData(pojo,productPojo);
             orderItemDataList.add(data);
         }
@@ -71,38 +72,26 @@ public class OrderItemDto {
 
     }
 
-    public OrderItemData get(int id){
-        OrderItemPojo pojo=service.get(id);
-        ProductPojo productPojo=productService.get(pojo.getProductId());
+    public OrderItemData getCheck(int id) throws ApiException {
+        OrderItemPojo pojo=service.getCheck(id);
+        ProductPojo productPojo=productService.getCheck(pojo.getProductId());
         OrderItemData data=convertOrderItemData(pojo,productPojo);
         return data;
     }
-
-//    public List<OrderItemData> getAll(){
-//        List<OrderItemData> orderItemDataList= new ArrayList<OrderItemData>();
-//        List<OrderItemPojo> orderItemPojoList= service.getAll();
-//        for(OrderItemPojo pojo: orderItemPojoList){
-//            OrderItemData data=orderItemConvert(pojo);
-//            ProductPojo productPojo=productService.get(pojo.getProductId());
-//            data.setBarcode(productPojo.getBarcode());
-//            orderItemDataList.add(data);
-//        }
-//        return orderItemDataList;
-//    }
 
 
     public void update(int id,OrderItemForm form) throws ApiException{
         validateOrderItemForm(form);
         OrderItemPojo pojo=convertOrderItemPojo(form);
-        OrderPojo existingOrderPojo= orderService.get(pojo.getOrderId());
+        OrderPojo existingOrderPojo= orderService.getCheck(pojo.getOrderId());
         ProductPojo existingProductPojo= productService.getCheck(form.getBarcode());
         InventoryPojo inventoryPojo=inventoryService.get(existingProductPojo.getId());
         pojo.setProductId(existingProductPojo.getId());
 
         checkOrderItemParameters(pojo,existingOrderPojo,existingProductPojo,inventoryPojo);
-        OrderItemPojo updatedPojo=service.get(id);
-        service.update(updatedPojo,pojo);
-        inventoryService.increaseInventory(inventoryPojo,updatedPojo.getQuantity());
+        OrderItemPojo updatedPojo=service.getCheck(id);
+        service.update(id,pojo);
+        inventoryService.increaseInventory(existingProductPojo.getId(),updatedPojo.getQuantity());
         inventoryService.decreaseInventory(existingProductPojo,pojo.getQuantity());
 
     }
