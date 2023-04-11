@@ -29,7 +29,6 @@ public class BrandController {
 		dto.add(form);
 	}
 
-
 	@ApiOperation(value="Gets a brand by id")
 	@RequestMapping(value = "{id}",method = RequestMethod.GET)
 	public BrandData getCheck(@PathVariable int id) throws ApiException {

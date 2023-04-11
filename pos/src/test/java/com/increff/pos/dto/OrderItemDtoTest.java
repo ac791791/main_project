@@ -99,6 +99,27 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     }
 
     @Test
+    public void testLessInventoryAdd() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+            form.setOrderId(orderData.getId());
+            form.setBarcode("b2");
+            form.setQuantity(1000);
+            form.setSellingPrice(100);
+            try {
+                dto.add(form);
+            }
+            catch (ApiException e){
+                assertEquals("This much quantity is not present. Max Quantity: 100",e.getMessage());
+            }
+
+        }
+    }
+
+
+    @Test
     public void testDifferentBarcodeAdd() throws ApiException {
         List<OrderData> orderDataList=orderDto.getAll();
 

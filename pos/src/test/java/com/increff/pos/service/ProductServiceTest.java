@@ -99,6 +99,17 @@ public class ProductServiceTest extends AbstractUnitTest {
     }
 
     @Test
+    public void testGetWrongId() throws ApiException {
+        try {
+            ProductPojo pojo = service.getCheck(1000);
+        }
+        catch (ApiException e){
+            assertEquals("Product with given id 1000 does not exist",e.getMessage());
+        }
+    }
+
+
+    @Test
     public void testGetBarcode() throws ApiException {
         List<ProductPojo> list=service.getAll();
 

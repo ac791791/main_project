@@ -110,7 +110,7 @@ public class ReportDtoTest extends AbstractUnitTest{
     }
 
     @Test
-    public void testSalesReport() throws ApiException {
+    public void testSalesReportWithoutDates() throws ApiException {
         SalesReportForm form = new SalesReportForm();
 
         List<SalesReportData> salesReportDataList = dto.getSalesReport(form);
@@ -120,6 +120,43 @@ public class ReportDtoTest extends AbstractUnitTest{
         List<SalesReportData> salesReportDataList1 = dto.getSalesReport(form);
         assertEquals(0,salesReportDataList1.size());
 
+    }
+    @Test
+    public void testSalesReportWithDates() throws ApiException {
+        SalesReportForm form = new SalesReportForm();
+        form.setStartDate("2023-02-26");
+        form.setEndDate("2023-04-06");
+        List<SalesReportData> salesReportDataList = dto.getSalesReport(form);
+        assertEquals(1,salesReportDataList.size());
+
+        form.setBrand("differentBrand");
+        List<SalesReportData> salesReportDataList1 = dto.getSalesReport(form);
+        assertEquals(0,salesReportDataList1.size());
+    }
+
+    @Test
+    public void testSalesReportStartDateGreaterThanEndDate() throws ApiException {
+        SalesReportForm form = new SalesReportForm();
+        form.setStartDate("2023-04-06");
+        form.setEndDate("2023-02-26");
+        try{
+            List<SalesReportData> salesReportDataList = dto.getSalesReport(form);
+        }
+        catch (ApiException e){
+            assertEquals("Start date can't exceed End Date",e.getMessage());
+        }
+    }
+    @Test
+    public void testSalesReportMaximumGapGreaterThan356Days() throws ApiException {
+        SalesReportForm form = new SalesReportForm();
+        form.setStartDate("2021-04-06");
+        form.setEndDate("2023-04-06");
+        try{
+            List<SalesReportData> salesReportDataList = dto.getSalesReport(form);
+        }
+        catch (ApiException e){
+            assertEquals("Maximum gap allowed is 356 days",e.getMessage());
+        }
     }
 
 }
