@@ -4,7 +4,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import com.increff.pos.pojo.ProductPojo;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import static com.increff.pos.util.Constants.pageSize;

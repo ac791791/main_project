@@ -136,7 +136,7 @@ function checkInputs() {
   var barcode = document.getElementById("inputBarcode").value;
   var quantity = document.getElementById("inputQuantity").value;
   var submitBtn = document.getElementById("topUpdate-inventory");
-  if (barcode.length > 0 || quantity > 0) {
+  if (barcode.length > 0 && quantity > 0) {
     submitBtn.disabled = false;
   } else {
     submitBtn.disabled = true;

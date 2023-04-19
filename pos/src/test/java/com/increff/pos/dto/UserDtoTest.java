@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.increff.pos.util.Constants.maxStringLength;
 import static com.increff.pos.util.Constants.pageSize;
 import static org.junit.Assert.assertEquals;
 
@@ -31,6 +32,72 @@ public class UserDtoTest extends AbstractUnitTest{
         form.setEmail("s1@gmail.com");
         form.setPassword("password");
         dto.add(form);
+    }
+
+    @Test
+    public void testEmptyEmailAdd() throws ApiException {
+        UserForm form=new UserForm();
+        form.setEmail("");
+        form.setPassword("password");
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Email can't be null/empty",e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDuplicateEmailAdd() throws ApiException {
+        UserForm form=new UserForm();
+        form.setEmail("o1@gmail.com");
+        form.setPassword("password");
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("User with given email already exists",e.getMessage());
+        }
+    }
+
+    @Test
+    public void testMuchGreaterEmailLengthAdd() throws ApiException {
+        UserForm form=new UserForm();
+        form.setEmail("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk@gmail.com");
+        form.setPassword("password");
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Length of email can't exceed "+maxStringLength,e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void testEmptyPasswordAdd() throws ApiException {
+        UserForm form=new UserForm();
+        form.setEmail("email@gmail.com");
+        form.setPassword("");
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Password can't be null/empty",e.getMessage());
+        }
+    }
+
+    @Test
+    public void testMuchGreaterPasswordLengthAdd() throws ApiException {
+        UserForm form=new UserForm();
+        form.setEmail("email@gmail.com");
+        form.setPassword("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk@ff");
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Length of password can't exceed "+maxStringLength,e.getMessage());
+        }
     }
 
     @Test
@@ -97,6 +164,16 @@ public class UserDtoTest extends AbstractUnitTest{
     }
 
     @Test
+    public void testDeleteWrongId() throws ApiException {
+        int id = 1000;
+        try {
+            dto.delete(id);
+        } catch (ApiException e) {
+            assertEquals("User with given id "+id+" does not exist",e.getMessage());
+        }
+    }
+
+    @Test
     public void testChangePassword() throws ApiException {
         List<UserData> userDataList=dto.getAll();
 
@@ -148,4 +225,6 @@ public class UserDtoTest extends AbstractUnitTest{
             }
         }
     }
+
+
 }

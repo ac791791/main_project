@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.Constants.maxMrp;
-import static com.increff.pos.util.Constants.pageSize;
+import static com.increff.pos.util.Constants.*;
 import static org.junit.Assert.assertEquals;
 
 public class ProductDtoTest extends AbstractUnitTest{
@@ -77,7 +76,20 @@ public class ProductDtoTest extends AbstractUnitTest{
         }
 
     }
-
+    @Test
+    public void testGreaterBarcodeLenghtAdd() throws ApiException{
+        ProductForm form = new ProductForm();
+        form.setBarcode("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk");
+        form.setbrandCategory(brandCategory);
+        form.setName("name");
+        form.setMrp(50);
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Length of barcode can't exceed "+maxStringLength,e.getMessage());
+        }
+    }
 
 
     @Test
@@ -94,6 +106,21 @@ public class ProductDtoTest extends AbstractUnitTest{
             assertEquals("Name can't be null/empty",e.getMessage());
         }
 
+    }
+
+    @Test
+    public void testGreaterNameLenghtAdd() throws ApiException{
+        ProductForm form = new ProductForm();
+        form.setBarcode("b2000");
+        form.setbrandCategory(brandCategory);
+        form.setName("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk");
+        form.setMrp(50);
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Length of name can't exceed "+maxStringLength,e.getMessage());
+        }
     }
 
     @Test
@@ -143,6 +170,23 @@ public class ProductDtoTest extends AbstractUnitTest{
         }
 
     }
+
+    @Test
+    public void testZeroBrandCategoryAdd() throws ApiException{
+        ProductForm form = new ProductForm();
+        form.setBarcode("b2000");
+        form.setbrandCategory(0);
+        form.setName("name");
+        form.setMrp(10);
+        try {
+            dto.add(form);
+        }
+        catch (ApiException e){
+            assertEquals("Please choose Brand/Category Option",e.getMessage());
+        }
+
+    }
+
 
 
     @Test
@@ -241,6 +285,87 @@ public class ProductDtoTest extends AbstractUnitTest{
             assertEquals(50.22,getData.getMrp(),0.01);
         }
     }
+
+    @Test
+    public void testEmptyNameUpdate() throws ApiException {
+        List<ProductData> list=dto.getAll();
+        for(ProductData data:list){
+            ProductUpdateForm form = new ProductUpdateForm();
+            form.setName("");
+            form.setMrp(50.22);
+            try {
+                dto.update(data.getId(),form);
+            }
+            catch (ApiException e){
+                assertEquals("Name can't be null/empty",e.getMessage());
+            }
+
+            ProductData getData=dto.getCheck(data.getId());
+            assertEquals(name,getData.getName());
+            assertEquals(mrp,getData.getMrp(),0.01);
+        }
+    }
+
+    @Test
+    public void testGreaterNameLengthUpdate() throws ApiException {
+        List<ProductData> list=dto.getAll();
+        for(ProductData data:list){
+            ProductUpdateForm form = new ProductUpdateForm();
+            form.setName("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk");
+            form.setMrp(50.22);
+            try {
+                dto.update(data.getId(),form);
+            }
+            catch (ApiException e){
+                assertEquals("Length of name can't exceed "+maxStringLength,e.getMessage());
+            }
+
+            ProductData getData=dto.getCheck(data.getId());
+            assertEquals(name,getData.getName());
+            assertEquals(mrp,getData.getMrp(),0.01);
+        }
+    }
+
+    @Test
+    public void testNegativeMrpUpdate() throws ApiException {
+        List<ProductData> list=dto.getAll();
+        for(ProductData data:list){
+            ProductUpdateForm form = new ProductUpdateForm();
+            form.setName("name");
+            form.setMrp(-1);
+            try {
+                dto.update(data.getId(),form);
+            }
+            catch (ApiException e){
+                assertEquals("Mrp can't be lesser than or equal to 0",e.getMessage());
+            }
+
+            ProductData getData=dto.getCheck(data.getId());
+            assertEquals(name,getData.getName());
+            assertEquals(mrp,getData.getMrp(),0.01);
+        }
+    }
+
+    @Test
+    public void testGreaterMrpUpdate() throws ApiException {
+        List<ProductData> list=dto.getAll();
+        for(ProductData data:list){
+            ProductUpdateForm form = new ProductUpdateForm();
+            form.setName("name");
+            form.setMrp(10000000);
+            try {
+                dto.update(data.getId(),form);
+            }
+            catch (ApiException e){
+                assertEquals("Mrp can't be greater than "+maxMrp,e.getMessage());
+            }
+
+            ProductData getData=dto.getCheck(data.getId());
+            assertEquals(name,getData.getName());
+            assertEquals(mrp,getData.getMrp(),0.01);
+        }
+    }
+
 }
 
 

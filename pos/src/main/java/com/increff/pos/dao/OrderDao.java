@@ -2,7 +2,6 @@ package com.increff.pos.dao;
 
 import com.increff.pos.pojo.OrderPojo;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;

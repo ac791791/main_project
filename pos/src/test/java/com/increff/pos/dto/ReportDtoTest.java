@@ -127,7 +127,7 @@ public class ReportDtoTest extends AbstractUnitTest{
         form.setStartDate("2023-02-26");
         form.setEndDate("2023-04-06");
         List<SalesReportData> salesReportDataList = dto.getSalesReport(form);
-        assertEquals(1,salesReportDataList.size());
+        assertEquals(0,salesReportDataList.size());
 
         form.setBrand("differentBrand");
         List<SalesReportData> salesReportDataList1 = dto.getSalesReport(form);

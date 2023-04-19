@@ -90,16 +90,21 @@ function addToJsonList(json, maxQuantity){
     if(barcode in map){
         for(let i=0;i<jsonList.length;i++){
             if(jsonList[i].barcode === barcode){
-                if((map[barcode]+orderItem.quantity)>maxQuantity){
+                var checkQuantity = parseInt(map[barcode]) + parseInt(orderItem.quantity);
+                if(checkQuantity>maxQuantity){
                     errorMessage(orderItem.quantity+" quantity is not present. Max Quantity: "+ (maxQuantity-map[barcode]));
                     break;
                 }
                 if(jsonList[i].sellingPrice != data.sellingPrice)
+                {
                   errorMessage("Price of same product can't be different");
+                  var submitBtn = document.getElementById("addItem-button");
+                  submitBtn.disabled=false;
+                 }
                 else{
                     var newQuantity = parseInt(jsonList[i].quantity) + parseInt(data.quantity);
-                    console.log("New Quantity "+newQuantity);
                     jsonList[i].quantity=  newQuantity;
+                    map[barcode]=newQuantity;
                     document.getElementById("order-add-form").reset();
                 }
 
@@ -391,7 +396,7 @@ function checkInputs1() {
   var quantity = document.getElementById("addQuantity").value;
   var mrp = document.getElementById("addMrp").value;
   var submitBtn = document.getElementById("addItem-button");
-  if (barcode.length > 0 || quantity > 0 || mrp>0) {
+  if (barcode.length > 0 && quantity > 0 && mrp>0) {
     submitBtn.disabled = false;
   } else {
     submitBtn.disabled = true;
@@ -403,7 +408,7 @@ function checkInputs2() {
   var quantity = document.getElementById("updateInputQuantity").value;
   var mrp = document.getElementById("updateInputMrp").value;
   var submitBtn = document.getElementById("edit-add-button");
-  if (barcode.length > 0 || quantity > 0 || mrp>0) {
+  if (barcode.length > 0 && quantity > 0 && mrp>0) {
     submitBtn.disabled = false;
   } else {
     submitBtn.disabled = true;

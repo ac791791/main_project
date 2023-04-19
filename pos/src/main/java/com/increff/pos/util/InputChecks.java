@@ -4,7 +4,6 @@ import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.ApiException;
 
-import java.util.Objects;
 
 import static com.increff.pos.util.Constants.*;
 import static com.increff.pos.util.StringUtil.isEmpty;
@@ -110,11 +109,11 @@ public class InputChecks {
             throw new ApiException("Password can't be null/empty");
         }
 
-        if(form.getEmail().length()>30){
-            throw new ApiException("Length of email can't exceed "+40);
+        if(form.getEmail().length()>maxStringLength){
+            throw new ApiException("Length of email can't exceed "+maxStringLength);
         }
-        if(form.getPassword().length()>30){
-            throw new ApiException("Length of password can't exceed "+40);
+        if(form.getPassword().length()>maxStringLength){
+            throw new ApiException("Length of password can't exceed "+maxStringLength);
         }
     }
 

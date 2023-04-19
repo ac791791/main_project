@@ -250,7 +250,7 @@ function checkInputs() {
     var name = document.getElementById("inputName").value;
     var mrp = document.getElementById("inputMrp").value;
     var submitBtn = document.getElementById("add-product");
-    if (barcode.length > 0 || name.length > 0 || mrp>0) {
+    if (barcode.length > 0 && name.length > 0 && mrp>0) {
       submitBtn.disabled = false;
     } else {
       submitBtn.disabled = true;
@@ -296,26 +296,20 @@ function check(){
 
 
         if(page=="1"){
-            console.log("1");
             previousBtn.disabled=true;
             nextBtn.disabled=false;
         }
 
         else if(page==totalPages){
-            console.log("2");
             previousBtn.disabled=false;
             nextBtn.disabled=true;
         }
         else{
-            console.log("3");
             previousBtn.disabled=false;
             nextBtn.disabled=false;
         }
 
         if(maxPage=="1" || page==""){
-                console.log("4");
-                console.log("totalPages "+totalPages);
-                console.log("page "+page);
                 previousBtn.disabled=true;
                 nextBtn.disabled=true;
             }

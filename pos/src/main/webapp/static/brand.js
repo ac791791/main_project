@@ -3,12 +3,14 @@ function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/brands";
 }
+
+console.log("url: "+getBrandUrl());
 function addToggle(){
     document.getElementById("brand-form").reset();
     $('#add-brand-modal').modal('toggle');
 }
 
-var bulkList=[];
+
 
 var backupPage=1;
 var totalPages=1;
@@ -81,7 +83,6 @@ function updateBrand(event){
 }
 
 function getTotalPages(){
-
 
     var url = getBrandUrl()+"/total";
     	$.ajax({
@@ -194,7 +195,7 @@ function checkInputs() {
   var brand = document.getElementById("inputBrand").value;
   var category = document.getElementById("inputCategory").value;
   var submitBtn = document.getElementById("add-brand");
-  if (brand.length > 0 || category.length > 0) {
+  if (brand.length > 0 && category.length > 0) {
     submitBtn.disabled = false;
   } else {
     submitBtn.disabled = true;

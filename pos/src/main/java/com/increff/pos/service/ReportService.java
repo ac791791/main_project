@@ -26,7 +26,6 @@ public class ReportService {
     private ReportDao dao;
 
 
-
     public List<Tuple> getBrandReport(BrandReportForm form){
         String brand = form.getBrand();
         String category = form.getCategory();

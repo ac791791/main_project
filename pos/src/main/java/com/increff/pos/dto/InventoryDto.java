@@ -66,7 +66,7 @@ public class InventoryDto {
 
     public void update(int id, InventoryUpdateForm form) throws ApiException {
         validateInventoryUpdateForm(form);
-        service.update(id,form.getQuantity());
+        service.update(id,(int)form.getQuantity());
     }
 
     public void topUpdate(InventoryAddForm form) throws ApiException {

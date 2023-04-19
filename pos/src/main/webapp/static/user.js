@@ -124,7 +124,7 @@ function checkInputs() {
   var email = document.getElementById("inputEmail").value;
   var password = document.getElementById("inputPassword").value;
   var submitBtn = document.getElementById("add-user");
-  if (email.length > 0 || password.length > 0) {
+  if (email.length > 0 && password.length > 0) {
     submitBtn.disabled = false;
   } else {
     submitBtn.disabled = true;

@@ -1,11 +1,11 @@
 package com.increff.pos.model;
 
 public class InventoryUpdateForm {
-    private int quantity;
-    public int getQuantity() {
+    private double quantity;
+    public double getQuantity() {
         return quantity;
     }
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 }

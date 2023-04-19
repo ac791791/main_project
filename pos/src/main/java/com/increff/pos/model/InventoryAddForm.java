@@ -2,13 +2,13 @@ package com.increff.pos.model;
 
 public class InventoryAddForm {
 
-    private int quantity;
+    private double quantity;
     private String barcode;
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
     public String getBarcode() {

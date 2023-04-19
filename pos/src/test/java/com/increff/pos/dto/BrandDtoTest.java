@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.increff.pos.util.Constants.maxStringLength;
 import static com.increff.pos.util.Constants.pageSize;
 import static org.junit.Assert.assertEquals;
 
@@ -84,6 +85,34 @@ public class BrandDtoTest extends AbstractUnitTest{
         }
         catch (ApiException e){
             assertEquals("Category can't be null/empty. ",e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGreaterBrandLengthAdd(){
+        BrandForm brandForm = new BrandForm();
+        brandForm.setBrand("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk");
+        brandForm.setCategory("categoty");
+
+        try {
+            dto.add(brandForm);
+        }
+        catch (ApiException e){
+            assertEquals("Length of brand can't exceed "+maxStringLength,e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGreaterCategoryLengthAdd(){
+        BrandForm brandForm = new BrandForm();
+        brandForm.setBrand("brand");
+        brandForm.setCategory("abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk");
+
+        try {
+            dto.add(brandForm);
+        }
+        catch (ApiException e){
+            assertEquals("Length of category can't exceed "+maxStringLength,e.getMessage());
         }
     }
     @Test

@@ -99,6 +99,41 @@ public class OrderItemDtoTest extends AbstractUnitTest{
     }
 
     @Test
+    public void testDuplicateBarcodeAdd() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+            form.setOrderId(orderData.getId());
+            form.setBarcode("b1");
+            form.setQuantity(10);
+            form.setSellingPrice(sellingPrice);
+            dto.add(form);
+        }
+    }
+
+    @Test
+    public void testDuplicateBarcodeDifferentSellingPriceAdd() throws ApiException {
+        List<OrderData> orderDataList=orderDto.getAll();
+
+        for(OrderData orderData: orderDataList){
+            OrderItemForm form= new OrderItemForm();
+            form.setOrderId(orderData.getId());
+            form.setBarcode("b1");
+            form.setQuantity(10);
+            form.setSellingPrice(50);
+            try{
+                dto.add(form);
+            }
+            catch (ApiException e){
+                assertEquals("Already present in cart. Selling Price can't be different.",e.getMessage());
+            }
+
+        }
+    }
+
+
+    @Test
     public void testLessInventoryAdd() throws ApiException {
         List<OrderData> orderDataList=orderDto.getAll();
 
@@ -206,6 +241,17 @@ public class OrderItemDtoTest extends AbstractUnitTest{
                 assertEquals(10,getData.getQuantity());
                 assertEquals(10.55,getData.getSellingPrice(),0.01);
             }
+        }
+    }
+
+    @Test
+    public void testGetByOrderItemIdWrongId() throws ApiException {
+        int id = 1000;
+        try {
+            dto.getCheck(id);
+        }
+        catch (ApiException e){
+            assertEquals("OrderItem with given id "+id+" does not exists",e.getMessage());
         }
     }
 

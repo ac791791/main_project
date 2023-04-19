@@ -4,7 +4,6 @@ package com.increff.pos.controller;
 import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderForm;
-import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +25,6 @@ public class OrderController {
     @ApiOperation(value = "Validating OrderForm")
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     public int validateOrderForm(@RequestBody OrderForm form) throws ApiException {
-        System.out.println("Check Validate form");
         return dto.checkOrderForm(form);
     }
 
@@ -47,13 +45,6 @@ public class OrderController {
     public OrderData get(@PathVariable int orderId) throws ApiException {
         return dto.get(orderId);
     }
-
-
-//    @ApiOperation(value = "Getting all orders")
-//    @RequestMapping(method = RequestMethod.GET)
-//    public List<OrderData> getAll(){
-//        return dto.getAll();
-//    }
 
     @ApiOperation(value = "Get list of Orders of a given page")
     @RequestMapping(value = "/getLimited/{pageNo}",method = RequestMethod.GET)

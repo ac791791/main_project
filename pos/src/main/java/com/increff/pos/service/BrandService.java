@@ -2,7 +2,7 @@ package com.increff.pos.service;
 
 import java.util.List;
 import java.util.Objects;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import com.increff.pos.pojo.BrandPojo;
 
 
 @Service
-@Transactional(rollbackOn = ApiException.class)
+@Transactional(rollbackFor = ApiException.class)
 public class BrandService {
 	
 	@Autowired

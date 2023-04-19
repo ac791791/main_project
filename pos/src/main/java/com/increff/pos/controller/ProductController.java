@@ -1,6 +1,5 @@
 package com.increff.pos.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.increff.pos.dto.ProductDto;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ProductService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

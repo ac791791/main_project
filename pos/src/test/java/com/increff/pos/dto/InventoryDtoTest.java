@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.increff.pos.util.Constants.maxQuantity;
 import static com.increff.pos.util.Constants.pageSize;
 import static org.junit.Assert.assertEquals;
 
@@ -147,6 +148,63 @@ public class InventoryDtoTest extends AbstractUnitTest{
         }
 
     }
+    @Test
+    public void testNegativeQuantityUpdate() throws ApiException {
+        List<InventoryData> list=dto.getAll();
+        for(InventoryData data:list){
+            InventoryUpdateForm form=new InventoryUpdateForm();
+            form.setQuantity(-1);
+            try {
+                dto.update(data.getId(), form);
+            }
+            catch (ApiException e){
+                assertEquals("Quantity can't be less than 0",e.getMessage());
+            }
+
+            InventoryData getData=dto.get(data.getId());
+            assertEquals(0,getData.getQuantity());
+        }
+
+    }
+
+    @Test
+    public void testDecimalQuantityUpdate() throws ApiException {
+        List<InventoryData> list=dto.getAll();
+        for(InventoryData data:list){
+            InventoryUpdateForm form=new InventoryUpdateForm();
+            form.setQuantity(1.1);
+            try {
+                dto.update(data.getId(), form);
+            }
+            catch (ApiException e){
+                assertEquals("Quantity can't be in Decimals",e.getMessage());
+            }
+
+            InventoryData getData=dto.get(data.getId());
+            assertEquals(0,getData.getQuantity());
+        }
+
+    }
+
+    @Test
+    public void testMuchGreaterQuantityUpdate() throws ApiException {
+        List<InventoryData> list=dto.getAll();
+        for(InventoryData data:list){
+            InventoryUpdateForm form=new InventoryUpdateForm();
+            form.setQuantity(10000000);
+            try {
+                dto.update(data.getId(), form);
+            }
+            catch (ApiException e){
+                assertEquals("Quantity can't be greater than "+maxQuantity,e.getMessage());
+            }
+
+            InventoryData getData=dto.get(data.getId());
+            assertEquals(0,getData.getQuantity());
+        }
+
+    }
+
 
     @Test
     public void testTopUpdate() throws ApiException {
@@ -159,6 +217,68 @@ public class InventoryDtoTest extends AbstractUnitTest{
 
             InventoryData getData=dto.get(data.getId());
             assertEquals(10,getData.getQuantity());
+        }
+    }
+
+    @Test
+    public void testNegativeQuantityTopUpdate() throws ApiException {
+        List<InventoryData> list=dto.getAll();
+        for(InventoryData data:list){
+            InventoryAddForm form=new InventoryAddForm();
+            form.setQuantity(-1);
+            form.setBarcode(barcode);
+            try {
+                dto.topUpdate(form);
+            }
+            catch (ApiException e){
+                assertEquals("Quantity can't be less than 0",e.getMessage());
+            }
+
+
+            InventoryData getData=dto.get(data.getId());
+            assertEquals(0,getData.getQuantity());
+        }
+    }
+
+    @Test
+    public void testDecimalQuantityTopUpdate() throws ApiException {
+        List<InventoryData> list=dto.getAll();
+        for(InventoryData data:list){
+            InventoryAddForm form=new InventoryAddForm();
+
+            form.setQuantity(1.1);
+            form.setBarcode(barcode);
+            try {
+                dto.topUpdate(form);
+            }
+            catch (ApiException e){
+                assertEquals("Quantity can't be in Decimals",e.getMessage());
+            }
+
+
+            InventoryData getData=dto.get(data.getId());
+            assertEquals(0,getData.getQuantity());
+        }
+    }
+
+    @Test
+    public void testMuchGreaterQuantityTopUpdate() throws ApiException {
+        List<InventoryData> list=dto.getAll();
+        for(InventoryData data:list){
+            InventoryAddForm form=new InventoryAddForm();
+
+            form.setQuantity(1000000000);
+            form.setBarcode(barcode);
+            try {
+                dto.topUpdate(form);
+            }
+            catch (ApiException e){
+                assertEquals("Quantity can't be greater than "+maxQuantity,e.getMessage());
+            }
+
+
+            InventoryData getData=dto.get(data.getId());
+            assertEquals(0,getData.getQuantity());
         }
     }
 
@@ -198,5 +318,7 @@ public class InventoryDtoTest extends AbstractUnitTest{
             assertEquals("Product with given barcode differentBarcode does not exist",e.getMessage());
         }
     }
+
+
 
 }

@@ -1,8 +1,6 @@
 package com.increff.pos.service;
 
 import com.increff.pos.dto.AbstractUnitTest;
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import org.junit.Before;
 import org.junit.Test;

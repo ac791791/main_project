@@ -149,6 +149,18 @@ public class OrderDtoTest extends AbstractUnitTest {
         }
     }
 
+    @Test
+    public void testGetWrongId() throws ApiException {
+        int id=10000;
+        try{
+            OrderData data = dto.get(id);
+        }
+        catch (ApiException e){
+            assertEquals("Order with given id "+id+" does not exist", e.getMessage());
+        }
+
+    }
+
 
     @Test
     public void testGetLimited() throws ApiException {
